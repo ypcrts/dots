@@ -1,3 +1,5 @@
+# vi: ft=make et
+
 # shell
 ~/.bashrc: ./bashrc
 ~/.config/bash/prompt.bash: ./lib/prompt.bash
