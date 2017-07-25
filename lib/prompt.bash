@@ -14,7 +14,11 @@ bash_prompt_setup () {
   __STRFARBE__ ()  {
     (($# < 1)) && return 1
     local HASH="$(echo \"$1\" | md5sum | sed -r 's/^([0-9a-f]*).*$/\U\1/')"
-    echo "ibase=16;(${HASH}%5)+20" | bc
+		if command -V bc >/dev/null 2>&1; then
+			echo "ibase=16;(${HASH}%5)+20" | bc
+		else
+			python -c "import os;os.write(1,'{:d}'.format(int('${HASH}',16)%0x5+0x20))"
+		fi
   }
 
   local VIRTUALENV_TEIL=''
