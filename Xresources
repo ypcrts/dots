@@ -53,4 +53,4 @@ Xautolock.time:                      5
 Xautolock.notify:                    15
 
 ! {{{1 Colours
-#include ".config/color/w0ng"
+#include "/home/user/.config/color/w0ng"
