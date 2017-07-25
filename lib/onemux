@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+#   ___  _ __   ___ _ __ ___  _   ___  __
+#  / _ \| '_ \ / _ \ '_ ` _ \| | | \ \/ /
+# | (_) | | | |  __/ | | | | | |_| |>  <
+#  \___/|_| |_|\___|_| |_| |_|\__,_/_/\_\
+#  by ypcrts   https://github.com/ypcrts
+#
+#  Inspired by https://gist.github.com/aki--aki/5062314
+
+onemux_usage () {
+  local SCRIPTNAME="$(basename $0)"
+  printf "USAGE:\t$SCRIPTNAME [-0|--no-256] [-f|--force] [ONEMUX_SESSION_NAME]\n\t$SCRIPTNAME [-h|--help]\n"
+}
+
+onemux () {
+  local ONEMUX_SESSION_NAME='one'
+  local ONEMUX_SESSION_INSTANCE=''
+  local SANITY_CHECKS=1
+  local TMUX_OPTS='-2'
+
+  while [[ $# -ge 1 ]]; do
+    case "$1" in
+      -0|--no-256) # disable `tmux -2` 256 colours
+        TMUX_OPTS="$(echo "$TMUX_OPTS" | sed -e 's/-2\s*//g')"
+        ;;
+      -f|--force)
+        SANITY_CHECKS=0
+        ;;
+      -h|--help)
+        onemux_usage
+        exit 0
+        ;;
+      -*)
+        onemux_usage
+        exit 1
+        ;;
+      *)
+        if [[ "$SANITY_CHECKS" = 1 ]]; then
+          if [[ "$ONEMUX_SESSION_NAME" != 'one' ]] || [[ "$1" =~ "^[\w]{1,3}$" ]]; then
+            onemux_usage
+            exit 1
+          fi
+        fi
+        ONEMUX_SESSION_NAME="$1"
+        ;;
+    esac
+    shift
+  done
+
+  ONEMUX_SESSION_INSTANCE="$ONEMUX_SESSION_NAME-`date -u +%Y%m%dT%H%M%SZ`"
+
+  if [[ -n "$TMUX" ]]; then
+    printf "Don't nest local tmux sessions, fool\n"
+    exit 1
+  fi
+
+  # create session & window iff none
+  if [[ "$(tmux ls | grep '${ONEMUX_SESSION_NAME}-' | wc -l)" -eq "0" ]]; then
+    2>/dev/null >/dev/null tmux $TMUX_OPTS new-session -d -s $ONEMUX_SESSION_NAME
+    2>/dev/null >/dev/null tmux $TMUX_OPTS new-window -t ${ONEMUX_SESSION_NAME}:1
+  fi
+
+  # kill old sessions
+  tmux ls | \
+    sed -e 's/.*attached.*//' -nre 's/([A-z0-9_]{1,}-[0-9TZ]{8,}):.*/\1/p' | \
+    xargs --replace={} tmux kill-session -t {} 2>/dev/null >/dev/null
+
+  2>/dev/null >/dev/null tmux $TMUX_OPTS new-session -d -t $ONEMUX_SESSION_NAME -s $ONEMUX_SESSION_INSTANCE
+  exec tmux $TMUX_OPTS attach-session -t $ONEMUX_SESSION_INSTANCE
+
+}
+
+onemux $@
+
+# vim: set ts=2 sts=2 ft=sh fdm=marker sw=2 tw=80 et:

@@ -12,3 +12,7 @@
 ~/.vimrc: ./vimrc
 ~/.gitignore: ./lib/gitignore
 ~/.gitconfig: ./gitconfig
+
+~/.tmux.conf: ./lib/tmux.conf
+~/.screenrc: ./lib/screenrc
+~/bin/onemux: ./lib/onemux
