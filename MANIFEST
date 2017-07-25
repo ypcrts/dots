@@ -6,3 +6,7 @@
 
 ~/.Xresources: ./Xresources
 ~/.config/color/w0ng: ./lib/xresources_color_w0ng
+
+~/.bashrc: ./bashrc
+
+~/.vimrc: ./vimrc

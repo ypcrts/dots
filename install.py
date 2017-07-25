@@ -9,7 +9,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-f','--force', help="remove any existing file", action='store_true')
-opts = parser.parse_args()
+args = parser.parse_args()
 
 startdir = os.getcwd() 
 
