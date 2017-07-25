@@ -5,3 +5,4 @@
 ~/.urxvt/ext/urxvt-font-size: ./lib/urxvt-font-size
 
 ~/.Xresources: ./Xresources
+~/.config/color/w0ng: ./lib/xresources_color_w0ng

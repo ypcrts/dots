@@ -1,0 +1,56 @@
+! vim:fenc=utf-8:nu:ai:si:et:ts=4:sw=4:ft=xdefaults:
+! {{{1 Urxvt ----------------------------------------
+URxvt.cursorColor:     #5E468C
+URxvt.cursorBlink:     false
+URxvt.geometry:        80x22
+URxvt.borderLess:      false
+URxvt*urgentOnBell:    true
+URxvt.internalBorder:  1
+URxvt.scrollBar_right: false
+URxvt.scrollBar:       false
+! {{{2 Annoying insert mode
+URxvt.iso14755:        true
+URxvt.iso14755_52:     false
+!URxvt.altSendsEscape:               true ! this is evil!
+URxvt.transparent:     false
+! {{{2 composite
+URxvt*depth:           32
+URxvt*background: [80]#000000
+! {{{2 Scrollback
+URxvt*scrollTtyKeypress: false
+! URxvt*scrollTtyKeypress: true
+URxvt*saveLines:         2048
+URxvt*skipBuiltinGlyphs: true
+
+URxvt*lineSpace:                     1
+! URxvt.font:                         -*-terminus-medium-r-*-*-12-*-*-*-*-*-*-13
+! URxvt.boldFont:                     -*-terminus-bold-r-*-*-12-*-*-*-*-*-*-13
+! URxvt.italicFont:                   -*-terminus-medium-r-*-*-12-*-*-*-*-*-*-13
+! URxvt.boldItalicFont:               -*-terminus-bold-r-*-*-12-*-*-*-*-*-*-13
+URxvt*letterSpace:                 -2
+URxvt*font:           xft:Cousine:style=Regular:pixelsize=14:antialias=on:hinting=on:hintstyle=hintslight
+URxvt*boldFont:       xft:Cousine:style=Regular:pixelsize=14:antialias=on:hinting=on:hintstyle=hintslight
+URxvt*italicFont:     xft:Cousine:style=Regular:pixelsize=14:antialias=on:hinting=on:hintstyle=hintslight
+URxvt*boldItalicFont: xft:Cousine:style=Regular:pixelsize=14:antialias=on:hinting=on:hintstyle=hintslight
+
+
+! {{{2 Extensions
+URxvt.perl-ext-common:               matcher,font-size
+URxvt.url-launcher:                   firefox
+URxvt.matcher.pattern.1:             \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
+URxvt.keysym.M-S-Insert:           perl:matcher:last
+URxvt.keysym.M-Insert:             perl:matcher:list
+URxvt.keysym.C-M-Up:                 perl:font-size:increase
+URxvt.keysym.C-M-Down:               perl:font-size:decrease
+URxvt.keysym.C-M-S-Up:               perl:font-size:incglobal
+URxvt.keysym.C-M-S-Down:             perl:font-size:decglobal
+! /*}}}*/
+
+! {{{1 Xautolock
+Xautolock.corners:                   -+++
+Xautolock.cornerdelay:               600
+Xautolock.time:                      5
+Xautolock.notify:                    15
+
+! {{{1 Colours
+#include ".config/color/w0ng"
