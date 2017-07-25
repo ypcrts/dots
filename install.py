@@ -32,7 +32,7 @@ with open('./MANIFEST', 'r') as fp:
     if not os.path.isdir(destdir):
       os.makedirs(destdir, 0755)
 
-    if os.lstat(destabs):
+    if os.path.exists(destabs):
       if not args.force and os.stat(destabs):
           print('skipping existing file:', destabs)
           continue

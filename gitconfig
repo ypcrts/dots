@@ -1,0 +1,174 @@
+; vim: set ft=gitconfig tw=0 ts=2 sw=2 sts=2 et:
+[filter "media"]
+  clean             = git-media-clean %f
+  smudge            = git-media-smudge %f
+
+[user]
+  name              = ypcrts
+  email             = ypcrts@users.noreply.github.com
+  signingkey        =
+
+[alias]
+  a                 = add
+  af                = add --force
+  ai                = add --interactive
+  ap                = add --patch
+  au                = add --update
+  amend             = commit --amend --no-edit
+
+  b                 = branch
+  bra               = branch -vva
+
+  r                 = remote
+  discard           = checkout -- .
+
+  ci                = commit
+  cn                = commit -n
+  cm                = "!sh -c 'git commit --message=\"$*\"' -"
+  cnm               = "!sh -c 'git commit -n --message=\"$*\"' -"
+
+  co                = checkout
+
+  d                 = diff -C -w --ignore-blank-lines ; -w===--ignore=all-space; -C===--find-copies
+  dm                = "!sh -c 'git d origin/master $*' -"
+  dw                = diff -C -w --color-words=. ; word diff with no ws
+  dad               = diff -C --ws-error-highlight=all ; dad shows ws errors ;'all' includes context
+  dih               = "!sh -c 'git d HEAD $*' -"
+  dis               = "!sh -c 'git d --staged $*' -"
+  diffs             = diff -C -w --summary --stat
+
+  s                 = status --short --branch -- .
+  si                = status --short --branch --ignored -- .
+  st                = status --short --branch
+
+  tags              = tag -l
+
+  l                 = log -n 10
+  logs              = log --show-signature
+  lol               = log --graph --date-order --pretty=lol
+  people            = shortlog -s -n --email
+
+  wt                = worktree
+  mt                = mergetool --no-prompt
+  rl                = reflog --decorate
+
+  rp                = rev-parse
+  rps               = rev-parse --short
+  rptl              = rev-parse --show-toplevel
+
+  ls                = ls-files
+  ignored           = ls-files --others -i --exclude-standard
+
+  insta             = instaweb
+
+  x                 = annex
+  github            = repo github
+
+  whois             = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author = \"$1\"' -"
+  rewrite-date      = "!set -xue;DATUM=\"$(date -R -d \"$1\")\"; shift; GIT_AUTHOR_DATE=\"$DATUM\" GIT_COMMITTER_DATE=\"$DATUM\" git commit --amend --date \"$DATUM\""
+  rewrite-datez      = "!set -xue;DATUM=\"$(date -u -R -d \"$1\")\"; shift; GIT_AUTHOR_DATE=\"$DATUM\" GIT_COMMITTER_DATE=\"$DATUM\" git commit --amend --date \"$DATUM\""
+
+
+[color]
+  ui                = auto
+[color "diff"]
+	plain = normal
+	meta = bold
+	frag = cyan bold
+	old = red bold
+	new = green bold
+	commit = yellow bold
+  whitespace        = red reverse
+[color "branch"]
+	current = green bold
+	local = normal
+	remote = red bold
+	plain = normal
+[color "status"]
+	header = normal
+	added = red bold
+	updated = green bold
+	changed = yellow bold
+	untracked = magenta bold
+	nobranch = red
+[color "grep"]
+	match = yellow bold
+[color "interactive"]
+	prompt = normal
+	header = black bold
+	help = magenta bold
+	error = red bold
+[clean]
+  requireForce      = true
+[core]
+  whitespace        = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+  autocrlf          = input
+  excludesfile      = ~/.gitignore
+
+[branch]
+  autosetupmerge    = false
+
+[pager]
+  color             = true
+
+[log]
+  abbrevCommit      = true
+  date = relative
+
+[status]
+  showUntrackdFiles = normal
+
+[diff]
+  mnemonicPrefix    = true
+  renames           = copies
+  algorithm         = minimal
+
+[format]
+  pretty = tiny
+
+[pretty]
+  tiny  = %C(auto,green)%h %C(auto,blue)%<(8,trunc)%an %C(auto,reset)%<(60,trunc)%s %C(auto,red)%d%C(auto,reset)
+  dated = %C(auto,green)%h %C(auto,blue)%<(8,trunc)%an %C(auto,reset)%<(60,trunc)%s %cd%C(auto,reset) %C(auto,red)%D%C(auto,reset)
+  find  = %C(auto,green)%h %C(auto,red)%d %C(auto,blue)%<(8,trunc)%an %C(auto,reset)%<(60,trunc)%s %C(auto,reset)
+  lol   = %C(auto,red)%h%C(auto,reset)%C(auto,yellow)%d%C(auto,reset) %C(auto,blue)%an%C(auto,reset) - %s %C(auto,green)(%cr)%C(auto,reset)
+  long  = %C(auto,green)%h %C(auto,blue)%<(15,trunc)%an %C(auto,reset)%<(70,trunc)%s %<(20)%cd%C(auto,red)%D %C(auto,reset)
+
+[url "github:"]
+  ;insteadOf         = "git://github.com/"
+  ;insteadOf         = "https://github.com/"
+  pushInsteadOf     = "git://github.com/"
+  pushInsteadOf     = "https://github.com/"
+
+[url "https://aur.archlinux.org/"]
+  insteadOf = "aur"
+
+[url "git@gist.github.com:"]
+  insteadOf         = "gist:"
+  pushInsteadOf     = "gist:"
+  pushInsteadOf     = "git://gist.github.com/"
+
+[rebase]
+  stat              = true
+
+[help]
+  autocorrect       = 0
+
+[daemon]
+  uploadarch        = true
+
+[push]
+  default           = current
+
+[merge]
+  stat              = true
+  tool              = maybenvimdiff2
+
+[mergetool]
+	keepBackup = false
+	prompt = false
+
+[mergetool "maybenvimdiff2"]
+  cmd = $EDITOR -d $LOCAL $MERGED $REMOTE
+
+[hub]
+  triangular        = false

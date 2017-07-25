@@ -10,3 +10,5 @@
 ~/.bashrc: ./bashrc
 
 ~/.vimrc: ./vimrc
+~/.gitignore: ./lib/gitignore
+~/.gitconfig: ./gitconfig
