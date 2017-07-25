@@ -16,7 +16,7 @@ startdir = os.getcwd()
 with open('./MANIFEST', 'r') as fp:
   for (i, line) in enumerate(fp, 1):
     line = line.strip()
-    if not line:
+    if not line or line.startswith("#"):
       continue
     parts = map(lambda x: x.strip(), line.split(":"))
     if len(parts) != 2:
