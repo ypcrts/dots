@@ -1,0 +1,14 @@
+#!/bin/sh
+# idiom to clear everything
+/usr/bin/setxkbmap -option
+
+# enable restart X
+# /usr/bin/setxkbmap -option terminate:ctrl_alt_bksp
+
+# disable CapsLock & map to Escape
+/usr/bin/setxkbmap -option caps:ctrl_modifier
+
+# compose key
+/usr/bin/setxkbmap -option compose:ralt
+
+

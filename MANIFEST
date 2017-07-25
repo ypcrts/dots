@@ -1,0 +1,7 @@
+~/bin/fixkeys: ./lib/fixkeys
+
+~/.config/awesome/rc.lua: ./awesome.lua
+
+~/.urxvt/ext/urxvt-font-size: ./lib/urxvt-font-size
+
+~/.Xresources: ./Xresources
