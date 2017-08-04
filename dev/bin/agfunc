@@ -1,0 +1,7 @@
+#!/bin/sh
+goto_fail () {
+  FUNKY="$1"
+  shift
+  ag "(function\s+${FUNKY}|(var|const|let)\s+${FUNKY}\s+=[(),\w\s]+=>)" "$@"
+}
+goto_fail "$@"

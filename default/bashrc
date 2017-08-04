@@ -5,11 +5,9 @@ if [[ -f /etc/bashrc ]]; then
 fi
 
 set -o vi
-
 set -o noclobber
 
 if [ "${BASH_VERSINFO}" -ge 4 ]; then
-  # shopt -s autocd
   shopt -s checkjobs
   shopt -s dirspell
   shopt -u globstar
@@ -33,3 +31,5 @@ shopt -s checkwinsize       # update the value of LINES and COLUMNS after each c
 
 . ~/.config/bash/git.bash
 . ~/.config/bash/prompt.bash
+. ~/.config/bash/aliases.bash
+eval $(dircolors -b $HOME/.config/bash/dircolors/dircolors.256dark) 2>/dev/null >/dev/null

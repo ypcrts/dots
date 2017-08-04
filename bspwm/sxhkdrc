@@ -1,0 +1,242 @@
+# Super +  Alt     -> Desktop Binding
+# Super +  Alt     -> Windows
+# Super +  Control -> Special
+
+# {{{1 control/power/reload
+super + alt + control + XF86Explorer
+    ~/.config/bspwm/bspwmrc && \
+    pkill -USR1 -x sxhkd  && \
+    notify-send --urgency=normal --expire-time=500 'bspwmrc and sxhkdrc reloaded'
+
+super + alt + control + XF86LaunchA
+    pkill -x panel;  \
+    notify-send --urgency=normal --expire-time=500 'panel reloaded'; \
+    ~/.config/lemonbar/panel
+
+super + alt + control + shift + XF86LaunchA
+    pkill -x panel;  \
+    notify-send --urgency=normal --expire-time=500 'panel killed'
+
+super + l
+    /usr/bin/xscreensaver-command --lock
+
+super + alt + control + Delete
+    /usr/bin/xscreensaver-command --lock
+
+#    notify-send --urgency=critical --expire-time=500 'Locking...'; \
+#    ~/bin/thinklock --dpms
+
+super + alt + control + Delete
+    notify-send --urgency=critical --expire-time=500 'Locking...'; \
+    /usr/bin/xscreensaver-command --lock
+
+super + alt + control + BackSpace
+    notify-send --urgency=critical --expire-time=500 'Sleeping...'; \
+    /usr/bin/xscreensaver-command --lock; \
+    systemctl suspend
+
+super + alt + control + XF86AudioMute
+    urxvt -e /bin/sh -c 'echo "Poweroff? [yN]"; read x; if [ "$x" = "y" ]; then echo "shutting down"; systemctl poweroff;  fi'
+
+# {{{1 monitors
+super + bracketright
+    bspc monitor next -f
+super + bracketleft
+    bspc monitor prev -f
+# }}}1
+
+# {{{1 Desktop
+
+super + grave
+    notify-send "Desktop $(bspc query --desktops --desktop focused)"
+
+#toggle between tiled and monocle
+super + alt + {t,y}
+    bspc desktop --layout {tiled,monocle}
+
+super + alt + {r, shift + r}
+    bspc node --rotate {90,270}
+
+super + alt + {c, shift + c}
+    bspc node --circulate {forward,backward}
+
+super + alt + backslash
+    bspc desktop --focus last
+
+super + {j,k}
+    bspc desktop --focus {next,prev}
+
+super + alt + {j,k}
+    DIR={next,prev}; \
+    WIN=$(bspc query --nodes --node focused); \
+    bspc node --to-desktop "$DIR" && \
+    bspc desktop --focus "$DIR" && \
+    bspc node $WIN --focus
+
+super + {1-9}
+    bspc desktop --focus ^{1-9}
+
+super + alt + {1-9}
+    bspc node --to-desktop ^{1-9}
+
+super + control + shift + {1-9}
+    DESKTOP={1-9}; \
+    bspc desktop --swap ^$DESKTOP && \
+    notify-send "Swapped with Desktop $DESKTOP"
+
+super + {braceright,braceleft}
+    GAP=$(( $(bspc config -d focused window_gap) {+,-} 2 )); \
+    bspc config -d focused window_gap $(( GAP < 0? 0 : GAP ))
+
+super + equal
+    notify-send "Desktops++"; \
+    bspc monitor --add-desktops "$(($(bspc query -D | wc -l)+1))"
+
+super + minus
+    ( bspc monitor --remove-desktops "$(bspc query --desktops --desktop focused)" ) && \
+    notify-send "Desktops--"
+
+# {{{1 Windows
+
+super + q
+    bspc node --close
+
+super + alt + {_,control +}Tab
+    bspc node --focus @{parent,brother}
+
+super + {Tab,shift + Tab}
+    bspc node --focus {next,prev}
+
+super + b
+    bspc node -s biggest
+
+super + backslash
+    bspc node -f last
+
+super + alt + {z,f,d}
+    bspc node --state {floating,fullscreen,tiled}
+
+super + alt + {_, shift +} s
+    FLAG_TOGGLE={on,off}; \
+    bspc node --flag sticky=$FLAG_TOGGLE; \
+    notify-send "$(~/bin/bspc-getfocusedclassname)" "sticky $FLAG_TOGGLE"
+
+super + alt + {_, shift +}a
+    FLAG_TOGGLE={on,off}; \
+    bspc node --flag locked=$FLAG_TOGGLE --flag private=$FLAG_TOGGLE && \
+    notify-send "$(~/bin/bspc-getfocusedclassname)" "locked & private $FLAG_TOGGLE"
+
+#swap with shift
+super + shift + {h,j,k,l}
+    DIR={left,down,up,right}; \
+    bspc node --swap "$DIR" || bspc node --swap {prev,next,prev,next}
+
+# split
+super + control + {h,j,k,l}
+    bspc node --presel-dir \~{west,south,north,east}
+
+# ratios
+super + control + {b,e}
+    bspc desktop --{balance,equalize}
+
+super + control + 0
+    bspc node --presel-dir cancel
+
+super + control + {1-9}
+    bspc node --presel-ratio 0.{1-9}
+
+
+# resizing
+super + alt + control + {h,j,k,l}
+    bspc node {@west -r -20,@south -r +20,@north -r -20,@east -r +20}
+
+super+ alt + control + shift + {h,j,k,l}
+    bspc node {@west -r +20,@south -r -20,@north -r +20,@east -r -20}
+
+# ~button1
+#     bspc pointer --grab focus
+
+# super + button{1-3}
+#     bspc pointer --grab {move,resize_side,resize_corner}
+
+# super + @button{1-3}
+#     bspc pointer --ungrab
+
+# {{{1 Launch
+
+super + Return
+    urxvt
+
+super + alt + Return
+    urxvt -name fancymux
+
+super + alt + control + Return
+    urxvt -name fancyonemux -e onemux
+
+super + control + Return
+    urxvt -name onemux -e onemux
+
+super + o
+    wmctrl -xa "Icedove" || exec icedove
+
+super + p
+    wmctrl -xa "Pidigin" || exec pidgin
+
+super + i
+    wmctrl -xa "ircmux" || exec urxvtcd -name 'ircmux' -e moshj irc
+
+super + r
+    rofi -show run
+
+super + space
+    rofi -show combi -combi-modi ssh,run,window
+
+super + control + Tab
+    rofi -show window -lines 10 -columns 8
+
+XF86Tools
+    wmctrl -xa "Firefox" || exec firefox-esr
+# firefox-esr for debian unstable
+# wmctrl -xa "Iceweasel" || exec iceweasel
+
+XF86Search
+    wmctrl -xa "Chromium" || exec chromium
+
+
+# {{{1 Fn Keys
+
+XF86AudioMute
+    ~/bin/thinkvolume mute
+
+super + XF86AudioMute
+    wmctrl -xa "pavucontrol" || exec pavucontrol
+
+XF86AudioRaiseVolume
+    ~/bin/thinkvolume up
+
+super + XF86AudioRaiseVolume
+    wmctrl -xa "cantata" || exec cantata
+
+XF86AudioLowerVolume
+    ~/bin/thinkvolume down
+
+XF86AudioMicMute
+    ~/bin/thinkvolume mutemic
+
+super + Home
+    wmctrl -xa "wicd-client.py" || exec ~/bin/wifischeisse
+
+# mpc
+super + alt + control + Right
+    mpc next
+
+super + alt + control + Left
+    mpc prev
+
+super + alt + control + Up
+    mpc toggle
+
+super + alt + control + Up
+    mpc pause
+
+# vim: set ft=conf tw=0 ts=4 sw=4 sts=4 fdm=marker fmr={{{,}}} et:

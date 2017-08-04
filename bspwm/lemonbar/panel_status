@@ -1,0 +1,56 @@
+#!/bin/bash
+[ "$DEBUG" = "1" ] && set -x
+
+source "$(dirname $0)/panel_config"
+
+volume(){
+  VOLUME=$(/usr/bin/pacmd list-sinks | grep -A 15 '* index' | awk '/volume: front/{print $5}' | sed 's/[%|,]//g')
+
+  MUTE=$(/usr/bin/pacmd list-sinks | grep -A 15 '* index' | awk '/muted:/{print $2}')
+    if [ "$MUTE" == "yes" ]; then
+        echo "%{F$GRAY_COLOR A:pactl mute:}$(printf '%b' "\ue04f") $VOLUME% %{A F-}"
+    else 
+	echo "%{F$GRAY_ON_COLOR A:pactl mute:}$(printf '%b' "\ue05d")%{F-} $VOLUME% %{A}"
+    fi
+}
+
+mpd(){
+    STATUS=$(/usr/bin/mpc current)
+    echo "%{F$GRAY_ON_COLOR A:mpc toggle: A3:mpc stop:}$(printf '%b' "\ue05c")%{F-} $STATUS%{A A}"
+}
+
+
+wifi_ssid(){
+    NAME=$(/sbin/iwconfig wlan0 | grep 'ESSID:' | awk '{print $4}' | sed 's/ESSID://g' | sed 's/"//g')
+    if [ "$NAME" == "off/any" ]; then
+        echo "%{F$GRAY_COLOR}$(printf '%b' "\ue21a")%{F-} "
+    else echo "%{F$GRAY_ON_COLOR}$(printf '%b' "\ue21a")%{F-} $NAME"
+    fi
+}
+
+battery() {
+    LEVEL=$(~/bin/thinkbattery -l)
+    
+    if $(~/bin/thinkbattery -c); then
+      ICON="\ue23a"
+    elif (( $LEVEL > 75)); then
+      ICON="\ue238"
+    elif (( $LEVEL > 25 )); then
+      ICON="\ue237"
+    else
+      ICON="\ue211"
+    fi;
+
+    echo "%{F$GRAY_ON_COLOR}$(printf '%b' "$ICON")%{F-} $LEVEL%"
+}
+
+load_avg() {
+    AVGLOAD=$(cut -d " " -f 1-3 /proc/loadavg)
+    echo "%{F$BLUE_COLOR}$(printf '%b' "\ue021")%{F-} $AVGLOAD"
+}
+
+
+while :; do
+  echo "S$(mpd)%{r}$(battery) $SEP $(wifi_ssid) $SEP $(volume)  %{B$YELLOW_COLOR}  %{F$GRAY_ON_COLOR}$(printf '%b' "\ue01f") %{F$BACKGROUND_COLOR} $(LC_TIME=de_DE.UTF-8 date +'%A %d. %b')  %{B$FOREGROUND_COLOR} %{F$GRAY_ON_COLOR} $(printf '%b' "\ue016") $(date -u +'%H:%MZ') %{F$BACKGROUND_COLOR}$(date +'%H:%M')  %{B F-}"
+  sleep 4
+done

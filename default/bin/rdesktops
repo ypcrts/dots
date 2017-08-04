@@ -1,0 +1,52 @@
+#!/usr/bin/env python3
+#
+#         _           _    _
+# _ __ __| | ___  ___| | _| |_ ___  _ __  ___
+#| '__/ _` |/ _ \/ __| |/ / __/ _ \| '_ \/ __|
+#| | | (_| |  __/\__ \   <| || (_) | |_) \__ \
+#|_|  \__,_|\___||___/_|\_\\__\___/| .__/|___/
+#  https://github.com/ypcrts    |_|
+#
+import argparse
+import os
+
+def netbiosscan(args):
+    print( "i am portscan")
+    return os.system("set -xe; nbtscan %s" % args.range)
+
+def portscan(args):
+    print( "i am portscan")
+    return os.system("set -xe; sudo nmap %s -p %s" % (args.range, args.ports))
+
+def connect(args):
+    print("i am connect")
+    return os.system("set -xe; rdesktop " + args.address  +" " + ( ("-u " +args.user) if args.user else "") + " -f -K -g 100%" ) # finish me
+
+
+parser = argparse.ArgumentParser(description='rdesktop wrapper with nmap scanner')
+
+subp = parser.add_subparsers()
+
+subp_connect = subp.add_parser('connect', help='start rdp connection')
+subp_connect.add_argument('--address',type=str,help='ip address to connect to',default="10.8.0.254")
+subp_connect.add_argument('--name',type=str,help='preconfigured box name to connect to')
+subp_connect.add_argument('--user',type=str,help='username',required=False)
+subp_connect.set_defaults(func=connect)
+
+subp_scan = subp.add_parser('scan', help='nmap portscan for open rdp ports')
+subp_scan.add_argument('-r','--range', default="10.8.0.200-254", type=str, help='range to scan with nmap')
+subp_scan.add_argument('-p','--ports', default="22,3389", type=str, help='port to scan')
+subp_scan.set_defaults(func=netbiosscan)
+subp_scan_type = subp_scan.add_subparsers()
+netbios_scan = subp_scan_type.add_parser('netbios',help='netbios scan')
+netbios_scan.set_defaults(func=netbiosscan)
+port_scan = subp_scan_type.add_parser('ports',help='ports scan')
+port_scan.set_defaults(func=portscan)
+
+args = parser.parse_args()
+#  print(args)
+if 'func' in args:
+    args.func(args)
+else:
+    parser.print_usage()
+#  vim: set ft=python tw=0 ts=8 sw=4 sts=4 fdm=marker fmr={{{,}}} et:

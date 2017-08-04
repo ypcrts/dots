@@ -1,0 +1,1 @@
+bspc query --tree --node focused 2>&1 | sed -re 's/.*"instanceName":"([^"]*)".*/\1/'

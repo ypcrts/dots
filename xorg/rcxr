@@ -1,0 +1,8 @@
+#!/bin/sh
+#    _____ _____ _  __ _____
+#   / ___// ___/| |/_// ___/
+#  / /   / /__ _>  < / /
+# /_/    \___//_/|_|/_/
+#        by ypcrts
+set -xe
+vim ~/.Xresources && xrdb -merge ~/.Xresources

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec nmap --script-args http.useragent="$(uagen.py)" "$@"

@@ -1,0 +1,25 @@
+$include /etc/inputrc
+
+set editing-mode vi
+set keymap vi
+
+set completion-ignore-case on
+set completion-map-case on
+set completion-query-items 256
+
+set visible-stats on
+set skip-completed-text on
+set echo-control-characters off
+
+set input-meta on
+set output-meta on
+set convert-meta off
+
+set mark-symlinked-directories on
+set show-all-if-ambiguous on
+set match-hidden-files on
+set page-completions off
+set bell-style none
+
+"\e[B": history-search-forward
+"\e[A": history-search-backward

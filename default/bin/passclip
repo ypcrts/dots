@@ -1,0 +1,66 @@
+#!/bin/bash
+#                                   __
+#                                  /\ \
+#   _____      __      ____    ____\ \ \/'\
+#  /\ '__`\  /'__`\   /',__\  /',__\\ \ , <
+#  \ \ \L\ \/\ \L\.\_/\__, `\/\__, `\\ \ \\`\
+#   \ \ ,__/\ \__/.\_\/\____/\/\____/ \ \_\ \_\
+#    \ \ \/  \/__/\/_/\/___/  \/___/   \/_/\/_/
+#     \ \_\
+#      \/_/                    by ypcrts
+
+
+ set -xe
+
+
+### Suchen nach was zum Kopieren
+if type xsel &>/dev/null; then
+  CLIPPER="xsel -ib"
+  PASTER="xsel -ob"
+elif type xclip &>/dev/null; then
+  CLIPPER="xclip -i -selection clipboard"
+  PASTER="xclip -o -selection clipboard"
+elif type pbcopy &>/dev/null && type pbpaste &>/dev/null; then
+  CLIPPER="pbcopy"
+  PASTER="pbpaste"
+else
+  echo "Fitta! Helvete jävla! Womit sollte ich kopieren, Rävhål? Attans bananer!" >&2
+  exit 1
+fi
+
+### Bekommen des Kennworts
+eval "pass \"$@\" | awk 'NR==1{print; exit}' | \"$CLIPPER\""
+
+### Reste kommt vom www.password-store.org originale Code
+### Jedoch nur 30 Sekunden is voreingestellt,
+### und wir benützen doch kein X_SELECTION, nur CLIPPER und PASTER.
+CLIP_TIME="${PASSWORD_STORE_CLIP_TIME:-30}"
+
+# This base64 business is because bash cannot store binary data in a shell
+# variable. Specifically, it cannot store nulls nor (non-trivally) store
+# trailing new lines.
+
+sleep_argv0="password store sleep on display $DISPLAY"
+pkill -f "^$sleep_argv0" 2>/dev/null && sleep 0.5
+before=$($PASTER 2>/dev/null | base64)
+$(echo -n \"$1\" | $CLIPPER || die "Error: Could not copy data to the clipboard")
+(
+  ( exec -a "$sleep_argv0" sleep "$CLIP_TIME" )
+  now=$($PASTER | base64)
+  [[ $now != $(echo -n "$1" | base64) ]] && before="$now"
+
+  # It might be nice to programatically check to see if klipper exists,
+  # as well as checking for other common clipboard managers. But for now,
+  # this works fine -- if qdbus isn't there or if klipper isn't running,
+  # this essentially becomes a no-op.
+  #
+  # Clipboard managers frequently write their history out in plaintext,
+  # so we axe it here:
+  qdbus org.kde.klipper /klipper org.kde.klipper.klipper.clearClipboardHistory &>/dev/null
+
+  $(echo "$before" | base64 -d | $CLIPPER)
+
+) 2>/dev/null & disown
+
+echo "Copied $2 to clipboard. Will clear in $CLIP_TIME seconds."
+

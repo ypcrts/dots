@@ -1,0 +1,6 @@
+e scr.color = true
+e scr.pager = less -R
+e scr.utf8 = true
+
+e cmd.stack = true
+e asm.cmtright = true

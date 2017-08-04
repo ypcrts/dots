@@ -1,0 +1,2 @@
+pkill redshift
+redshift -O 3700k

@@ -1,0 +1,4 @@
+#/bin/sh
+echo "Cursor ready to grab window..."
+set -xe
+xprop | grep -Ei "(instance|class)"

@@ -1,0 +1,117 @@
+#!/bin/sh
+#     _
+#    (_)____ ___   ____ _ __  __ _____
+#   / // __ `__ \ / __ `// / / // ___/
+#  / // / / / / // /_/ // /_/ // /
+# /_//_/ /_/ /_/ \__, / \__,_//_/
+#               /____/
+#                  __                   __ __
+#   __  __ ____   / /____   ____ _ ____/ // /
+#  / / / // __ \ / // __ \ / __ `// __  // /
+# / /_/ // /_/ // // /_/ // /_/ // /_/ //_/
+# \__,_// .___//_/ \____/ \__,_/ \__,_/(_)
+#      /_/   https://github.com/ypcrts
+#            ported to sh from bash ^,^
+###1 Meta
+# Original Author: Bart Nagel <bart@tremby.net>, version 4
+#
+# Required: curl
+#
+# Optional: xsel or xclip for automatically putting the URLs on the X selection
+# for easy pasting
+#
+###1 Instructions
+# Upload an image:
+# 	imgur images/hilarious/manfallingover.jpg
+# Upload multiple images:
+# 	imgur images/delicious/cake.png images/exciting/bungeejump.jpg
+# The URLs will be displayed (and the delete page's URLs will be displayed on
+# stderr). If you have xsel or xclip the URLs will also be put on the X
+# selection, which you can usually paste with a middle click.
+
+###1 constants
+apikey="b3625162d3418ac51a9ee805b1840452"
+
+usage () {
+	echo "Usage: $(basename $0) <filename> [<filename> [...]]" >&2
+	echo "Upload images to imgur and output their new URLs to stdout. Each one's" >&2
+	echo "delete page is output to stderr between the view URLs." >&2
+	echo "If xsel or xclip is available, the URLs are put on the X selection for" >&2
+	echo "easy pasting." >&2
+}
+
+###1 sanity preflight
+if [ "$apikey" = "Your API key" ]; then
+	echo "You first need to edit the script and put your API key in the variable near the top." >&2
+	exit 15
+fi
+if ! type curl >/dev/null 2>/dev/null; then
+	echo "Couln't find curl, which is required." >&2
+	exit 17
+fi
+
+###1 parse opts
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+	usage
+	exit 0
+elif [ $# = 0 ]; then
+	echo "No file specified" >&2
+	usage
+	exit 16
+fi
+
+clip=""
+errors=false
+
+###1 parse args
+while [ $# -gt 0 ]; do
+	file="$1"
+	shift
+
+	if [ ! -f "$file" ]; then
+		echo "file '$file' doesn't exist, skipping" >&2
+		errors=true
+		continue
+	fi
+
+	# upload the image
+	response=$(curl -F "key=$apikey" -H "Expect: " -F "image=@$file" \
+		http://imgur.com/api/upload.xml 2>/dev/null)
+	# the "Expect: " header is to get around a problem when using this through
+	# the Squid proxy. Not sure if it's a Squid bug or what.
+	if [ $? -ne 0 ]; then
+		echo "Upload failed" >&2
+		errors=true
+		continue
+	elif [ $(echo $response | grep -c "<error_msg>") -gt 0 ]; then
+		echo "Error message from imgur:" >&2
+		echo $response | sed -r 's/.*<error_msg>(.*)<\/error_msg>.*/\1/' >&2
+		errors=true
+		continue
+	fi
+
+	url=$(echo $response | sed -r 's/.*<original_image>(.*)<\/original_image>.*/\1/')
+	deleteurl=$(echo $response | sed -r 's/.*<delete_page>(.*)<\/delete_page>.*/\1/')
+	echo $url
+	echo "Delete page: $deleteurl" >&2
+
+	clip="$clip$url"
+done
+
+###1 copy to clipboard
+if [ $DISPLAY ]; then
+	if !! type xsel >/dev/null 2>/dev/null; then
+     echo "$clip" | xsel
+   elif !! type xclip >/dev/null 2>/dev/null; then
+     echo "$clip" | xclip
+   else
+     echo "Couldn't copy: no xsel or xclip" >&2
+else
+	echo "Couldn't copy: no \$DISPLAY" >&2
+fi
+
+###1 error exit code
+if $errors; then
+	exit 1
+fi
+# vim: set ft=sh tw=0 ts=2 sw=2 sts=2 fdm=marker fmr=###,### et:

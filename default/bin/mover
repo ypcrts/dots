@@ -1,0 +1,23 @@
+#/bin/bash -i
+
+mover () {
+  if [[ -z "$1" ]]; then
+    printf "USAGE: $0 ASSET"
+    printf "\n\t\tASSET\tmust be specified with full path\n"
+    exit 1
+  fi
+  set -xe
+
+  local CRYPT_DIR="/crypt"
+  local ASSET_ORIGIN="$1"
+  local ASSET_NAME="$(basename $ASSET_ORIGIN)"
+  local ASSET_DIR="$(dirname $ASSET_ORIGIN)"
+
+  mkdir -p "${CRYPT_DIR}${ASSET_DIR}"
+  mv -t "${CRYPT_DIR}${ASSET_DIR}" "$ASSET_ORIGIN"
+  ln --relative --symbolic -t "$ASSET_DIR" "${CRYPT_DIR}${ASSET_DIR}/$ASSET_NAME"
+
+}
+
+mover "$@"
+# vim: set ft=sh tw=0 ts=2 sw=2 sts=2 fdm=marker fmr={{{,}}} et:

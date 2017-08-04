@@ -1,0 +1,9 @@
+set height 0
+set print pretty on
+set print object on
+set history expansion on
+set history filename ~/.gdb_history
+set history save on
+set history size 66535
+tui enable
+layout regs

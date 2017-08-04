@@ -1,0 +1,59 @@
+# vi: ft=sh sts=2 sw=2 et
+
+adjunct_path_with () {
+  export PATH
+  adjunctor="$1" # the directory  ## WARN: DO NOT USE TRAILING SLASH OR THE WORLD ENDS!
+  override="$2"  # if $2 is true: $1 is prefixed to PATH; else $1 is appended to PATH
+
+  if ! [ -d "$adjunctor" ]; then
+    return 1
+  fi
+
+  if [ "$override" = "true" ]; then
+    PATH="$1:$PATH"
+  elif [ "${PATH#*$adjunctor}" != "$PATH"  ]; then
+    return 0
+  else
+    PATH="$PATH:$1"
+  fi
+}
+
+case "$OSTYPE" in
+  darwin*)
+    if [ "$(id -u)" -eq 0 ]; then
+      # Add localbins  to path, esp for homebrew
+      adjunct_path_with "/usr/local/sbin" true
+    fi
+    adjunct_path_with /usr/local/opt/coreutils/libexec/gnubin true
+    export CLICOLOR=1
+    export LSCOLORS=ExFxCxDxBxegedabagacad
+    export BROWSER='open' # Use the open command on OSX
+    }
+
+    # fuck macOS, honestly
+    alias vi='reattach-to-user-namespace vim'
+    alias vim='reattach-to-user-namespace vim'
+    alias nvim='reattach-to-user-namespace nvim'
+
+    # ignore some things in completions
+    # http://sigpipe.macromates.com/2012/08/10/path-completion-bash
+    FIGNORE="$FIGNORE:.o:~:Application Scripts"
+
+    case "$SHELL" in
+      *bash)
+	if [ -f `brew --prefix`/etc/bash_completion ]; then
+	  . `brew --prefix`/etc/bash_completion
+	fi
+	;;
+    esac
+    ;;
+  linux*)
+    [ -n "$XDG_CONFIG_HOME" ] || export XDG_CONFIG_HOME="$HOME/.config"
+    [ -n "$XDG_CACHE_HOME"  ] || export XDG_CACHE_HOME="$HOME/.cache"
+    [ -n "$XDG_DATA_HOME"   ] || export XDG_DATA_HOME="$HOME/.local/share"
+    [ -n "$SYSTEMD_LESS" ] || export SYSTEMD_LESS="${LESS}"
+    ;;
+  *) return ;;
+esac
+
+unset -f adjunct_path_with

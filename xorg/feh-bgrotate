@@ -1,0 +1,30 @@
+#!/bin/sh
+ONCE=0
+while [ $# -gt 0 ]; do
+  case $1 in
+    --once|-o)
+      ONCE=1
+      ;;
+    --)
+      break
+      ;;
+    *)
+      echo "unknown options $1"
+      exit 1
+      ;;
+  esac
+  shift
+done
+call_feh () {
+  feh --bg-fill --randomize ~/Media/Walls/Active
+}
+if [ "$ONCE" -eq 0 ]; then
+  while true; do
+    call_feh
+    sleep 1
+  done
+else
+  call_feh
+fi
+unset call_feh
+unset ONCE

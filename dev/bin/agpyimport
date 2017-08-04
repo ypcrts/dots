@@ -1,0 +1,17 @@
+#!/bin/sh
+goto_fail () {
+  if [ $# -lt 1 ]; then
+    "$0" --help
+    exit 1
+  fi
+  MASTERYUCK="$1"
+  shift
+  case "${MASTERYUCK}" in 
+    -h|--help)
+      printf "`basename $0` module_name [options]\n"
+      exit 0
+      ;;
+  esac
+  ag "$@" "(from|import).*${MASTERYUCK}"
+}
+goto_fail "$@"

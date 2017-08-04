@@ -1,0 +1,11 @@
+#!/bin/sh
+doit () {
+  if [ $# -lt 1 ]; then
+    printf "fatal: no file specified\n"
+    exit 1
+  fi
+  local FN="$1"
+  shift
+  pandoc --tab-stop=2 --smart --self-contained --css ~/Tools/markdownstylesheet/Byword.css -o "$FN".html -r markdown -w html "$FN" "$@"
+}
+doit "$@"

@@ -1,0 +1,694 @@
+"
+" ~/.vimrc
+
+
+"{{{1 Plugins
+
+let s:configdir = '~/.vim'
+if has('nvim')
+  let s:configdir = '~/.config/nvim'
+  if filereadable(glob('~/.config/nvim/local.vim'))
+    source $HOME/.config/nvim/local.vim
+  endif
+else
+  set nocompatible
+  if filereadable(glob('~/.vimrc.local'))
+    source $HOME/.config/nvim/local.vim
+  endif
+endif
+if has('win32')
+  let s:configdir = '~/vimfiles'
+endif
+
+if empty(glob( s:configdir . '/autoload/plug.vim'))
+  silent call system('mkdir -p ~/.vim/{autoload,bundle,cache,undo,backups,swaps}')
+  silent call system('curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
+  execute 'source ~/.vim/autoload/plug.vim'
+endif
+
+if empty(glob( s:configdir . '/autoload/pathogen.vim'))
+  execute 'source ~/.vim/autoload/pathogen.vim'
+endif
+
+execute pathogen#infect('~/.vim/pathogens/{}')
+
+if has('python') || has('python3') || has('nvim')
+  call plug#begin( s:configdir . '/plugged')
+
+  Plug 'ypcrts/securemodelines', { 'commit': '9751f29699186a47743ff6c06e689f483058d77a' }
+  " Plug 'jamessan/vim-gnupg'
+  " Plug 'ypcrts/vim-gpg-sign'
+
+  Plug 'editorconfig/editorconfig-vim'
+  Plug 'Konfekt/FastFold'
+  Plug 'tpope/vim-eunuch'
+  Plug 'tpope/vim-unimpaired'
+  Plug 'itchyny/lightline.vim'
+  Plug 'nishigori/increment-activator'
+  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-repeat'
+  Plug 'scrooloose/nerdcommenter'
+  Plug 'junegunn/vim-easy-align'
+
+  Plug 'chrisbra/NrrwRgn'
+
+  Plug '~/.fzf'
+  Plug 'junegunn/fzf.vim'
+  Plug 'junegunn/vim-peekaboo'
+  Plug 'jremmen/vim-ripgrep'
+
+  " Plug 'chrisbra/vim-diff-enhanced'
+
+  " Linting
+  " PICK ONE STOP CHANGING LINT PLUGINS YOU'RE DRIVING YOURSELF MAD
+  if has('nvim') || v:version > 800
+    Plug 'w0rp/ale'
+  else
+    Plug 'scrooloose/syntastic'
+  endif
+  Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
+  Plug 'fisadev/vim-isort', { 'for': 'python' }
+
+  " Completion
+  if has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'Shougo/neoinclude.vim'
+    Plug 'zchee/deoplete-jedi'
+    " Plug 'zchee/deoplete-clang'
+    Plug 'tweekmonster/deoplete-clang2', { 'commit': '787dd4dc7eeb5d1bc2fd3cefcf7bd07e48f4a962' }
+    let g:deoplete#enable_at_startup = 1
+  else
+    "Plug 'valloric/youcompleteme', { 'do': 'echoerr \"You need to go compile YCM\"' }
+  endif
+
+  " NEVER USE THIS IT IS HORRIBLE, STOP LOVING IT
+  " Plug 'jiangmiao/auto-pairs'
+
+  Plug 'mattn/emmet-vim'
+
+  " Syntax etc
+  " Plug 'sheerun/vim-polyglot' " 6d6574617061636b616765207365637572697479207269736b206666730a
+  Plug '~/Projects/ansible-vim', { 'branch': 'j2-commentstring' }
+  Plug 'tweekmonster/django-plus.vim'
+  Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+  Plug 'racer-rust/vim-racer', { 'for': 'rust' }
+  Plug 'cespare/vim-toml', { 'for': 'toml' }
+
+  " Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+  Plug 'ypcrts/vim-ini-fold',          { 'commit': 'b61a9ab242a316d2ba755c36c96888416162f1f4', 'for': ['gitignore','gitconfig','ini'] }
+  Plug 'ypcrts/vim-uncrustify',        { 'commit': 'bcf54fff8d58e0f4276ba22077562ead9814096a', 'for': ['c','cpp']  }
+  " Plug 'bigfish/vim-js-context-coloring', { 'commit': '6c90329664f3b0a58b05e2a5207c94da0d83a51c', 'for': 'javascript', 'do': 'nvm use 6 && npm install --upgrade' }
+  " Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
+  " Plug 'git://fedorapeople.org/home/fedora/wwoods/public_git/vim-scripts.git' "systemd
+  " Plug 'PotatoesMaster/i3-vim-syntax'
+  Plug 'tmhedberg/SimpylFold', { 'for': 'python', 'commit': '4624031f65d78196d55be0180a31bd352460aebc' }
+
+  " RE
+  " Plug 'CaledoniaProject/VIM-IDC'
+  " Plug 'alderz/smali-vim'
+
+  " Git/VCS
+  Plug 'airblade/vim-gitgutter'
+  Plug 'tpope/vim-fugitive'
+
+  " TODO: cr die webapi-vim neuigkeiten, scheiße
+  Plug 'mattn/gist-vim',     { 'commit': 'f0d63579eab7548cf12f979dc52ef5a370ecbe63' }
+  Plug 'mattn/webapi-vim',   { 'commit': 'e3fa93f29a3a0754204002775e140d8a9acfd7fd' }
+
+  " Colour
+  Plug 'w0ng/vim-hybrid'
+  Plug 'nanotech/jellybeans.vim'
+  Plug 'guns/jellyx.vim'
+  Plug 'fisadev/fisa-vim-colorscheme'
+  Plug 'whatyouhide/vim-gotham' ",      { 'commit': 'f46412d4f9768c332ae22676f3ef4cc130457ba0' }
+  Plug 'djjcast/mirodark',             { 'commit': '306c5f96dd0ecaa64eac603b990a22300dc798f7' }
+  Plug 'lu-ren/SerialExperimentsLain', { 'commit': 'aabb800d6a27cde243604a94a9a14334286a87b2' }
+  Plug 'zcodes/vim-colors-basic',      { 'commit': 'bdf14db578ad283bffa019ab2236f4d378eef34b' }
+  Plug 'lifepillar/vim-solarized8' ",    { 'commit': 'dc6c1dfa6f5c068ba338b8a2e4f88f4b6de4433a' }
+  if !has('nvim') " nvim no work? 16-bit
+    Plug 'laserswald/chameleon.vim',   { 'commit': 'e7c9991fa19961dd2bcf89e92f09be1da89b8c77' }
+  endif
+  " Plug 'nightsense/vim-crunchbang'
+  " Plug 'flazz/vim-colorschemes'
+
+  call plug#end()
+else
+  echoerr "I do not have python. I am ugly. You might as well use emacs."
+endif
+
+set nobackup
+set writebackup
+set noswapfile
+set noautowrite
+set noautowriteall
+set noautoread      " Don't automatically re-read changed files.
+
+if has('autocmd') " clear all the autocommands that I never wanted
+  autocmd!
+endif
+
+"{{{1 Standard (syntax, utf8, ft, clipboard, 256 )
+filetype plugin on
+filetype indent on
+syntax on
+syntax sync minlines=256
+
+if has('multi_byte')
+  set encoding=utf-8 " UTF-8 encoding for all new files
+  set nobomb
+endif
+
+set ffs=unix,dos,mac " Try recognizing dos, unix, and mac line endings.
+
+set timeoutlen=900
+set ttimeoutlen=0
+
+if &t_Co > 2 || has('gui_running')
+
+  if has('termguicolors') &&
+        \ matchstr(system("uname"), "Darwin") != '' &&
+        \ matchstr($TERM, 'rxvt.*') == ''
+    " This nonsense can only be set if terminal has 24 bit colour support.
+    " neovim does not intuit such a thing. programming is math not magic.
+    " rxvt never has 24-bit support, so off.
+    set termguicolors
+  endif
+  if !has('nvim')
+    set ttyfast               " More redrawing characters sent to terminal
+    set ttymouse=xterm2       " More accurate mouse tracking
+  endif
+
+  set hlsearch
+endif
+
+set undolevels=2048
+set tags=./tags,tags,.tags
+
+" TODO: This is really hideous. Fix it.
+" ugh you should really fix this (its one year later now)
+" whats that expression? if it aint broke...
+if !isdirectory(expand('~/.cache/vim/undo'))
+  if !isdirectory(expand('~/.cache/vim'))
+    if !isdirectory(expand('~/.cache'))
+      call mkdir(expand('~/.cache'), 'p', 0700)
+    endif
+    call mkdir(expand('~/.cache/vim'), 'p', 0700)
+  endif
+  call mkdir(expand('~/.cache/vim/undo'), 'p', 0700)
+endif
+if isdirectory(expand('~/.cache/vim/undo'))
+  set directory=~/.cache/vim
+  if !has('nvim')
+    set viminfo+=n~/.cache/vim/viminfo
+  endif
+  let g:netrw_home = expand('~/.cache/vim')
+  if has('persistent_undo')
+    set undofile
+    set undodir=~/.cache/vim/undo
+  endif
+endif
+
+
+"{{{1 OS & GUI Settings
+
+if has('gui_running')
+  if has("gui_win32") " true on WOW64
+      set guicursor+=a:blinkon0 " disable blinking cursor (gvimwin32)
+      let &guifont="Consolas:h10"
+  else
+      let &guifont="Terminus\ 10"
+  endif
+  " [+c text dialogues instead of popups]
+  " http://vimdoc.sourceforge.net/htmldoc/options.html#%27guioptions%27
+  set guioptions=aceg
+  " (m)enubar scrollba(r) (T)(t)oolbar
+  " set guioptions-=mrTt
+
+else
+    source $VIMRUNTIME/menu.vim
+    set wcm=<C-z>
+    map <Leader>em :emenu <C-z>
+endif
+
+if has("win32")
+ colorscheme ir_black
+elseif has('termguicolors') && &termguicolors
+  " macos
+  let g:solarized_termtrans = 1
+ set background=dark
+ color solarized8_dark_high
+else
+  " rice
+  augroup TransparentBackground
+    au ColorScheme * hi Normal guibg=NONE ctermbg=NONE
+  augroup END
+  color basic-dark
+endif
+
+"{{{1 Code format & Indenting
+set autoindent
+set nosmartindent
+set nocindent
+set expandtab
+set shiftround
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+
+set showcmd      " show typing in normal mode
+set showbreak=…\ \ \ " show x in front of wrapped lines (trailing escaped space `\ `)
+set textwidth=0  " disable hard wrap at col 79
+
+set formatoptions=qn1jtc
+
+set linebreak        " wrap lines at chars in &breakat'
+set nowrap
+
+set history=1000
+set synmaxcol=1024
+
+"{{{1 Interaction (Keys, Mouse).
+
+let mapleader="\<Space>"
+set backspace=2           " =2: full backspacing capabilities (indent,eol,start)
+set nojoinspaces          " never joing lines with two spaces
+
+set mouse=                " set mouse=nv " enable mouse in normal, visual
+set mousehide             " Hide the mouse when typing text
+set nostartofline         " Avoid moving cursor to BOL when jumping around
+
+set whichwrap=b,s,h,l,<,> " <BS> <Space> h l <Left> <Right> can change lines
+set virtualedit+=block    " Let cursor move past the last char in <C-v> mode
+"set scrolloff=3           " Keep 3 context lines above and below the cursor
+
+set matchpairs=(:),{:},[:],<:>
+set noshowmatch           " Don't Briefly jump to a paren once it's balanced
+set matchtime=2           " (for only .2 seconds).
+
+set complete=.,w,b,u,t
+set completeopt=longest,menuone ",preview
+
+if has("autocmd")
+  " Resize splits with window
+  au VimResized * :wincmd =
+
+  " Restore cursor position
+  au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
+
+  augroup reload_vimrc
+    au!
+    autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
+  augroup END
+endif
+
+"{{{1 Visuals
+
+set title              " show title in console title bar
+set noruler            " no: display row, column and % of document
+set laststatus=2
+set noshowmode         " hide secondary statusline
+set noerrorbells
+set novisualbell
+set nonumber
+set shortmess=aoOstTAI " shorten all messages except written
+set report=0           " Always report the number of lines changed by a cmd
+
+set splitright
+set splitbelow
+
+" Prevent Vim from clobbering the scrollback buffer. See
+" http://www.shallowsky.com/linux/noaltscreen.html
+set t_ti= t_te=
+
+
+"{{{2 Cursor Column
+set nocursorline
+set nocursorcolumn
+" augroup activecursor
+"   autocmd!
+"   autocmd winenter * set cursorline
+"   autocmd winleave * set nocursorline
+"   autocmd winenter * set cursorcolumn   | set cursorline
+"   autocmd winleave * set nocursorcolumn | set nocursorline
+" augroup end
+
+"{{{2  Wildmenu
+if has('wildmenu')
+ " enhanced tab-completion shows all matching cmds in a popup menu
+ set wildmenu
+ set wildmode=full
+ set wildcharm=<C-z>
+
+ if has('wildignore')
+   set wildignore+=*.a,*.o,*.bmp,*.gif,*.ico,*.jpg,*.jpeg,*.png,.DS_Store,.git,.hg,.svn,*~,*.swp,*.tmp
+ endif
+
+  if exists('&wildignorecase')
+    set wildignorecase
+  endif
+endif
+"
+"{{{2 Listchars: show spaces, tab, eol trailing
+set nolist
+set listchars=trail:·,precedes:…,extends:→,tab:▸\ ,eol:$
+set fillchars=fold:\ ,diff:╳,vert:│
+
+"{{{2 Folding
+fu! CustomFoldText()
+  " I am from http://www.gregsexton.org/2011/03/improving-the-text-displayed-in-a-fold/
+
+  "get first non-blank line
+  let fs = v:foldstart
+  while getline(fs) =~ '^\s*$' | let fs = nextnonblank(fs + 1)
+  endwhile
+  if fs > v:foldend
+    let line = getline(v:foldstart)
+  else
+    let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
+  endif
+
+  let w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
+  let foldSize = 1 + v:foldend - v:foldstart
+  let foldSizeStr = " " . foldSize . " lines "
+  let foldLevelStr = repeat("+--", v:foldlevel)
+  let lineCount = line("$")
+  let foldPercentage = printf("[%.1f", (foldSize*1.0)/lineCount*100) . "%] "
+  let expansionString = repeat(".", w - strwidth(foldSizeStr.line.foldLevelStr.foldPercentage))
+  return line . expansionString . foldSizeStr . foldPercentage . foldLevelStr
+endf
+set foldtext=CustomFoldText()
+set foldmethod=marker
+set foldlevelstart=99
+set foldminlines=0
+
+"{{{2 Searching
+set incsearch  " increment search
+set ignorecase " case-insensitive search
+set smartcase  " uppercase causes case-sensitive search
+set nogdefault " Disabled - See http://j.mp/1mZvnrt  (no `g` on `:s`)
+
+"{{{2 Filetype Autocommands
+if has("autocmd")
+  au FileType helpfile setlocal nonumber
+  au FileType mail,tex setlocal textwidth=72
+  au FileType cpp,c,java,sh,pl,php,asp setlocal autoindent cindent
+  au FileType c,cpp,java setlocal foldmethod=syntax foldnestmax=5
+  au FileType es6,javascript setlocal foldmethod=syntax
+  " Using https://github.com/tmhedberg/SimpylFold instead; fdm=expr
+  "au FileType python,python2,python3 setlocal foldmethod=indent
+  au FileType crontab set nobackup nowritebackup
+  au BufNewFile,BufRead  modprobe.conf setlocal syntax=modconf
+  au BufNewFile,BufRead .tern-project set ft=json
+  au BufNewFile,BufRead .eslintrc set ft=json
+endif
+
+"{{{1 Keybindings.
+"{{{2 Basic functionality extension
+vnoremap > >gv
+vnoremap < <gv
+nnoremap gls :ls<CR>
+nnoremap gb :bn<CR>
+nnoremap gB :bp<CR>
+nnoremap Y y$
+
+" Center the cursor on the search word when using 'n'
+" http://git.z3bra.org/cgit.cgi/dotfiles/tree/vimrc
+nmap n nzz
+nmap N Nzz
+
+" Q formats paragraphs, instead of entering ex mode
+noremap Q gq
+nnoremap <silent> gqJ :call Exe#ExeWithOpts('norm! gqj', { 'tw' : 2147483647 })<CR>
+
+" K should behave like J
+nnoremap K kJ
+
+nnoremap <buffer> <Left> <Nop>
+nnoremap <buffer> <Right> <Nop>
+nnoremap <buffer> <Up> <Nop>
+nnoremap <buffer> <Down> <Nop>
+
+inoremap <buffer> <Left> <Esc>
+inoremap <buffer> <Right> <Esc>
+inoremap <buffer> <Up> <Esc>
+inoremap <buffer> <Down> <Esc>
+
+vnoremap <buffer> <Left> <Nop>
+vnoremap <buffer> <Right> <Nop>
+vnoremap <buffer> <Up> <Nop>
+vnoremap <buffer> <Down> <Nop>
+
+"{{{2 splits, tmux aware.
+" pieced together from:
+" https://github.com/christoomey/vim-tmux-navigator
+" http://www.codeography.com/2013/06/19/navigating-vim-and-tmux-splits
+if exists('$TMUX')
+  let g:tmux_is_last_pane = 0
+  au WinEnter * let g:tmux_is_last_pane = 0
+  function! TmuxOrSplitSwitch(wincmd, tmuxdir)
+    let previous_winnr = winnr()
+    silent! execute "wincmd " . a:wincmd
+    if previous_winnr == winnr()
+      call system("tmux select-pane -" . a:tmuxdir)
+      redraw!
+    endif
+  endfunction
+
+  function! TmuxOrSplitPrevious()
+    let nr = winnr()
+    if !g:tmux_is_last_pane
+      silent! execute 'wincmd p'
+    endif
+    if g:tmux_is_last_pane || nr == winnr()
+      silent call system('tmux select-pane -l')
+      let g:tmux_is_last_pane = 1
+    else
+      let g:tmux_is_last_pane = 0
+    endif
+  endfunction
+
+  map <silent> <C-h> :call TmuxOrSplitSwitch('h', 'L')<cr>
+  map <silent> <C-j> :call TmuxOrSplitSwitch('j', 'D')<cr>
+  map <silent> <C-k> :call TmuxOrSplitSwitch('k', 'U')<cr>
+  map <silent> <C-l> :call TmuxOrSplitSwitch('l', 'R')<cr>
+  map <silent> <C-\> :call TmuxOrSplitPrevious()<cr>
+else
+  map <C-h> <C-w>h
+  map <C-j> <C-w>j
+  map <C-k> <C-w>k
+  map <C-l> <C-w>l
+endif
+
+" insert mode <C-k> inserts digraphs etc
+inoremap <C-k> <C-k>
+
+"}}}
+"{{{2 Timestamps, datestamps
+
+if exists("*strftime")
+  " Local datestamp
+  noremap <silent> <leader>zl m'A<C-R>=strftime("%d.%m.%Y")<CR><ESC>``
+
+  if has('win_32')
+    " To hell with it... local weak datestamps for Windows
+    " Unless for some unholy reason there's no strftime compiled in vim
+    " ... then the environment is garbage, so who cares about timestamps.
+    map <silent> <leader>zs <leader>zl
+    map <silent> <leader>zd <leader>zl
+  else
+    " Real timestamps, yes. Praise GNU... and Darwin?
+    noremap <silent> <Leader>zs m'A<C-R>=system('date -u \+\%Y\%m\%dT\%H\%MZ')<CR><ESC>``
+    noremap <silent> <Leader>zd m'A<C-R>=system('date -u \+\%Y-\%m-\%d')<CR><ESC>``
+  endif
+endif
+
+" Timestamped signatures
+nmap <silent> <leader>zg A<C-R>=' [ypcrts // '<CR><ESC><leader>zs<ESC>A<C-R>=']'<CR><ESC>
+nmap <silent> <Leader>zz A<C-R>=' ['.expand("$USER").' // '<CR><ESC><leader>zs<ESC>A<C-R>=']'<CR><ESC>
+
+"{{{2 Leader
+
+nnoremap <Leader>rc :tabnew $MYVIMRC<CR>
+
+" visual <Leader>d to black hole register
+vmap <silent> <leader>d "_d
+
+nnoremap <leader>dgr :diffget REMOTE<CR>
+nnoremap <leader>dgb :diffget BASE<CR>
+nnoremap <leader>dgl :diffget LOCAL<CR>
+
+nnoremap <leader>8 :%!autopep8 -a -a -a -<CR>
+vnoremap <leader>8 :!autopep8 -a -a -a -<CR>
+nmap <silent> <leader>cp :Pydocstring<CR>
+
+" ycm, rip
+" nnoremap <leader>yj :YcmCompleter GoTo<CR>
+" nnoremap <leader>yr :YcmCompleter GoToReferences<CR>
+" nnoremap <leader>yh :YcmCompleter GetDoc<CR>
+
+" syntastic 
+nmap <leader>sy :SyntastictoggleMode<cr>
+nmap <leader>sl :SyntasticsetlocList<cr>:lw<cr>
+nmap <leader>sj :JSContextColorToggle<cr>
+
+" NrrwRgn
+nnoremap <leader>nr :NR<CR>
+vnoremap <leader>nr :NR<CR>
+
+nmap <Leader>aa <Plug>(increment-activator-increment)
+nmap <Leader>ax <Plug>(increment-activator-decrement)
+nmap <c-a>      <Plug>(increment-activator-increment)
+nmap <c-x>      <Plug>(increment-activator-decrement)
+
+noremap <silent> <Leader><Leader> :nohls<cr><c-l>
+
+nnoremap <Leader>ml :call ModelineStub()<CR>
+
+nnoremap <Leader>dts :call DeleteTrailingSpaces()<CR>
+
+vmap <Enter> <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
+" fzf is so fucking amazing (yes, fucking)
+nmap <Leader>gf :GFiles<CR>
+nmap <Leader>gs :GFiles?<CR>
+nmap <Leader>f :Files<CR>
+nmap <Leader>t :Tags<CR>
+nmap <Leader>l :Lines<CR>
+nmap <Leader>bt :BTags<CR>
+nmap <Leader>bl :BLines<CR>
+nmap <Leader>bb :Buffers<CR>
+nmap <Leader>k :Marks<CR>
+
+" ripgrep-vim
+nmap <Leader>rg :Rg<Space>
+
+nmap [h <Plug>GitGutterPrevHunk
+nmap ]h <Plug>GitGutterNextHunk
+nmap <Leader>hs <Plug>GitGutterStageHunk
+nmap <Leader>hu <Plug>GitGutterUndoHunk
+nmap <Leader>hp <Plug>GitGutterPreviewHunk
+
+nmap ]og :GitGutterLineHighlightsDisable<CR>
+nmap [og :GitGutterLineHighlightsEnable<CR>
+
+nmap ]gg :GitGutterDisable<CR>
+nmap [gg :GitGutterEnable<CR>
+
+nmap [gh :let g:gitgutter_diff_base = 'HEAD'<CR>
+nmap [gm :let g:gitgutter_diff_base = 'origin/master'<CR>
+nmap [gs :let g:gitgutter_diff_base = 'origin/staging'<CR>
+
+
+"{{{1 Plugin Configuration
+let g:nrrw_rgn_nomap_nr = 1  " disable worlds worst default maps
+let g:nrrw_rgn_nomap_Nr = 1
+
+" pymode, rip
+" let g:pymode_lint_cwindow = 0
+" let g:pymode_doc_bind = ''
+" let g:pymode_virtualenv = 0
+
+let g:gitgutter_enabled = 1
+let g:gitgutter_map_keys = 0
+
+" flake8-vim
+let g:PyFlakeCWindow = 0
+
+" ycm, rip
+"let g:ycm_key_invoke_complete = '' "<C-Space> === <NUL>
+" let g:ycm_key_detailed_diagnostics = '<leader>yd'
+" let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<C-n>']
+" let g:ycm_autoclose_preview_window_after_completion = 1
+" let g:ycm_autoclose_preview_window_after_insertion  = 1
+" let g:ycm_semantic_triggers =  {
+"       \   'c' : ['->', '.'],
+"       \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+"       \             're!\[.*\]\s'],
+"       \   'ocaml' : ['.', '#'],
+"       \   'cpp,objcpp' : ['->', '.', '::'],
+"       \   'perl' : ['->'],
+"       \   'php' : ['->', '::'],
+"       \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
+"       \   'python' : ['.', 'from ', 'import '],
+"       \   'ruby' : ['.', '::'],
+"       \   'lua' : ['.', ':'],
+"       \   'erlang' : [':'],
+"       \ }
+
+let g:js_context_colors_enabled = 0
+let g:js_context_colors_usemaps = 0
+let g:js_context_colors_highlight_function_names = 0
+
+let g:javascript_plugin_jsdoc = 1
+
+" let g:polyglot_disabled = ['javascript']
+
+let g:ale_lint_on_text_changed = 'always'
+let g:ale_lint_on_enter = 0
+let g:ale_lint_delay = 5000
+let g:ale_sign_error = 'E'
+let g:ale_sign_warning = 'W'
+let g:ale_echo_cursor = 1
+let g:ale_echo_msg_format = '[%linter%] %severity%: %s'
+let g:ale_list_window_size = 6
+let g:ale_linters = { 'python': ['flake8'] } " merged dict; no pylint in ale please
+
+let g:syntastic_javascript_checkers = [ 'eslint' ]
+let g:syntastic_python_checkers = [ 'flake8' ]
+
+let g:pydocstring_enable_mapping = 0
+
+let g:NERDSpaceDelims = 1
+let g:NERDMenuMode    = 0
+
+let g:increment_activator_no_default_key_mappings = 1
+let g:increment_activator_filetype_candidates =
+      \ {
+      \ '_': [
+      \   [
+      \     's:black', 's:red', 's:green', 's:yellow', 's:blue', 's:magenta',
+      \     's:cyan', 's:white', 's:blackb', 's:redb', 's:greenb', 's:yellowb',
+      \     's:blueb', 's:magentab', 's:cyanb', 's:whiteb'
+      \   ],
+      \   [
+      \     'black', 'red', 'green', 'yellow', 'blue', 'magenta',
+      \     'cyan', 'white', 'blackb', 'redb', 'greenb', 'yellowb',
+      \     'blueb', 'magentab', 'cyanb', 'whiteb'
+      \   ],
+      \ ],
+      \ 'gitrebase': [
+      \   [
+      \      'pick','reword','edit','squash','fixup','exec'
+      \   ],
+      \ ],
+    \ }
+
+if has("autocmd")
+  let g:lightline = { 'colorscheme': 'jellybeans' }
+  let g:lightline.mode_map = {
+        \ 'n':      '',
+        \ 'i':      'INSERT',
+        \ 'R':      'REPLACE',
+        \ 'v':      'VISUAL',
+        \ 'V':      'V-LINE',
+        \ 'c':      'COMMAND',
+        \ "\<C-v>": 'V-BLOCK',
+        \ 's':      'SELECT',
+        \ 'S':      'S-LINE',
+        \ "\<C-s>": 'S-BLOCK',
+        \ '?':      '      ' }
+		let g:lightline.tabline = {
+		    \ 'left':  [ [ 'tabs' ] ],
+		    \ 'right': [ ] }
+   		let g:lightline.active = {
+		    \ 'left':  [ [ 'mode', 'paste' ],
+		    \          [ 'readonly', 'relativepath', 'modified' ] ],
+		    \ 'right': [ [ 'lineinfo' ],
+		    \          [ 'fileformat', 'fileencoding', 'filetype' ] ] }
+    let g:lightline.inactive = {
+		    \ 'left':  [ [ 'relativepath' ] ],
+		    \ 'right': [ [ 'lineinfo' ],
+        \ ] }
+  endif
+

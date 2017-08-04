@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]; then
+  exit 1
+fi
+LEADER="$(git rev-parse --show-toplevel || echo ".")"
+PATH="$LEADER/node_modules/.bin:$PATH"
+export PATH
+
+exec /bin/sh -c "$*"

@@ -1,0 +1,32 @@
+--recurse
+--tag-relative=yes
+
+--exclude=.git
+--exclude=vendor
+--exclude=libraries
+--exclude=node_modules
+
+--langdef=Css
+--langmap=Css:.css
+--langmap=Css:+.less
+--langmap=Css:+.sass
+--langmap=Css:+.scss
+--regex-Css=/^[ \t]*(.+)[ \t]*\{/\1/f,function/
+--regex-Css=/^[ \t]*(.+)[ \t]*,[ \t]*$/\1/f,function/
+
+--langmap=C++:+.mm
+
+--langdef=Json
+--langmap=Json:.json
+--regex-Json=/^[ \t]*"([^"]+)"[ \t]*\:/\1/f,function/
+
+--langdef=Markdown
+--langmap=Markdown:.md
+--langmap=Markdown:+.markdown
+--langmap=Markdown:+.mdown
+--langmap=Markdown:+.mkd
+--langmap=Markdown:+.mkdown
+--langmap=Markdown:+.ron
+--regex-Markdown=/^#+[ \t]*([^#]+)/\1/f,function/
+
+--langmap=Ruby:+(Rakefile)

@@ -1,0 +1,14 @@
+#!/bin/bash -i
+if ! [[ "$#" -ge 1 ]]; then
+  printf "\nfatal: read your script\n"
+  exit 1
+fi
+DEST="$1"
+shift
+if ! [[ "$DEST" =~ /* ]]; then
+  printf "\nDEST=${DEST} is invalid\n"
+  exit 1
+fi
+chmod 644 "$DEST"
+rsync -aAXv --progress "$@" --exclude={"/dev/*","/var/tmp","/var/cache","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} / "$DEST"
+chmod 444 "$DEST"
