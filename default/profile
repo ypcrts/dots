@@ -28,7 +28,6 @@ case "$OSTYPE" in
     export CLICOLOR=1
     export LSCOLORS=ExFxCxDxBxegedabagacad
     export BROWSER='open' # Use the open command on OSX
-    }
 
     # fuck macOS, honestly
     alias vi='reattach-to-user-namespace vim'

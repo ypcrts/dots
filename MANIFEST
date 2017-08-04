@@ -36,7 +36,7 @@ $ dev
 
 ~/bin/: ./dev/bin/*
 ~/.vimrc: ./dev/vimrc
-~/.vim: ./dev/vimdir
+~/.vim/: ./dev/vimdir/*
 ~/.ctags: ./dev/ctags
 ~/.uncrustify.cfg: ./dev/uncrustify.cfg
 ~/.radare2rc: ./dev/radare2rc
