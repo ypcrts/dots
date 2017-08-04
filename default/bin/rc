@@ -1,0 +1,44 @@
+#!/bin/bash
+#    _____ _____
+#   / ___// ___/
+#  / /   / /__   github.com/ypcrts
+# /_/    \___/
+
+# Inspired by: https://bitbucket.org/jasonwryan/centurion/raw/120ca5085493f49e6ed0c3d42ef7992d8010e086/Scripts/xdg
+# Original Author: falconindy - https://bbs.archlinux.org/viewtopic.php?id=128585
+set -e
+TARGET="$1"
+
+edit_and_quit() {
+  if (( ${#FOUNDFILES[*]} )); then
+    "$EDITOR" "${FOUNDFILES}"
+    exit 0
+  fi
+}
+
+TARGETDIRS=("$HOME/.${TARGET}*" "${XDG_CONFIG_HOME:-/home/$USER/.config}/${TARGET}/")
+read -r -d '' -a FOUNDFILES < \
+    <(find "${TARGETDIRS[@]}" -maxdepth 2 \
+    \( -type f -o -type l \)  \
+      \( \
+        -name "*.conf" \
+        -o -name "*rc" \
+        -o -name "conf" \
+        -o -name "config" \
+        -o -name "*.cfg" \
+      \) -print0 \
+    2>/dev/null) \
+  && edit_and_quit
+
+read -r -d '' -a FOUNDFILES < \
+  <(find "$HOME" -maxdepth 2 \
+  \( -type f -o -type l \)  \
+  \( \
+    -iname "*${TARGET}rc" \
+    -o -iname "*${TARGET}.conf" \
+    -o -iname "*${TARGET}config" \
+  \) -print0 \
+  2>/dev/null ) \
+  && edit_and_quit
+
+echo "Not found"

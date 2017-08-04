@@ -27,7 +27,7 @@ def link_one(dest, src):
     os.makedirs(destdir, 0755)
   elif os.path.lexists(destabs):
     if not args.force:
-      print('skipping existing file:', destabs)
+      print('skipped (exists):', destabs)
       return
     if os.path.isdir(destabs) and not os.path.islink(destabs):
       shutil.rmtree(destabs)

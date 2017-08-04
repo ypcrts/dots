@@ -29,7 +29,7 @@ $ default
 $ macos
 
 ~/bin/: ./macos/bin/*
-~/.config/bash/aliases.bash: ./macos/aliases.bash
+~/.config/bash/os-aliases.bash: ./macos/os-aliases.bash
 
 
 $ dev 

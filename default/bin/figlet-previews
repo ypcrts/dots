@@ -1,0 +1,18 @@
+#!/bin/sh
+FILENAME="/tmp/figlet_previews"
+opts=""
+while [ $# -gt 1 ]; do
+  case "$1" in
+    -*) opts+=" $1" ;;
+    [!-]*) break ;;
+  esac
+  shift
+done
+TEXT="$*"
+[ -z "$TEXT" ] && TEXT="hello i am font"
+for file in /usr/share/figlet/*.flf; do 
+  echo "\n"$(basename "$file") ' ↓' >> $FILENAME;
+  figlet -l -k $opts -f $file "$TEXT" >> $FILENAME; 
+done
+pager $FILENAME
+rm $FILENAME 

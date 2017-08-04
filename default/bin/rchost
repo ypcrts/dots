@@ -1,0 +1,29 @@
+#!/bin/bash -i
+welp () {
+  printf "$0 [-p|--private]\n"
+}
+
+goto_fail () {
+  local SUFFIX=""
+  while [ $# -gt 0 ]; do
+    case "$1" in 
+      -h|--help)
+        welp
+        exit 0
+        ;;
+      -p|--private)
+        SUFFIX='.private'
+        ;;
+      *)
+        printf "fatal: invalid parameter \"$1\"\n"
+        welp
+        exit 1
+        ;;
+      esac
+      shift
+    done
+    $EDITOR ~/.profile.d/hosts/`hostname`$SUFFIX.sh
+}
+
+goto_fail "$@"
+# vim: set ft=sh tw=0 ts=2 sw=2 sts=2 fdm=marker fmr={{{,}}} et:

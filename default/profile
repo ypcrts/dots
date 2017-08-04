@@ -1,7 +1,7 @@
 # vi: ft=sh sts=2 sw=2 et
 
+export PATH
 adjunct_path_with () {
-  export PATH
   adjunctor="$1" # the directory  ## WARN: DO NOT USE TRAILING SLASH OR THE WORLD ENDS!
   override="$2"  # if $2 is true: $1 is prefixed to PATH; else $1 is appended to PATH
 
@@ -18,6 +18,59 @@ adjunct_path_with () {
   fi
 }
 
+has () {
+  command -V $1 2>/dev/null >&2 
+}
+
+adjunct_path_with "/sbin"              true
+adjunct_path_with "/usr/sbin"          true
+adjunct_path_with "/usr/local/bin"     true
+adjunct_path_with "${HOME}/bin"        false
+adjunct_path_with "${HOME}/.cargo/bin" false
+adjunct_path_with "${HOME}/.local/bin" false
+
+
+export EDITOR VISUAL
+if has nvim; then
+  EDITOR=nvim
+elif has vim; then
+  EDITOR=vim
+elif has vi; then
+  EDITOR=vi
+elif has ed; then
+  EDITOR=ed
+fi
+
+VISUAL="$EDITOR"
+
+export MOSH_ESCAPE_KEY='~'
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+[ -n "$XDG_CONFIG_HOME" ] || export XDG_CONFIG_HOME="$HOME/.config"
+[ -n "$XDG_CACHE_HOME"  ] || export XDG_CACHE_HOME="$HOME/.cache"
+[ -n "$XDG_DATA_HOME"   ] || export XDG_DATA_HOME="$HOME/.local/share"
+
+#{{{1 Less
+# Mouse-wheel scroll can be disabled by -X (disable screen clearing)
+# Remove -X and -F (exit if the content fits on one screen) to enable mouse-wheel scroll
+if [ -z "$LESS" ]; then
+  export LESS="--no-init --quit-if-one-screen --quit-on-intr --force --dumb --ignore-case --no-lessopen --RAW-CONTROL-CHARS --tilde --shift 8 --chop-long-lines"
+  export LESSSECURE='1' LESSHISTFILE='-' LESSCHARSET='utf-8'
+fi
+
+#{{{1 Pretty colours
+export GREP_COLOR="1;33"
+export LESS_TERMCAP_mb=$'\E[01;31m' LESS_TERMCAP_md=$'\E[01;34m' LESS_TERMCAP_me=$'\E[0m' LESS_TERMCAP_se=$'\E[0m' LESS_TERMCAP_so=$'\E[01;30;03;36m' LESS_TERMCAP_ue=$'\E[0m' LESS_TERMCAP_us=$'\E[01;35m'
+
+#{{{1 fzf
+if [ -x ~/.fzf/bin/fzf ]; then
+  adjunct_path_with "${HOME}/.fzf/bin" false
+  [ -d ~/.fzf/man ] && export MANPATH="$MANPATH:~/.fzf/man"
+  export FZF_DEFAULT_COMMAND='ag -g ""'             # This uses agignore and gitignore
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+fi
+
+#{{{1 OS Specific
 case "$OSTYPE" in
   darwin*)
     if [ "$(id -u)" -eq 0 ]; then
@@ -47,12 +100,31 @@ case "$OSTYPE" in
     esac
     ;;
   linux*)
-    [ -n "$XDG_CONFIG_HOME" ] || export XDG_CONFIG_HOME="$HOME/.config"
-    [ -n "$XDG_CACHE_HOME"  ] || export XDG_CACHE_HOME="$HOME/.cache"
-    [ -n "$XDG_DATA_HOME"   ] || export XDG_DATA_HOME="$HOME/.local/share"
-    [ -n "$SYSTEMD_LESS" ] || export SYSTEMD_LESS="${LESS}"
+    [ -n "$PAGER"   ] || export PAGER='/usr/bin/less' SYSTEMD_PAGER='/usr/bin/less'
+    [ -n "$SYSTEMD_LESS"    ] || export SYSTEMD_LESS="${LESS}"
+    export BROWSER
+    for THIS in brave firefox firefox-esr chromium x-www-browser; do
+      has $THIS && BROWSER=$THIS && break
+    done
     ;;
   *) return ;;
 esac
+
+
+#{{{1 Guard for non-interactive shells
+case "$-" in
+  *i*)  ;;
+  *)   return ;;
+esac
+
+#{{{1 Disable flow control
+stty -ixon
+
+#{{{1 TMOUT
+if [ "$(id -u)" -eq 0 ]; then
+  export TMOUT=300
+else
+  export TMOUT=0
+fi
 
 unset -f adjunct_path_with
