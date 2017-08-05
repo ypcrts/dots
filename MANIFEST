@@ -36,6 +36,7 @@ $ dev
 
 ~/bin/: ./dev/bin/*
 ~/.vimrc: ./dev/vimrc
+~/.config/nvim/init.vim: ./dev/vimrc
 ~/.vim/: ./dev/vimdir/*
 ~/.ctags: ./dev/ctags
 ~/.uncrustify.cfg: ./dev/uncrustify.cfg
@@ -66,3 +67,7 @@ $ bspwm
 $ awesome
 
 ~/.config/awesome/rc.lua: ./xorg/awesome.lua
+
+
+$ thinkpad
+~/bin/: ./thinkpad/bin/*

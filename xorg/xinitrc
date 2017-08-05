@@ -7,9 +7,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
 fi
 
 # set environment variables
-for f in /etc/profile \
-    ~/.profile 
-do
+for f in /etc/profile  ~/.profile; do
     [ -r "$f" ] && . "$f"
 done
 unset f
@@ -49,6 +47,5 @@ fi
 /usr/bin/xscreensaver -no-splash &
 sxhkd &
 exec bspwm > .xinit.log 2>&1
-
 
 # vim: set ft=sh tw=0 ts=4 sw=4 sts=2 fdm=marker fmr={{{,}}} et:

@@ -7,11 +7,10 @@ alias p='cd ~/Projects'
 alias cdtl='cd "$(git rev-parse --show-toplevel)"'
 alias dirs='dirs -v'
 
-alias nvim="COLORTERM=256 nvim"
-alias nvi='nvim'
-alias bim="vim"
-alias cim="vim"
-alias vom="vim"
+if command -V nvim >/dev/null 2>&1; then
+  alias nvim="COLORTERM=256 nvim"
+  alias nvi='nvim'
+fi
 
 alias ls='ls -hF' # ls --color is set in linux files
 alias ll='l -lh'
@@ -159,6 +158,15 @@ cleanout() {
   fi
 }
 #{{{1 loadenv
+source_if_exists () {
+  if [ -f $1 ]; then
+    . $1
+    return 0
+  else
+    return 1
+  fi
+}
+
 loadenv () {
   local POSTLOAD=''
   case "$1" in

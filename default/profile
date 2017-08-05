@@ -19,7 +19,10 @@ adjunct_path_with () {
 }
 
 has () {
-  command -V $1 2>/dev/null >&2 
+  if command -V $1 2>/dev/null >&2; then
+    return 0
+  fi
+  return 1
 }
 
 adjunct_path_with "/sbin"              true
@@ -128,3 +131,6 @@ else
 fi
 
 unset -f adjunct_path_with
+
+# for the benefit of tmux that is not -i
+. ~/.bashrc

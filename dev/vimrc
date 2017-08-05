@@ -61,7 +61,7 @@ if has('python') || has('python3') || has('nvim')
 
   " Linting
   " PICK ONE STOP CHANGING LINT PLUGINS YOU'RE DRIVING YOURSELF MAD
-  if has('nvim') || v:version > 800
+  if has('nvim') || v:version >= 800
     Plug 'w0rp/ale'
   else
     Plug 'scrooloose/syntastic'

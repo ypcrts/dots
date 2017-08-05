@@ -25,7 +25,8 @@ shopt -s progcomp
 shopt -s gnu_errfmt
 shopt -s checkwinsize       # update the value of LINES and COLUMNS after each command if altered
 
-eval $(dircolors -b $HOME/.config/bash/dircolors/dircolors.256dark) 2>/dev/null >/dev/null
 . ~/.config/bash/git.bash
 . ~/.config/bash/prompt.bash
 . ~/.config/bash/aliases.bash
+. ~/.config/bash/os-aliases.bash
+eval $(dircolors -b ~/.config/bash/dircolors/dircolors.256dark) 2>/dev/null >/dev/null

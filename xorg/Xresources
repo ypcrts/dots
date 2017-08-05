@@ -1,5 +1,14 @@
 ! vim:fenc=utf-8:nu:ai:si:et:ts=4:sw=4:ft=xdefaults:
-! {{{1 Urxvt ----------------------------------------
+! {{{1 Font settings
+Xft.autohint:                        0
+Xft.lcdfilter:                       lcddefault
+Xft.hintstyle:                       hintfull
+Xft.hinting:                         1
+Xft.antialias:                       1
+Xft.rgba:                            rgb
+Xft.dpi:                             92
+
+! {{{1 Urxvt
 URxvt.cursorColor:     #5E468C
 URxvt.cursorBlink:     false
 URxvt.geometry:        80x22
@@ -52,5 +61,30 @@ Xautolock.cornerdelay:               600
 Xautolock.time:                      5
 Xautolock.notify:                    15
 
+! {{{1 SSH askpass
+! https://wiki.archlinux.org/index.php/SSH_Keys#Calling_x11-ssh-askpass_with_ssh-add
+*askpass*background:                 #000000
+
+! {{{1 Rofi
+rofi.opacity:         85
+rofi.color-enabled:   true
+!                     bg,      fg,      bgalt,   hlbg,    hlfg
+rofi.color-normal:    #000000, #ffffff, #000000, #333333, #ffffff
+rofi.color-urgent:    #000000, #ffffff, #000000, #333333, #ffffff
+rofi.color-active:    #000000, #ffffff, #000000, #333333, #ffffff
+rofi.color-window:    #000000, #222222
+rofi.terminal:        urxvtc
+rofi.location: 0
+rofi.padding: 400
+rofi.separator-style: solid
+rofi.threads: 0
+rofi.lines:           10
+rofi.fixed-num-lines: true
+rofi.eh:              2
+rofi.bw:              0
+rofi.hide-scrollbar:  true
+rofi.font:            Terminus 8
+rofi.fullscreen:      true
+
 ! {{{1 Colours
-#include "/home/user/.config/color/w0ng"
+#include ".config/color/w0ng"

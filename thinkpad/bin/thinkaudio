@@ -1,0 +1,93 @@
+#!/bin/sh
+CARD=
+PROFILE=
+go_for_it () {
+  if [ -n "$CARD" ] && [ -n "$PROFILE" ]; then 
+    pactl set-card-profile "$CARD" "$PROFILE"
+  else
+    echo "No card parameter"
+    exit 1
+  fi
+}
+set_off () {
+  PROFILE="off"
+}
+set_hdmi () {
+  CARD=0
+  PROFILE="output:hdmi-stereo"
+}
+set_internal () {
+  CARD=1
+  PROFILE="output:analog-stereo"
+}
+while [ $# -gt 0 ]; do
+  case "$1" in 
+    --debug)
+      set -xe
+      ;;
+    --help)
+      echo "thinkaudio CARD on|off"
+      ;;
+    --list|-l)
+      pactl list cards | grep -iE -B6 'hda|pch'
+      exit 0
+      ;;
+    hdmi|h)
+      set_hdmi
+      ;;
+    internal|i)
+      set_internal
+      ;;
+    on|1)
+      go_for_it
+      ;;
+    off|0)
+      set_off
+      go_for_it
+      ;;
+    --card|-c)
+      shift
+      CARD="$1"
+      ;;
+    --profile|-p)
+      shift
+      PROFILE="$1"
+      ;;
+    --only|-o)
+      shift
+      case "$1" in 
+        hdmi|h|tv)
+          echo "Turning off internal"
+          set_internal
+          set_off
+          go_for_it
+          echo "Turning on hdmi"
+          set_hdmi
+          go_for_it
+          ;;
+        internal|i|speakers|speak|speaks)
+          echo "Turning off hdmi"
+          set_hdmi
+          set_off
+          go_for_it
+          echo "Turning on internal"
+          set_internal
+          go_for_it
+          ;;
+        *)
+          echo "--only ${1}: invalid parameter"
+          exit 1
+          ;;
+      esac
+      ;;
+    --)
+      break;
+      ;;
+    *)
+      echo "Invalid parameter"
+      exit 1
+      ;;
+  esac
+  shift
+done
+# vim: set ft=sh tw=0 ts=2 sw=2 sts=2 fdm=marker fmr={{{,}}} et:

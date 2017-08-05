@@ -1,0 +1,68 @@
+#!/bin/sh
+[ -n "$DISPLAY" ] && DISPLAY=:0
+THINKAUDIO_MODE='hdmi'
+VIDEO_MODE=0
+if [ $# -eq 0 ]; then
+  echo "USAGE: thinktv [up|halt] [--] [undefined] "
+  exit 1
+fi
+
+case "$1" in
+  1|up|start|go|ignite|vroom|whatisgooduxwhenyourejustwritingthingstoimpressyourfriendsandtickleyourfancy)
+    VIDEO_MODE=2
+    THINKAUDIO_MODE="hdmi"
+    ;;
+  0|halt|quit|off|bye|sleep|night|nightnight)
+    VIDEO_MODE=0
+    THINKAUDIO_MODE="internal"
+    ;;
+  *)
+    echo "invalid param: ${1}"
+    exit 1
+    ;;
+esac
+shift
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --no-dual)
+      [ "$VIDEO_MODE" -eq 2 ] && VIDEO_MODE=1
+      ;;
+    --)
+      break
+      ;;
+    *)
+      echo "-- use undefined"
+      exit 1
+      ;;
+  esac
+  shift
+done
+case "$VIDEO_MODE" in
+  0)
+    ~/.screenlayout/thinkpad-1080p.sh
+    ;;
+  1)
+    echo "you need to make a stupid file"
+    exit 1
+    ;;
+  2)
+    ~/.screenlayout/thinktv-2up.sh
+    ;;
+esac
+
+~/bin/thinkaudio --only "$THINKAUDIO_MODE" &
+
+if [ "$VIDEO_MODE" -gt 0 ]; then
+  xset -dpms
+  xset s off
+  pkill xautolock
+  x11vnc -passwd hello -forever >/dev/null 2>/dev/null &
+else
+  bspc query --monitors | grep -i hdmi1 && bspc wm --remove-monitor HDMI1 &
+  if [ "$(ps -a | grep xautolock | wc -l)" = "0" ]; then
+    xautolock -detectsleep &
+  fi
+  xset +dpms
+  pkill x11vnc
+fi

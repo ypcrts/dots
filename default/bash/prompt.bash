@@ -57,9 +57,9 @@ bash_prompt_setup () {
     NUTZER_TEIL="${F}\\u@\[\033[0;${HOST_FARBE}m\]\\H ${R}\[\033[0;\${RET_FARBE}m\]${BEGRENZER} "
   fi
 
-  export PS1="\n${NUTZER_TEIL}${F}\\w \$(___VIRTUALENV_PROMPT__ 2>/dev/null)\[\033[0;34m\]\$(__git_ps1 \"(%s)\" 2>/dev/null)${R}\n\[\033[\${RET_FARBE}m\]\\$ ${R}"
-  export PS2="${F}\ "
-  export PS4="${F}• "
+  PS1="\n${NUTZER_TEIL}${F}\\w \$(___VIRTUALENV_PROMPT__ 2>/dev/null)\[\033[0;34m\]\$(__git_ps1 \"(%s)\" 2>/dev/null)${R}\n\[\033[\${RET_FARBE}m\]\\$ ${R}"
+  PS2="${F}\ "
+  PS4="${F}• "
 }
 
 bash_prompt_setup
@@ -76,13 +76,13 @@ ___VIRTUALENV_PROMPT__ () {
   # TODO: Add rubygems (g), rvm (r)
 }
 
-___EXITSTAT () {
+function ___EXITSTAT () {
   local RET=$?
   if ((RET)); then
-    export RET_FARBE='0;31'
+    RET_FARBE='0;31'
     printf '\n\033[1;31m(%d)\033[0m ' "$RET"
   else
-    export RET_FARBE='0'
+    RET_FARBE='0'
   fi
 
 }

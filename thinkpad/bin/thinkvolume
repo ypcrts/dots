@@ -1,0 +1,29 @@
+#!/bin/sh
+case $1 in
+  up)
+    pactl set-sink-volume @DEFAULT_SINK@ +5%
+    ;;
+  down)
+    pactl set-sink-volume @DEFAULT_SINK@ -5%
+    ;;
+  mute)
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+    DISPLAY=:0 notify-send --urgency=low --expire-time=50 $(pactl list sinks | awk '/Mute:/ {if ($2 == "yes") { print "Muted";} else { print "Unmuted";}  exit;}')
+    exit 0
+    ;;
+  muteforce)
+    pactl set-sink-mute @DEFAULT_SINK@ on
+    DISPLAY=:0 notify-send --urgency=low --expire-time=50 $(pactl list sinks | awk '/Mute:/ {if ($2 == "yes") { print "Muted";} else { print "Unmuted";}  exit;}')
+    exit 0
+    ;;
+  mutemic)
+    pactl set-source-mute alsa_input.pci-0000_00_1b.0.analog-stereo toggle
+    exit 0
+    ;;
+  *)
+    echo "fatal"
+    exit 1
+    ;;
+esac
+
+DISPLAY=:0 notify-send --urgency=low --expire-time=1 "Volume: $(pactl list sinks | awk '/Volume:/ {print $5; exit;}' )" 
