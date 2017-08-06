@@ -42,20 +42,9 @@ $ macos
 ~/bin/: ./macos/bin/*
 ~/.config/bash/os-aliases.bash: ./macos/aliases.bash
 
-$ dev 
-@include: default
-~/bin/: ./dev/bin/*
-~/.vim/: ./dev/vimdir/*
-~/.ctags: ./dev/ctags
-~/.uncrustify.cfg: ./dev/uncrustify.cfg
-~/.radare2rc: ./dev/radare2rc
-~/.gdbinit: ./dev/gdbinit
-
-$ ssh
-~/.config/git/ssh.gitconfig: ./ssh/ssh.gitconfig
+#--------------------------------------------------------------------------------
 
 $ xorg
-@include: default
 ~/bin/: ./xorg/bin/*
 ~/.urxvt/ext/font-size: ./xorg/urxvt-font-size
 ~/.Xresources: ./xorg/Xresources
@@ -73,15 +62,33 @@ $ bspwm
 ~/.config/lemonbar: ./bspwm/lemonbar
 
 $ awesome
+@include: xorg
 ~/.config/awesome/rc.lua: ./xorg/awesome.lua
 
+#--------------------------------------------------------------------------------
+
+$ dev 
+~/bin/: ./dev/bin/*
+~/.vim/: ./dev/vimdir/*
+~/.ctags: ./dev/ctags
+~/.uncrustify.cfg: ./dev/uncrustify.cfg
+~/.radare2rc: ./dev/radare2rc
+~/.gdbinit: ./dev/gdbinit
+
+$ ssh
+~/.config/git/ssh.gitconfig: ./ssh/ssh.gitconfig
+
+#--------------------------------------------------------------------------------
+
 $ thinkpad
-@include: dev
+@include: default
 @include: bspwm
+@include: dev
 @include: ssh
 ~/bin/: ./thinkpad/bin/*
 
 $ macbook
+@include: default
 @include: macos
 @include: dev
 @include: ssh
