@@ -72,56 +72,65 @@ class Manifest(dict):
             section[dest] = src
 
     def install_file(self, dest, src):
-        srcabs = os.path.normpath(os.path.join(STARTDIR, src))
-        destabs = os.path.normpath(dest)
-        destdir = os.path.dirname(destabs)
-        destname = os.path.basename(destabs)
+        destdir = os.path.dirname(dest)
+        destname = os.path.basename(dest)
+        srcname = os.path.basename(src)
 
         if not os.path.isdir(destdir):
             makedirs(destdir, 0o755)
-        elif os.path.lexists(destabs):
+        elif os.path.lexists(dest):
             if not self.force:
-                print('skipped (exists):', destabs)
+                print('skipped (exists):', dest)
                 return
-            if os.path.isdir(destabs) and not os.path.islink(destabs):
-                rmtree(destabs)
+            if os.path.isdir(dest) and not os.path.islink(dest):
+                rmtree(dest)
             else:
-                rmfile(destabs)
-        if src == '@delete':
+                rmfile(dest)
+        if srcname in SRC_MACROS:
             return
-        assert os.path.exists(srcabs), \
-            "Manifest src `{:}` does not exist on the filesystem"
+        assert os.path.exists(src), \
+            "Manifest src `{:}` does not exist on the filesystem".format(src)
         chdir(destdir)
         try:
-            symlink(srcabs, destname)
-            print('linked', destabs)
+            symlink(src, destname)
+            print('linked', dest)
         except OSError as e:
-            print(e, '::', destabs)
+            print(e, '::', dest)
 
     def install_section(self, section_name):
-        assert section_name
+        for (dest, src) in self.iter_section(section_name):
+            self.install_file(dest, src)
 
+    def remove_section(self, section_name):
+        for (dest, src) in self.iter_section(section_name):
+            if os.path.lexists(dest):
+                os.remove(dest)
+
+    def iter_section(self, section_name):
         for (dest, src) in self[section_name].iteritems():
             has_glob = src.endswith('*')
+            src = os.path.normpath(os.path.join(STARTDIR, src))
+            dest = os.path.normpath(dest)
             if not has_glob:
-                self.install_file(dest, src)
+                yield dest, src
                 continue
 
             glob_src_dir = os.path.normpath(
                 os.path.join(STARTDIR, src.strip('*')))
             names = os.listdir(glob_src_dir)
             for name in names:
-                self.install_file(
-                    dest=os.path.join(dest, name),
-                    src=os.path.join(glob_src_dir, name)
+                yield (
+                    os.path.join(dest, name),
+                    os.path.join(glob_src_dir, name)
                 )
+
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('section',
                         help='manifest target', type=str, nargs='*',
-                        default=('default,'))
+                        default=('default',))
     parser.add_argument('-f', '--force',
                         help="remove any existing files or links",
                         action='store_true')
