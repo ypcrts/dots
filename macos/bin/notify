@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+
+import os
+import sys 
+import sh
+import uuid
+import subprocess
+
+if sys.argv.__len__() != 1:
+    os.stderr.write("fatal invalid argc")
+    sys.exit(1)
+
+filename = "/tmp/notifyscript{:s}".format(uuid.uuid4())
+name = sh.basename(os.getcwd()).strip()
+mesg = sys.argv[1]
+
+script = """
+  var app = Application.currentApplication();
+
+    app.includeStandardAdditions = true
+
+    app.displayNotification("{:s}", {{
+      withTitle: "PageCloud",
+      subtitle: "{:s}",
+      soundName: "Frog"
+    }})
+""".format(name, mesg)
+
+with open(filename, 'w') as f:
+    f.write(script)
+
+subprocess.call(["/usr/local/bin/reattach-to-user-namespace", "/usr/bin/osascript", "-l", "JavaScript", filename ])
+
+sh.rm(filename)
