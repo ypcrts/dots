@@ -75,6 +75,11 @@ $ dev
 $ ssh
 ~/.config/git/ssh.gitconfig: ./ssh/ssh.gitconfig
 
+$ gpg
+~/.caff/gnupghome/gpg.conf: ./gpg/caff-gpg.conf
+~/.gnupg/dirmngr.conf: ./gpg/dirmngr.conf
+~/.gnupg/gpg.conf: ./gpg/gpg.conf
+
 #--------------------------------------------------------------------------------
 
 $ thinkpad
