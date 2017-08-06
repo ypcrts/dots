@@ -114,19 +114,21 @@ class Manifest(dict):
             if os.path.lexists(dest):
                 rmfile(dest)
 
-    def iter_section(self, section_name):
+    def iter_section(self, section_name, included=list()):
         for (dest, src) in self[section_name].iteritems():
             has_glob = src.endswith('*')
             if dest == DEST_MACROS[0]:
-                included_sections = src.split(' ')
-                for sn in included_sections:
+                include = src.split(' ')
+                include = list(filter(lambda sn: sn not in included, include))
+                included.extend(include)
+                for sn in include:
                     assert sn != section_name,\
                         "cannot include `{:}` inside itself'\
                         '!".format(section_name)
                     assert sn in self, \
                         "cannot include `{:}` '\
                         '- does not exist".format(section_name)
-                    for s in self.iter_section(sn):
+                    for s in self.iter_section(sn, included):
                         yield s
                 continue
             src = os.path.normpath(os.path.join(STARTDIR, src))
