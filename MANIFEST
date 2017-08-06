@@ -69,6 +69,8 @@ $ dev
 ~/.uncrustify.cfg: ./dev/uncrustify.cfg
 ~/.radare2rc: ./dev/radare2rc
 ~/.gdbinit: ./dev/gdbinit
+~/.gbp.conf: ./dev/gbp.conf
+~/.ansible.cfg: ./dev/ansible.cfg
 
 $ ssh
 ~/.config/git/ssh.gitconfig: ./ssh/ssh.gitconfig

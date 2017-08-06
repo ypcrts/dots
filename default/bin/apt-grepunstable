@@ -1,0 +1,4 @@
+#!/bin/sh
+apt-show-versions | grep -v stable | grep -v testing | grep -v 'not installed'
+# this is garbage, but it works and i will fix it later  [ypcrts // 20151112T1531Z]
+
