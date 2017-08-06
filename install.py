@@ -162,10 +162,12 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', action='count')
 
     args = parser.parse_args()
+
     if args.verbose >= 2:
         log.setLevel(logging.DEBUG)
     elif args.verbose >= 1:
         log.setLevel(logging.INFO)
+
     if args.dry_run:
         log.warn('seting up dry run')
         rmtree = nop(rmtree)
@@ -175,6 +177,7 @@ if __name__ == '__main__':
         chdir = nop(chdir)
 
     m = Manifest(force=args.force, path=args.manifest)
+    args.section = list(map(lambda sn: sn.rstrip('/'), args.section))
     for sn in args.section:
         assert sn in m, "section `{:s}` is not in the manifest".format(sn)
 
