@@ -9,10 +9,14 @@ import os
 import os.path
 import shutil
 import sys
+import logging
 
 STARTDIR = os.getcwd()
 SRC_MACROS = ('@delete',)
 manifest = None
+log = logging.getLogger(__name__)
+log.setLevel(logging.WARN)
+log.addHandler(logging.StreamHandler())
 
 rmtree = shutil.rmtree
 rmfile = os.remove
@@ -28,7 +32,7 @@ def nop(f):
     name = f.__name__
 
     def _nop(*a, **k):
-        print('would:', name, *a, **k)
+        log.debug('would: %s %s %s' % (name, a, k))
     return _nop
 
 
@@ -80,7 +84,7 @@ class Manifest(dict):
             makedirs(destdir, 0o755)
         elif os.path.lexists(dest):
             if not self.force:
-                print('skipped (exists):', dest)
+                log.info('skipped (exists): %s' % dest)
                 return
             if os.path.isdir(dest) and not os.path.islink(dest):
                 rmtree(dest)
@@ -93,9 +97,9 @@ class Manifest(dict):
         chdir(destdir)
         try:
             symlink(src, destname)
-            print('linked', dest)
+            log.warn('linked %s' % dest)
         except OSError as e:
-            print(e, '::', dest)
+            log.error('%s :: %s' % (e, dest))
 
     def install_section(self, section_name):
         for (dest, src) in self.iter_section(section_name):
@@ -115,13 +119,12 @@ class Manifest(dict):
                 yield dest, src
                 continue
 
-            glob_src_dir = os.path.normpath(
-                os.path.join(STARTDIR, src.strip('*')))
-            names = os.listdir(glob_src_dir)
+            src = src.strip('*')
+            names = os.listdir(src)
             for name in names:
                 yield (
                     os.path.join(dest, name),
-                    os.path.join(glob_src_dir, name)
+                    os.path.join(src, name)
                 )
 
 
@@ -140,10 +143,15 @@ if __name__ == '__main__':
                             help="on install, remove any existing files or links")
     ctrl_group.add_argument('-p', '--purge', action='store_true',
                             help='remove the link or file at target paths')
+    parser.add_argument('-v', '--verbose', action='count')
 
     args = parser.parse_args()
+    if args.verbose >= 2:
+        log.setLevel(logging.DEBUG)
+    elif args.verbose >= 1:
+        log.setLevel(logging.INFO)
     if args.dry_run:
-        print('dry run')
+        log.warn('seting up dry run')
         rmtree = nop(rmtree)
         rmfile = nop(rmfile)
         makedirs = nop(makedirs)
