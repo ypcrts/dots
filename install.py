@@ -101,10 +101,10 @@ class Manifest(dict):
         for (dest, src) in self.iter_section(section_name):
             self.install_file(dest, src)
 
-    def remove_section(self, section_name):
+    def purge_section(self, section_name):
         for (dest, src) in self.iter_section(section_name):
             if os.path.lexists(dest):
-                os.remove(dest)
+                rmfile(dest)
 
     def iter_section(self, section_name):
         for (dest, src) in self[section_name].iteritems():
@@ -125,20 +125,21 @@ class Manifest(dict):
                 )
 
 
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('section',
                         help='manifest target', type=str, nargs='*',
-                        default=('default',))
-    parser.add_argument('-f', '--force',
-                        help="remove any existing files or links",
-                        action='store_true')
+                        default=('default',)) 
     parser.add_argument('-n', '--dry-run', action='store_true',
                         help='nop out all syscalls, verbose')
     parser.add_argument('-m', '--manifest', type=str,
                         help="path to custom manifest file",
                         default='./MANIFEST')
+    ctrl_group = parser.add_mutually_exclusive_group()
+    ctrl_group.add_argument('-f', '--force', action='store_true',
+                            help="on install, remove any existing files or links")
+    ctrl_group.add_argument('-p', '--purge', action='store_true',
+                            help='remove the link or file at target paths')
 
     args = parser.parse_args()
     if args.dry_run:
@@ -153,5 +154,5 @@ if __name__ == '__main__':
     for sn in args.section:
         assert sn in m, "section `{:s}` is not in the manifest".format(sn)
 
-    for sn in args.section:
-        m.install_section(sn)
+    taskfunc = m.purge_section if args.purge else m.install_section
+    all(map(lambda sn: taskfunc(sn), args.section))
