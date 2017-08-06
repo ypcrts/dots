@@ -17,7 +17,8 @@ $ default
 ~/.screenrc: ./default/screenrc
 ~/.ipython/profile_default/ipython_config.py: ./default/ipython_config.py
 
-~/.vimrc: ./default/vimrc-minimal
+~/.vimrc: ./default/vimrc
+~/.config/nvim/init.vim: ./default/vimrc
 ~/.tmux.conf: ./default/tmux.conf
 
 ~/.gitignore: ./default/gitignore
@@ -35,8 +36,6 @@ $ macos
 $ dev 
 
 ~/bin/: ./dev/bin/*
-~/.vimrc: ./dev/vimrc
-~/.config/nvim/init.vim: ./dev/vimrc
 ~/.vim/: ./dev/vimdir/*
 ~/.ctags: ./dev/ctags
 ~/.uncrustify.cfg: ./dev/uncrustify.cfg
