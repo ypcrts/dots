@@ -133,22 +133,6 @@
   lol   = %C(auto,red)%h%C(auto,reset)%C(auto,yellow)%d%C(auto,reset) %C(auto,blue)%an%C(auto,reset) - %s %C(auto,green)(%cr)%C(auto,reset)
   long  = %C(auto,green)%h %C(auto,blue)%<(15,trunc)%an %C(auto,reset)%<(70,trunc)%s %<(20)%cd%C(auto,red)%D %C(auto,reset)
 
-[url "git@github.com:"]
-  insteadOf         = "github:"
-  pushInsteadOf     = "github:"
-  insteadOf         = "git://github.com/"
-  insteadOf         = "https://github.com/"
-  pushInsteadOf     = "git://github.com/"
-  pushInsteadOf     = "https://github.com/"
-
-[url "https://aur.archlinux.org/"]
-  insteadOf = "aur"
-
-[url "git@gist.github.com:"]
-  insteadOf         = "gist:"
-  pushInsteadOf     = "gist:"
-  pushInsteadOf     = "git://gist.github.com/"
-
 [rebase]
   stat              = true
 
@@ -174,3 +158,5 @@
 
 [hub]
   triangular        = false
+[include]
+  path = ~/.config/git/ssh.gitconfig

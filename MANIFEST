@@ -1,40 +1,49 @@
 # vi: ft=make et
 
-$ default
-
+$ bin
 ~/bin/: ./default/bin/*
 
+$ shell
 ~/.profile: ./default/profile
 ~/.bash_profile: @delete
 ~/.bash_logout: ./default/bash_logout
 ~/.logout: @delete
-
 ~/.bashrc: ./default/bashrc
 ~/.config/bash/: ./default/bash/*
-
 ~/.hushlogin: ./default/hushlogin
 ~/.inputrc: ./default/inputrc
-~/.screenrc: ./default/screenrc
 ~/.ipython/profile_default/ipython_config.py: ./default/ipython_config.py
 
+$ vim
 ~/.vimrc: ./default/vimrc
 ~/.config/nvim/init.vim: ./default/vimrc
-~/.tmux.conf: ./default/tmux.conf
 
+$ mux
+~/.tmux.conf: ./default/tmux.conf
+~/.screenrc: ./default/screenrc
+
+$ git
 ~/.gitignore: ./default/gitignore
 ~/.gitconfig: ./default/gitconfig
  
+$ curl
 ~/.curlrc: ./default/curlrc
 
+$ default
+@include: shell
+@include: vim
+@include: mux
+@include: git
+@include: curl
+@include: bin
 
 $ macos
-
+@include: default
 ~/bin/: ./macos/bin/*
-~/.config/bash/os-aliases.bash: ./macos/os-aliases.bash
-
+~/.config/bash/os-aliases.bash: ./macos/aliases.bash
 
 $ dev 
-
+@include: default
 ~/bin/: ./dev/bin/*
 ~/.vim/: ./dev/vimdir/*
 ~/.ctags: ./dev/ctags
@@ -42,9 +51,11 @@ $ dev
 ~/.radare2rc: ./dev/radare2rc
 ~/.gdbinit: ./dev/gdbinit
 
+$ ssh
+~/.config/git/ssh.gitconfig: ./ssh/ssh.gitconfig
 
 $ xorg
-
+@include: default
 ~/bin/: ./xorg/bin/*
 ~/.urxvt/ext/font-size: ./xorg/urxvt-font-size
 ~/.Xresources: ./xorg/Xresources
@@ -54,20 +65,23 @@ $ xorg
 ~/.gtkrc-2.0: ./xorg/gtkrc2
 ~/.screenlayout: ./xorg/screenlayout
 
-
 $ bspwm
-
+@include: xorg
 ~/bin/: ./bspwm/bin/*
 ~/.config/bspwm/bspwmrc: ./bspwm/bspwmrc
 ~/.config/sxhkd/sxhkdrc: ./bspwm/sxhkdrc
 ~/.config/lemonbar: ./bspwm/lemonbar
 
-
 $ awesome
-
 ~/.config/awesome/rc.lua: ./xorg/awesome.lua
 
-
 $ thinkpad
-
+@include: dev
+@include: bspwm
+@include: ssh
 ~/bin/: ./thinkpad/bin/*
+
+$ macbook
+@include: macos
+@include: dev
+@include: ssh

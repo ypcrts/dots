@@ -1,0 +1,17 @@
+# vi: ft=gitconfig
+
+[url "git@github.com:"]
+  insteadOf         = "github:"
+  pushInsteadOf     = "github:"
+  insteadOf         = "git://github.com/"
+  insteadOf         = "https://github.com/"
+  pushInsteadOf     = "git://github.com/"
+  pushInsteadOf     = "https://github.com/"
+
+[url "https://aur.archlinux.org/"]
+  insteadOf = "aur"
+
+[url "git@gist.github.com:"]
+  insteadOf         = "gist:"
+  pushInsteadOf     = "gist:"
+  pushInsteadOf     = "git://gist.github.com/"

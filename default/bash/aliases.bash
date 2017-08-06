@@ -160,14 +160,7 @@ cleanout() {
   fi
 }
 #{{{1 loadenv
-source_if_exists () {
-  if [ -f $1 ]; then
-    . $1
-    return 0
-  else
-    return 1
-  fi
-}
+
 
 loadenv () {
   local POSTLOAD=''

@@ -13,6 +13,7 @@ import logging
 
 STARTDIR = os.getcwd()
 SRC_MACROS = ('@delete',)
+DEST_MACROS = ('@include',)
 manifest = None
 log = logging.getLogger(__name__)
 log.setLevel(logging.WARN)
@@ -32,7 +33,7 @@ def nop(f):
     name = f.__name__
 
     def _nop(*a, **k):
-        log.debug('would: %s %s %s' % (name, a, k))
+        log.debug('nop: %s %s %s' % (name, a, k))
     return _nop
 
 
@@ -113,6 +114,13 @@ class Manifest(dict):
     def iter_section(self, section_name):
         for (dest, src) in self[section_name].iteritems():
             has_glob = src.endswith('*')
+            if dest == DEST_MACROS[0]:
+                assert src in self, \
+                    "cannot include `{:}` '\
+                    '- does not exist".format(section_name)
+                for s in self.iter_section(src):
+                    yield s
+                continue
             src = os.path.normpath(os.path.join(STARTDIR, src))
             dest = os.path.normpath(dest)
             if not has_glob:
@@ -132,7 +140,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('section',
                         help='manifest target', type=str, nargs='*',
-                        default=('default',)) 
+                        default=('default',))
     parser.add_argument('-n', '--dry-run', action='store_true',
                         help='nop out all syscalls, verbose')
     parser.add_argument('-m', '--manifest', type=str,
