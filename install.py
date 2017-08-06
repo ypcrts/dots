@@ -125,8 +125,10 @@ if __name__ == '__main__':
     parser.add_argument('-f', '--force',
                         help="remove any existing files or links",
                         action='store_true')
-    parser.add_argument('-n', '--dry-run', action='store_true')
+    parser.add_argument('-n', '--dry-run', action='store_true',
+                        help='nop out all syscalls, verbose')
     parser.add_argument('-m', '--manifest', type=str,
+                        help="path to custom manifest file",
                         default='./MANIFEST')
 
     args = parser.parse_args()
