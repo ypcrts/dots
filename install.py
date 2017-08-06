@@ -34,7 +34,7 @@ def nop(f):
 
 class Manifest(dict):
 
-    def __init__(self, path='./MANIFEST', force=False):
+    def __init__(self, path, force):
         self.force = force
         if path:
             with open(path, 'r') as fp:
@@ -53,7 +53,7 @@ class Manifest(dict):
                 section = self[section_name] = dict()
                 continue
 
-            assert section, \
+            assert section is not None, \
                 "line {:d}: target definition before "\
                 "section declaration".format(i)
 
@@ -126,6 +126,8 @@ if __name__ == '__main__':
                         help="remove any existing files or links",
                         action='store_true')
     parser.add_argument('-n', '--dry-run', action='store_true')
+    parser.add_argument('-m', '--manifest', type=str,
+                        default='./MANIFEST')
 
     args = parser.parse_args()
     if args.dry_run:
@@ -136,7 +138,9 @@ if __name__ == '__main__':
         symlink = nop(symlink)
         chdir = nop(chdir)
 
-    m = Manifest(force=args.force)
+    m = Manifest(force=args.force, path=args.manifest)
+    for sn in args.section:
+        assert sn in m, "section `{:s}` is not in the manifest".format(sn)
 
     for sn in args.section:
         m.install_section(sn)
