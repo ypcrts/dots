@@ -1,115 +1,110 @@
 " vi: ft=vim
 
-if empty(glob(g:libdir . '/plug.vim'))
-  silent call system('mkdir -p ' . g:libdir . '/{autoload,bundle,cache,undo,backups,swaps}')
-  silent call system('curl -fLo ' . g:libdir . '/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
+if !(has('python') || has('python3') || has('nvim'))
+  finish
 endif
 
 call Sourceiffr(g:libdir . '/plug.vim')
+"silent call system('mkdir -p ' . g:configdir . '/plugged')
+call plug#begin(g:configdir . '/plugged')
 
-if has('python') || has('python3') || has('nvim')
-  call plug#begin( g:configdir . '/plugged')
+Plug 'ypcrts/securemodelines', { 'commit': '9751f29699186a47743ff6c06e689f483058d77a' }
+" Plug 'jamessan/vim-gnupg'
+" Plug 'ypcrts/vim-gpg-sign'
 
-  Plug 'ypcrts/securemodelines', { 'commit': '9751f29699186a47743ff6c06e689f483058d77a' }
-  " Plug 'jamessan/vim-gnupg'
-  " Plug 'ypcrts/vim-gpg-sign'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'Konfekt/FastFold'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-unimpaired'
+Plug 'itchyny/lightline.vim'
+Plug 'nishigori/increment-activator'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'scrooloose/nerdcommenter'
+Plug 'junegunn/vim-easy-align'
 
-  Plug 'editorconfig/editorconfig-vim'
-  Plug 'Konfekt/FastFold'
-  Plug 'tpope/vim-eunuch'
-  Plug 'tpope/vim-unimpaired'
-  Plug 'itchyny/lightline.vim'
-  Plug 'nishigori/increment-activator'
-  Plug 'tpope/vim-surround'
-  Plug 'tpope/vim-repeat'
-  Plug 'scrooloose/nerdcommenter'
-  Plug 'junegunn/vim-easy-align'
+Plug 'chrisbra/NrrwRgn'
 
-  Plug 'chrisbra/NrrwRgn'
+Plug '~/.fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/vim-peekaboo'
+Plug 'jremmen/vim-ripgrep'
 
-  Plug '~/.fzf'
-  Plug 'junegunn/fzf.vim'
-  Plug 'junegunn/vim-peekaboo'
-  Plug 'jremmen/vim-ripgrep'
+" Plug 'chrisbra/vim-diff-enhanced'
 
-  " Plug 'chrisbra/vim-diff-enhanced'
-
-  " Linting
-  " PICK ONE STOP CHANGING LINT PLUGINS YOU'RE DRIVING YOURSELF MAD
-  if has('nvim') || v:version >= 800
-    Plug 'w0rp/ale'
-  else
-    Plug 'scrooloose/syntastic'
-  endif
-  Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
-  Plug 'fisadev/vim-isort', { 'for': 'python' }
-
-  " Completion
-  if has('nvim')
-    " deoplete does not work on vim8, stop hoping, cry
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'Shougo/neoinclude.vim'
-    Plug 'zchee/deoplete-jedi'
-    " Plug 'zchee/deoplete-clang'
-    Plug 'tweekmonster/deoplete-clang2', { 'commit': '787dd4dc7eeb5d1bc2fd3cefcf7bd07e48f4a962' }
-  else
-    "Plug 'valloric/youcompleteme', { 'do': 'echoerr \"You need to go compile YCM\"' }
-  endif
-
-  " NEVER USE THIS IT IS HORRIBLE, STOP LOVING IT
-  " Plug 'jiangmiao/auto-pairs'
-
-  Plug 'mattn/emmet-vim'
-
-  " Syntax etc
-  " Plug 'sheerun/vim-polyglot' " 6d6574617061636b616765207365637572697479207269736b206666730a
-  Plug '~/Projects/ansible-vim', { 'branch': 'j2-commentstring' }
-  Plug 'tweekmonster/django-plus.vim'
-  Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-  Plug 'racer-rust/vim-racer', { 'for': 'rust' }
-  Plug 'cespare/vim-toml', { 'for': 'toml' }
-
-  " Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-  Plug 'ypcrts/vim-ini-fold',          { 'commit': 'b61a9ab242a316d2ba755c36c96888416162f1f4', 'for': ['gitignore','gitconfig','ini'] }
-  Plug 'ypcrts/vim-uncrustify',        { 'commit': 'bcf54fff8d58e0f4276ba22077562ead9814096a', 'for': ['c','cpp']  }
-  " Plug 'bigfish/vim-js-context-coloring', { 'commit': '6c90329664f3b0a58b05e2a5207c94da0d83a51c', 'for': 'javascript', 'do': 'nvm use 6 && npm install --upgrade' }
-  " Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
-  " Plug 'git://fedorapeople.org/home/fedora/wwoods/public_git/vim-scripts.git' "systemd
-  " Plug 'PotatoesMaster/i3-vim-syntax'
-  Plug 'tmhedberg/SimpylFold', { 'for': 'python', 'commit': '4624031f65d78196d55be0180a31bd352460aebc' }
-
-  " RE
-  " Plug 'CaledoniaProject/VIM-IDC'
-  " Plug 'alderz/smali-vim'
-
-  " Git/VCS
-  Plug 'airblade/vim-gitgutter'
-  Plug 'tpope/vim-fugitive'
-
-  " TODO: cr die webapi-vim neuigkeiten, scheiße
-  Plug 'mattn/gist-vim',     { 'commit': 'f0d63579eab7548cf12f979dc52ef5a370ecbe63' }
-  Plug 'mattn/webapi-vim',   { 'commit': 'e3fa93f29a3a0754204002775e140d8a9acfd7fd' }
-
-  " Colour
-  Plug 'w0ng/vim-hybrid'
-  Plug 'nanotech/jellybeans.vim'
-  Plug 'guns/jellyx.vim'
-  Plug 'fisadev/fisa-vim-colorscheme'
-  Plug 'whatyouhide/vim-gotham' ",      { 'commit': 'f46412d4f9768c332ae22676f3ef4cc130457ba0' }
-  Plug 'djjcast/mirodark',             { 'commit': '306c5f96dd0ecaa64eac603b990a22300dc798f7' }
-  Plug 'lu-ren/SerialExperimentsLain', { 'commit': 'aabb800d6a27cde243604a94a9a14334286a87b2' }
-  Plug 'zcodes/vim-colors-basic',      { 'commit': 'bdf14db578ad283bffa019ab2236f4d378eef34b' }
-  Plug 'lifepillar/vim-solarized8' ",    { 'commit': 'dc6c1dfa6f5c068ba338b8a2e4f88f4b6de4433a' }
-  if !has('nvim') " nvim no work? 16-bit
-    Plug 'laserswald/chameleon.vim',   { 'commit': 'e7c9991fa19961dd2bcf89e92f09be1da89b8c77' }
-  endif
-  " Plug 'nightsense/vim-crunchbang'
-  " Plug 'flazz/vim-colorschemes'
-
-  call plug#end()
+" Linting
+" PICK ONE STOP CHANGING LINT PLUGINS YOU'RE DRIVING YOURSELF MAD
+if has('nvim') || v:version >= 800
+  Plug 'w0rp/ale'
 else
-  echoerr "I do not have python. I am ugly. You might as well use emacs."
+  Plug 'scrooloose/syntastic'
 endif
+Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
+Plug 'fisadev/vim-isort', { 'for': 'python' }
+
+" Completion
+if has('nvim')
+  " deoplete does not work on vim8, stop hoping, cry
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/neoinclude.vim'
+  Plug 'zchee/deoplete-jedi'
+  " Plug 'zchee/deoplete-clang'
+  Plug 'tweekmonster/deoplete-clang2', { 'commit': '787dd4dc7eeb5d1bc2fd3cefcf7bd07e48f4a962' }
+else
+  "Plug 'valloric/youcompleteme', { 'do': 'echoerr \"You need to go compile YCM\"' }
+endif
+
+" NEVER USE THIS IT IS HORRIBLE, STOP LOVING IT
+" Plug 'jiangmiao/auto-pairs'
+
+Plug 'mattn/emmet-vim'
+
+" Syntax etc
+" Plug 'sheerun/vim-polyglot' " 6d6574617061636b616765207365637572697479207269736b206666730a
+Plug '~/Projects/ansible-vim', { 'branch': 'j2-commentstring' }
+Plug 'tweekmonster/django-plus.vim'
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+Plug 'racer-rust/vim-racer', { 'for': 'rust' }
+Plug 'cespare/vim-toml', { 'for': 'toml' }
+
+" Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'ypcrts/vim-ini-fold',          { 'commit': 'b61a9ab242a316d2ba755c36c96888416162f1f4', 'for': ['gitignore','gitconfig','ini'] }
+Plug 'ypcrts/vim-uncrustify',        { 'commit': 'bcf54fff8d58e0f4276ba22077562ead9814096a', 'for': ['c','cpp']  }
+" Plug 'bigfish/vim-js-context-coloring', { 'commit': '6c90329664f3b0a58b05e2a5207c94da0d83a51c', 'for': 'javascript', 'do': 'nvm use 6 && npm install --upgrade' }
+" Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
+" Plug 'git://fedorapeople.org/home/fedora/wwoods/public_git/vim-scripts.git' "systemd
+" Plug 'PotatoesMaster/i3-vim-syntax'
+Plug 'tmhedberg/SimpylFold', { 'for': 'python', 'commit': '4624031f65d78196d55be0180a31bd352460aebc' }
+
+" RE
+" Plug 'CaledoniaProject/VIM-IDC'
+" Plug 'alderz/smali-vim'
+
+" Git/VCS
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+
+" TODO: cr die webapi-vim neuigkeiten, scheiße
+Plug 'mattn/gist-vim',     { 'commit': 'f0d63579eab7548cf12f979dc52ef5a370ecbe63' }
+Plug 'mattn/webapi-vim',   { 'commit': 'e3fa93f29a3a0754204002775e140d8a9acfd7fd' }
+
+" Colour
+Plug 'w0ng/vim-hybrid'
+Plug 'nanotech/jellybeans.vim'
+Plug 'guns/jellyx.vim'
+Plug 'fisadev/fisa-vim-colorscheme'
+Plug 'whatyouhide/vim-gotham' ",      { 'commit': 'f46412d4f9768c332ae22676f3ef4cc130457ba0' }
+Plug 'djjcast/mirodark',             { 'commit': '306c5f96dd0ecaa64eac603b990a22300dc798f7' }
+Plug 'lu-ren/SerialExperimentsLain', { 'commit': 'aabb800d6a27cde243604a94a9a14334286a87b2' }
+Plug 'zcodes/vim-colors-basic',      { 'commit': 'bdf14db578ad283bffa019ab2236f4d378eef34b' }
+Plug 'lifepillar/vim-solarized8' ",    { 'commit': 'dc6c1dfa6f5c068ba338b8a2e4f88f4b6de4433a' }
+if !has('nvim') " nvim no work? 16-bit
+  Plug 'laserswald/chameleon.vim',   { 'commit': 'e7c9991fa19961dd2bcf89e92f09be1da89b8c77' }
+endif
+" Plug 'nightsense/vim-crunchbang'
+" Plug 'flazz/vim-colorschemes'
+
+call plug#end()
 
 let g:nrrw_rgn_nomap_nr = 1  " disable worlds worst default maps
 let g:nrrw_rgn_nomap_Nr = 1
