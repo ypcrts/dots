@@ -4,11 +4,9 @@
 from __future__ import print_function
 
 import argparse
-import inspect
 import os
 import os.path
 import shutil
-import sys
 import logging
 
 STARTDIR = os.getcwd()
@@ -69,11 +67,16 @@ class Manifest(dict):
             dest, src = paths = map(lambda p: os.path.expanduser(p), paths)
             assert not src.startswith('@') or src in SRC_MACROS, \
                 "line {:d}: unknown src macro {:}".format(i, src)
+            assert not dest.startswith('@') or dest in DEST_MACROS, \
+                "line {:d}: unknown dest macro {:}".format(i, src)
             has_glob = src.endswith('*')
             if has_glob:
                 assert dest.endswith('/'), \
                     'line {:d}: glob dest must be directory '\
                     'ending with `/`'.format(i)
+            assert dest not in section, \
+                "line {:d}: target redefinition `{:}` "\
+                "in same section".format(i, dest)
             section[dest] = src
 
     def install_file(self, dest, src):
@@ -115,11 +118,16 @@ class Manifest(dict):
         for (dest, src) in self[section_name].iteritems():
             has_glob = src.endswith('*')
             if dest == DEST_MACROS[0]:
-                assert src in self, \
-                    "cannot include `{:}` '\
-                    '- does not exist".format(section_name)
-                for s in self.iter_section(src):
-                    yield s
+                included_sections = src.split(' ')
+                for sn in included_sections:
+                    assert sn != section_name,\
+                        "cannot include `{:}` inside itself'\
+                        '!".format(section_name)
+                    assert sn in self, \
+                        "cannot include `{:}` '\
+                        '- does not exist".format(section_name)
+                    for s in self.iter_section(sn):
+                        yield s
                 continue
             src = os.path.normpath(os.path.join(STARTDIR, src))
             dest = os.path.normpath(dest)

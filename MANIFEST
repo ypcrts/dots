@@ -17,6 +17,7 @@ $ shell
 $ vim
 ~/.vimrc: ./default/vimrc
 ~/.config/nvim/init.vim: ./default/vimrc
+~/.vim/: ./default/vimdir/*
 
 $ mux
 ~/.tmux.conf: ./default/tmux.conf
@@ -30,12 +31,7 @@ $ curl
 ~/.curlrc: ./default/curlrc
 
 $ default
-@include: shell
-@include: vim
-@include: mux
-@include: git
-@include: curl
-@include: bin
+@include: shell vim mux git curl bin
 
 $ macos
 @include: default
@@ -69,7 +65,6 @@ $ awesome
 
 $ dev 
 ~/bin/: ./dev/bin/*
-~/.vim/: ./dev/vimdir/*
 ~/.ctags: ./dev/ctags
 ~/.uncrustify.cfg: ./dev/uncrustify.cfg
 ~/.radare2rc: ./dev/radare2rc
@@ -81,14 +76,8 @@ $ ssh
 #--------------------------------------------------------------------------------
 
 $ thinkpad
-@include: default
-@include: bspwm
-@include: dev
-@include: ssh
+@include: default bspwm dev ssh
 ~/bin/: ./thinkpad/bin/*
 
 $ macbook
-@include: default
-@include: macos
-@include: dev
-@include: ssh
+@include: default macos dev ssh
