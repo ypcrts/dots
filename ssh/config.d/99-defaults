@@ -1,0 +1,45 @@
+Host *
+Protocol 2
+Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr,chacha20-poly1305@openssh.com,blowfish-cbc,cast128-cbc,3des-cbc
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128-etm@openssh.com,umac-64-etm@openssh.com,umac-128@openssh.com,hmac-ripemd160-etm@openssh.com,hmac-ripemd160
+Compression no
+
+# VisualHostKey yes
+#HashKnownHosts yes
+
+TCPKeepAlive yes
+
+#CheckHostIP yes
+#Port 22
+#Tunnel no
+
+#Only use config file-specified keys
+#IdentitiesOnly yes
+
+#GSSAPITrustDNS no
+#GSSAPIAuthentication no
+#GSSAPIDelegateCredentials no
+
+# BatchMode=yes -- fail if key not preauthed
+#BatchMode yes
+
+# Don't leak ssh-agent or X,
+ForwardAgent no
+ForwardX11Trusted no
+ForwardX11 no
+
+# Don't allow remote to infect local
+PermitLocalCommand no
+
+# Auth: Protocol 2
+#HostbasedAuthentication no
+
+# Protocol 1 caca
+#Cipher blowfish
+RSAAuthentication no
+RhostsRSAAuthentication no
+
+### Important if maxtries < n°keys.
+# IdentitiesOnly yes
+# IdentityFile ~/x
+# vim: set ft=sshconfig tw=0 ts=2 sw=2 sts=2 fdm=marker fmr={{{,}}} et:

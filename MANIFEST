@@ -73,7 +73,9 @@ $ dev
 ~/.ansible.cfg: ./dev/ansible.cfg
 
 $ ssh
+~/bin/: ./ssh/bin/*
 ~/.config/git/ssh.gitconfig: ./ssh/ssh.gitconfig
+~/.ssh/config.d/: ./ssh/config.d*
 
 $ gpg
 ~/.caff/gnupghome/gpg.conf: ./gpg/caff-gpg.conf

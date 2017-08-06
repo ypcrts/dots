@@ -1,0 +1,7 @@
+Host github.com github gh bb gl bitbucket.org bitbucket gitlab gitlab.com
+ControlMaster auto
+ControlPath ~/.ssh/sockets/%r@%h-%p
+ControlPersist 2h
+ServerAliveInterval 5
+ServerAliveCountMax 10
+# vim: set ft=sshconfig tw=0 ts=2 sw=2 sts=2 fdm=marker fmr={{{,}}} et:

@@ -1,0 +1,20 @@
+Host github.com github gh
+HostName github.com
+User git
+LogLevel FATAL
+
+Host gitlab.com gitlab gl
+Hostname gitlab.com
+User git
+LogLevel FATAL
+
+Host bitbucket.org bitbucket bb
+HostName bitbucket.org
+User git
+LogLevel FATAL
+
+Host heroku
+HostName heroku.com
+User git
+LogLevel FATAL
+# vim: set ft=sshconfig tw=0 ts=2 sw=2 sts=2 fdm=marker fmr={{{,}}} et:

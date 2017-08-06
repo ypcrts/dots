@@ -1,0 +1,51 @@
+#!/bin/bash
+catstripped () {
+	if [ $# -lt 2 ]; then
+		echo "fatal: assertion error, catstripped call invalid"
+		exit 1
+	fi
+	local file=$1
+	shift
+
+	# remove comments and blank lines
+	cat $@ | sed -re '/(^\s*$)|(^\s*#)/d' >> "$file"
+}
+mksshconfig () {
+  local pfx="$HOME/.ssh"
+	local file="$pfx/config"
+	local configd="$pfx/config.d"
+  local socketsd="$pfx/sockets"
+	local git_ext="std"
+
+	printf "Use cloud repos ({git{hub,lab},bitbucket}) on alternative port 443? [N/y]"
+	read resp
+	if [ "$resp" = "y" ]; then
+		echo "Using alternative port 443 for cloud repos"
+		git_ext="alt"
+	else
+		echo "Using port 22 for cloud repos"
+	fi
+
+	rm -vf ${file}{,.sig}
+	>>"${file}" cat <<-__EOF 
+		################################################################################
+		# Auto Generated on `date -uIseconds` by `whoami`
+		################################################################################
+__EOF
+
+	catstripped "$file" ${configd}/0-controlmaster-git
+	catstripped "$file" ${configd}/0-git.${git_ext}
+	catstripped "$file" `find $configd \( -type f -o -type l \) -a -regextype posix-extended -regex '.*/[0-9]{2}.*'`
+  vim "$file"
+  set -x
+  mkdir -p ~/.ssh/sockets
+  chmod --changes 0600 $pfx/config{,.sig,.d/*}
+  chmod --changes 0700 $pfx
+  set +x
+  echo "Sign it?"
+  read respy
+  if  [ "$respy" = "y" ]; then
+    gpg2 --detach-sign "${file}"
+  fi
+}
+mksshconfig $@
