@@ -1,5 +1,5 @@
 # vi: ft=make et
-k
+
 $ default
 
 ~/bin/: ./default/bin/*

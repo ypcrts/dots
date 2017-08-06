@@ -10,6 +10,8 @@ alias dirs='dirs -v'
 if command -V nvim >/dev/null 2>&1; then
   alias nvim="COLORTERM=256 nvim"
   alias nvi='nvim'
+  alias vim='nvim'
+  alias vi='nvim'
 fi
 
 alias ls='ls -hF' # ls --color is set in linux files

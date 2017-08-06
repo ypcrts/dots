@@ -1,4 +1,4 @@
-backups/*
-/undo/*
+/backups/
+/undo/
 *netrwhist*
-/plugged
+/plugged/
