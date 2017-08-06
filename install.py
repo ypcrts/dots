@@ -1,83 +1,142 @@
 #!/usr/bin/env python2.7
-# vi: sts=2 ts=2 sw=2 et:
+# vi: sts=4 ts=4 sw=4 et:
 
 from __future__ import print_function
 
-import sys
+import argparse
+import inspect
 import os
 import os.path
-import argparse
 import shutil
+import sys
 
-parser = argparse.ArgumentParser()
-parser.add_argument('section', help='manifest target', type=str)
-parser.add_argument('-f','--force', help="remove any existing file", action='store_true')
-args = parser.parse_args()
+STARTDIR = os.getcwd()
+SRC_MACROS = ('@delete',)
+manifest = None
 
-STARTDIR = os.getcwd() 
-
-
-def link_one(dest, src):
-  srcabs = os.path.normpath(os.path.join(STARTDIR, src))
-  destabs = os.path.normpath(dest)
-  destdir = os.path.dirname(destabs)
-  destname = os.path.basename(destabs)
-
-  if not os.path.isdir(destdir):
-    os.makedirs(destdir, 0755)
-  elif os.path.lexists(destabs):
-    if not args.force:
-      print('skipped (exists):', destabs)
-      return
-    if os.path.isdir(destabs) and not os.path.islink(destabs):
-      shutil.rmtree(destabs)
-    else:
-      os.remove(destabs) 
-  if src == '@delete':
-    return
-  os.chdir(destdir)
-  try:
-    os.symlink(srcabs, destname)
-    print('linked', destabs)
-  except OSError as e:
-    print(e, '::', destabs)
+rmtree = shutil.rmtree
+rmfile = os.remove
+makedirs = os.makedirs
+symlink = os.symlink
+chdir = os.chdir
 
 
-def link_from_manifest(path='./MANIFEST'):
-  found_section = None
-  with open(path, 'r') as fp:
-    for (i, line) in enumerate(fp, 1):
-      line = line.strip()
-      if not line or line.startswith("#"):
-        continue
-      if line.startswith("$"):
-        if found_section:  # stop at beginning of next section
-          break
-        section = line.strip("$").strip()
-        if section == args.section:
-          found_section = True
-          continue
-      
-      if not found_section:
-        continue
+def nop(f):
+    """
+    syscall nop function used with `--dry-run`
+    """
+    name = f.__name__
 
-      parts = map(lambda x: x.strip(), line.split(":"))
-      if len(parts) != 2:
-        sys.stderr.write('skipping line {:d}: `{:s}`\n'.format(i, line))
+    def _nop(*a, **k):
+        print('would:', name, *a, **k)
+    return _nop
 
-      dest, src = map(lambda p: os.path.expanduser(p), parts)
-      has_glob = src.endswith('*')
-      if not has_glob:
-        link_one(dest, src)
-      else: 
-        assert dest.endswith('/'), 'malformed manifest'
-        glob_src_dir = os.path.normpath(os.path.join(STARTDIR, src.strip('*')))
-        names = os.listdir(glob_src_dir)
-        for name in names:
-          link_one(src=os.path.join(glob_src_dir, name),
-                   dest=os.path.join(dest, name))
 
-  if not found_section:
-    print('Unable to find section {:s}'.format(args.section))
+class Manifest(dict):
 
-link_from_manifest()
+    def __init__(self, path='./MANIFEST', force=False):
+        self.force = force
+        if path:
+            with open(path, 'r') as fp:
+                self.parse(fp)
+
+    def parse(self, fp):
+        section = None
+        for (i, line) in enumerate(fp, 1):
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if line.startswith("$"):
+                section_name = line.strip("$").strip()
+                assert section_name not in self, \
+                    "line {:d}: duplicate section declaration".format(i)
+                section = self[section_name] = dict()
+                continue
+
+            assert section, \
+                "line {:d}: target definition before "\
+                "section declaration".format(i)
+
+            paths = map(lambda x: x.strip(), line.split(":"))
+            assert len(paths) == 2, \
+                "line {:d}: must be exactly one colon per line".format(i)
+
+            dest, src = paths = map(lambda p: os.path.expanduser(p), paths)
+            assert not src.startswith('@') or src in SRC_MACROS, \
+                "line {:d}: unknown src macro {:}".format(i, src)
+            has_glob = src.endswith('*')
+            if has_glob:
+                assert dest.endswith('/'), \
+                    'line {:d}: glob dest must be directory '\
+                    'ending with `/`'.format(i)
+            section[dest] = src
+
+    def install_file(self, dest, src):
+        srcabs = os.path.normpath(os.path.join(STARTDIR, src))
+        destabs = os.path.normpath(dest)
+        destdir = os.path.dirname(destabs)
+        destname = os.path.basename(destabs)
+
+        if not os.path.isdir(destdir):
+            makedirs(destdir, 0o755)
+        elif os.path.lexists(destabs):
+            if not self.force:
+                print('skipped (exists):', destabs)
+                return
+            if os.path.isdir(destabs) and not os.path.islink(destabs):
+                rmtree(destabs)
+            else:
+                rmfile(destabs)
+        if src == '@delete':
+            return
+        assert os.path.exists(srcabs), \
+            "Manifest src `{:}` does not exist on the filesystem"
+        chdir(destdir)
+        try:
+            symlink(srcabs, destname)
+            print('linked', destabs)
+        except OSError as e:
+            print(e, '::', destabs)
+
+    def install_section(self, section_name):
+        assert section_name
+
+        for (dest, src) in self[section_name].iteritems():
+            has_glob = src.endswith('*')
+            if not has_glob:
+                self.install_file(dest, src)
+                continue
+
+            glob_src_dir = os.path.normpath(
+                os.path.join(STARTDIR, src.strip('*')))
+            names = os.listdir(glob_src_dir)
+            for name in names:
+                self.install_file(
+                    dest=os.path.join(dest, name),
+                    src=os.path.join(glob_src_dir, name)
+                )
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('section',
+                        help='manifest target', type=str, nargs='*',
+                        default=('default,'))
+    parser.add_argument('-f', '--force',
+                        help="remove any existing files or links",
+                        action='store_true')
+    parser.add_argument('-n', '--dry-run', action='store_true')
+
+    args = parser.parse_args()
+    if args.dry_run:
+        print('dry run')
+        rmtree = nop(rmtree)
+        rmfile = nop(rmfile)
+        makedirs = nop(makedirs)
+        symlink = nop(symlink)
+        chdir = nop(chdir)
+
+    m = Manifest(force=args.force)
+
+    for sn in args.section:
+        m.install_section(sn)
