@@ -85,8 +85,8 @@ $ gpg
 #--------------------------------------------------------------------------------
 
 $ thinkpad
-@include: default bspwm dev ssh
+@include: default bspwm dev ssh gpg
 ~/bin/: ./thinkpad/bin/*
 
 $ macbook
-@include: default macos dev ssh
+@include: default macos dev ssh gpg

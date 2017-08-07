@@ -148,7 +148,7 @@ class Manifest(dict):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description='creates symlinks described by a manifest')
     parser.add_argument('section',
                         help='manifest target', type=str, nargs='*',
                         default=('default',))
