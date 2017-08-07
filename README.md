@@ -22,7 +22,7 @@ optional arguments:
 ## `MANIFEST` syntax
 
 - `~/bin/destination_link: ./section/source_file` 
-  destination-to-source mapping, with the two arguments delimited by a colon
+  - destination-to-source mapping, with the two arguments delimited by a colon
 
 - `$ bin`
   - defines the `bin` section
