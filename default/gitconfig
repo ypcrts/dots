@@ -160,3 +160,4 @@
   triangular        = false
 [include]
   path = ~/.config/git/ssh.gitconfig
+  path = ~/.config/git/local.gitconfig

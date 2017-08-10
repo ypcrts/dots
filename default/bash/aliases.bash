@@ -14,7 +14,13 @@ if command -V nvim >/dev/null 2>&1; then
   alias vi='nvim'
 fi
 
-alias ls='ls -hF' # ls --color is set in linux files
+alias tree='tree -C'
+alias grep='grep --color=auto'
+if ls --group-directories-first 2>/dev/null >&2; then
+  alias ls='ls --color=auto -hF --group-directories-first'
+else
+alias ls='ls -hF'
+fi
 alias ll='l -lh'
 alias l1='l -1'
 alias la='l -A'
