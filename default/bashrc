@@ -46,3 +46,8 @@ source_if_exists ~/.config/bash/hosts/"${HOSTIDENT}.sh"
 source_if_exists ~/.config/bash/hosts/"${HOSTIDENT}.private.sh"
 source_if_exists ~/.config/bash/hosts/local.private.sh
 unset HOSTIDENT
+
+if [ -d ~/.fzf ]; then
+  . ~/.fzf/shell/completion.bash 2>/dev/null
+  . ~/.fzf/shell/key-bindings.bash 2>/dev/null
+fi
