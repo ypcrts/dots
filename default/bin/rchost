@@ -11,6 +11,9 @@ goto_fail () {
         welp
         exit 0
         ;;
+      -l)
+        $EDITOR ~/.config/bash/local.private.sh
+        ;;
       -p|--private)
         SUFFIX='.private'
         ;;
@@ -22,7 +25,7 @@ goto_fail () {
       esac
       shift
     done
-    $EDITOR ~/.profile.d/hosts/`hostname`$SUFFIX.sh
+    $EDITOR ~/.config/bash/hosts/`hostname -s`$SUFFIX.sh
 }
 
 goto_fail "$@"

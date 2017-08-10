@@ -39,3 +39,10 @@ source_if_exists () {
 . ~/.config/bash/aliases.bash
 source_if_exists ~/.config/bash/os-aliases.bash
 eval $(dircolors -b ~/.config/bash/dircolors/dircolors.256dark) 2>/dev/null >/dev/null
+
+[[ -z "$HOSTNAME" ]] && HOSTNAME="$(hostname)"
+HOSTIDENT="$(printf '%s' "$HOSTNAME" | sed 's/\..*//')"
+source_if_exists ~/.config/bash/hosts/"${HOSTIDENT}.sh"
+source_if_exists ~/.config/bash/hosts/"${HOSTIDENT}.private.sh"
+source_if_exists ~/.config/bash/hosts/local.private.sh
+unset HOSTIDENT

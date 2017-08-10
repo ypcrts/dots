@@ -24,6 +24,7 @@ endfunc
 call Sourceiffr(g:libdir. '/autoload/pathogen.vim')
 call pathogen#infect(g:libdir . '/pathogens/{}')
 
+let mapleader="\<Space>"
 if empty($SAFEVI) && $USER != 'root'
   call Sourceiffr(g:libdir . '/plugins.vim')
 else
@@ -167,7 +168,6 @@ set synmaxcol=1024
 
 "{{{1 Interaction (Keys, Mouse).
 
-let mapleader="\<Space>"
 set backspace=2           " =2: full backspacing capabilities (indent,eol,start)
 set nojoinspaces          " never joing lines with two spaces
 
