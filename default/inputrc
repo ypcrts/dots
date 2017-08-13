@@ -11,11 +11,13 @@ set visible-stats on
 set skip-completed-text on
 set echo-control-characters off
 
-set input-meta on
-set output-meta on
+set input-meta off
+set output-meta off
 set convert-meta off
 
+set mark-directories off
 set mark-symlinked-directories on
+
 set show-all-if-ambiguous on
 set match-hidden-files on
 set page-completions off
