@@ -21,7 +21,9 @@ set mark-symlinked-directories on
 set show-all-if-ambiguous on
 set match-hidden-files on
 set page-completions off
-set bell-style none
+set bell-style audible
+
+set expand-tilde off
 
 "\e[B": history-search-forward
 "\e[A": history-search-backward

@@ -68,6 +68,7 @@
   rewrite-date      = "!set -xue;DATUM=\"$(date -R -d \"$1\")\"; shift; GIT_AUTHOR_DATE=\"$DATUM\" GIT_COMMITTER_DATE=\"$DATUM\" git commit --amend --date \"$DATUM\""
   rewrite-datez      = "!set -xue;DATUM=\"$(date -u -R -d \"$1\")\"; shift; GIT_AUTHOR_DATE=\"$DATUM\" GIT_COMMITTER_DATE=\"$DATUM\" git commit --amend --date \"$DATUM\""
 
+  wta = "!doit() { set -eu; BRANCH=\"$1\"; [ $# -eq 2 ] && ODIR=\"$2\" || ODIR=\"$(printf %s \"$BRANCH\" | sed -e 's/pc-[[:digit:]]\\{4,5\\}//i' | tr -d '\\-_/1234567890' | tr '[:upper:]' '[:lower:]')\"; git worktree add ../$ODIR $BRANCH; }; doit"
 
 [color]
   ui                = auto
@@ -161,3 +162,5 @@
 [include]
   path = ~/.config/git/ssh.gitconfig
   path = ~/.config/git/local.gitconfig
+[github]
+  user = ypcrts
