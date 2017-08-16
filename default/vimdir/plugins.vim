@@ -1,5 +1,6 @@
 " vi: ft=vim
-
+"{{{1 bootstrap
+"{{{2 meta
 if !(has('python') || has('python3') || has('nvim'))
   finish
 endif
@@ -8,6 +9,7 @@ call Sourceiffr(g:libdir . '/plug.vim')
 "silent call system('mkdir -p ' . g:configdir . '/plugged')
 call plug#begin(g:configdir . '/plugged')
 
+"{{{2 plugs
 Plug 'ypcrts/securemodelines', { 'commit': '9751f29699186a47743ff6c06e689f483058d77a' }
 " Plug 'jamessan/vim-gnupg'
 " Plug 'ypcrts/vim-gpg-sign'
@@ -30,10 +32,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-peekaboo'
 Plug 'jremmen/vim-ripgrep'
 
-" Plug 'chrisbra/vim-diff-enhanced'
-
-" Linting
-" PICK ONE STOP CHANGING LINT PLUGINS YOU'RE DRIVING YOURSELF MAD
+"{{{3 linting
 if has('nvim') || v:version >= 800
   Plug 'w0rp/ale'
 else
@@ -42,7 +41,7 @@ endif
 Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
 Plug 'fisadev/vim-isort', { 'for': 'python' }
 
-" Completion
+"{{{3 completion
 if has('nvim')
   " deoplete does not work on vim8, stop hoping, cry
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -53,42 +52,46 @@ if has('nvim')
 else
   "Plug 'valloric/youcompleteme', { 'do': 'echoerr \"You need to go compile YCM\"' }
 endif
-
-" NEVER USE THIS IT IS HORRIBLE, STOP LOVING IT
-" Plug 'jiangmiao/auto-pairs'
-
 Plug 'mattn/emmet-vim'
+Plug 'python-rope/ropevim'
+Plug 'ypcrts/vim-uncrustify',        { 'commit': 'bcf54fff8d58e0f4276ba22077562ead9814096a', 'for': ['c','cpp']  }
 
-" Syntax etc
+"{{{3 Syntax
+"{{{4 metapackages
 " Plug 'sheerun/vim-polyglot' " 6d6574617061636b616765207365637572697479207269736b206666730a
+"{{{4 python ecosystems
 Plug '~/Projects/ansible-vim', { 'branch': 'j2-commentstring' }
 Plug 'tweekmonster/django-plus.vim'
+"{{{4 rust ecosystems
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 Plug 'cespare/vim-toml', { 'for': 'toml' }
-
+"{{{4 javascript ecosystems
 " Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'ypcrts/vim-ini-fold',          { 'commit': 'b61a9ab242a316d2ba755c36c96888416162f1f4', 'for': ['gitignore','gitconfig','ini'] }
-Plug 'ypcrts/vim-uncrustify',        { 'commit': 'bcf54fff8d58e0f4276ba22077562ead9814096a', 'for': ['c','cpp']  }
 " Plug 'bigfish/vim-js-context-coloring', { 'commit': '6c90329664f3b0a58b05e2a5207c94da0d83a51c', 'for': 'javascript', 'do': 'nvm use 6 && npm install --upgrade' }
 " Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
+"{{{5 linux / systems
 " Plug 'git://fedorapeople.org/home/fedora/wwoods/public_git/vim-scripts.git' "systemd
 " Plug 'PotatoesMaster/i3-vim-syntax'
-Plug 'tmhedberg/SimpylFold', { 'for': 'python', 'commit': '4624031f65d78196d55be0180a31bd352460aebc' }
-
-" RE
+"{{{4 esrever
 " Plug 'CaledoniaProject/VIM-IDC'
 " Plug 'alderz/smali-vim'
 
-" Git/VCS
+"{{{3 Folding
+Plug 'ypcrts/vim-ini-fold',          { 'commit': 'b61a9ab242a316d2ba755c36c96888416162f1f4', 'for': ['gitignore','gitconfig','ini'] }
+Plug 'tmhedberg/SimpylFold', { 'for': 'python', 'commit': 'aa0371d9d708388f3ba385ccc67a7504586a20d9' }
+
+
+"{{{3 Git/VCS
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
+"{{{4 Gist-vim
 " TODO: cr die webapi-vim neuigkeiten, scheiße
 Plug 'mattn/gist-vim',     { 'commit': 'f0d63579eab7548cf12f979dc52ef5a370ecbe63' }
 Plug 'mattn/webapi-vim',   { 'commit': 'e3fa93f29a3a0754204002775e140d8a9acfd7fd' }
 
-" Colour
+"{{{3 Colourschemes
 Plug 'w0ng/vim-hybrid'
 Plug 'nanotech/jellybeans.vim'
 Plug 'guns/jellyx.vim'
@@ -105,72 +108,106 @@ endif
 " Plug 'flazz/vim-colorschemes'
 
 call plug#end()
-
-let g:nrrw_rgn_nomap_nr = 1  " disable worlds worst default maps
-let g:nrrw_rgn_nomap_Nr = 1
-
-let g:gitgutter_enabled = 1
+"}}}1
+"{{{1 trash
+"{{{2 can i haz no default fucking maps pleaz
+" This has it's own section now because when I see these lines unfolded I get
+" grumpy, and the inconsistency between the meanings of the 1s and 0s is
+" really next level. Vim 9 needs a plugin default mapping api, so you can turn
+" them all off, forever.
 let g:gitgutter_map_keys = 0
-
-" flake8-vim
-let g:PyFlakeCWindow = 0
-
-" deoplete is life
-let g:deoplete#enable_at_startup = 1
-
-" pymode, rip
-" let g:pymode_lint_cwindow = 0
-" let g:pymode_doc_bind = ''
-" let g:pymode_virtualenv = 0
-
-" ycm, rip
-"let g:ycm_key_invoke_complete = '' "<C-Space> === <NUL>
-" let g:ycm_key_detailed_diagnostics = '<leader>yd'
-" let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<C-n>']
-" let g:ycm_autoclose_preview_window_after_completion = 1
-" let g:ycm_autoclose_preview_window_after_insertion  = 1
-" let g:ycm_semantic_triggers =  {
-"       \   'c' : ['->', '.'],
-"       \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
-"       \             're!\[.*\]\s'],
-"       \   'ocaml' : ['.', '#'],
-"       \   'cpp,objcpp' : ['->', '.', '::'],
-"       \   'perl' : ['->'],
-"       \   'php' : ['->', '::'],
-"       \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
-"       \   'python' : ['.', 'from ', 'import '],
-"       \   'ruby' : ['.', '::'],
-"       \   'lua' : ['.', ':'],
-"       \   'erlang' : [':'],
-"       \ }
-
-let g:js_context_colors_enabled = 0
+let g:pydocstring_enable_mapping = 0
+let g:nrrw_rgn_nomap_nr = 1
+let g:nrrw_rgn_nomap_Nr = 1
+let g:increment_activator_no_default_key_mappings = 1
 let g:js_context_colors_usemaps = 0
-let g:js_context_colors_highlight_function_names = 0
 
+"{{{2 can i haz enable plugin
+let g:gitgutter_enabled = 1
+let g:js_context_colors_enabled = 0
+let g:js_context_colors_highlight_function_names = 0
 let g:javascript_plugin_jsdoc = 1
 
-" let g:polyglot_disabled = ['javascript']
+"{{{1 configuration
+"{{{2 completion plugin
+if has_key(g:plugs, 'deoplete.nvim')
+  let g:deoplete#enable_at_startup = 1
 
-let g:ale_lint_on_text_changed = 'always'
-let g:ale_lint_on_enter = 0
-let g:ale_lint_delay = 5000
-let g:ale_sign_error = 'E'
-let g:ale_sign_warning = 'W'
-let g:ale_echo_cursor = 1
-let g:ale_echo_msg_format = '[%linter%] %severity%: %s'
-let g:ale_list_window_size = 6
-let g:ale_linters = { 'python': ['flake8'] } " merged dict; no pylint in ale please
+elseif has_key(g:plugs, 'youcompleteme')
+  let g:ycm_key_invoke_complete = '' "<C-Space> === <NUL>
+  let g:ycm_key_detailed_diagnostics = '<leader>yd'
+  let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<C-n>']
+  let g:ycm_autoclose_preview_window_after_completion = 1
+  let g:ycm_autoclose_preview_window_after_insertion  = 1
+  let g:ycm_semantic_triggers =  {
+        \   'c' : ['->', '.'],
+        \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+        \             're!\[.*\]\s'],
+        \   'ocaml' : ['.', '#'],
+        \   'cpp,objcpp' : ['->', '.', '::'],
+        \   'perl' : ['->'],
+        \   'php' : ['->', '::'],
+        \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
+        \   'python' : ['.', 'from ', 'import '],
+        \   'ruby' : ['.', '::'],
+        \   'lua' : ['.', ':'],
+        \   'erlang' : [':'],
+        \ }
+  nnoremap <leader>yj :YcmCompleter GoTo<CR>
+  nnoremap <leader>yr :YcmCompleter GoToReferences<CR>
+  nnoremap <leader>yh :YcmCompleter GetDoc<CR>
+endif
 
-let g:syntastic_javascript_checkers = [ 'eslint' ]
-let g:syntastic_python_checkers = [ 'flake8' ]
+"{{{2 linter
+if has_key(g:plugs, 'ale')
+  let g:ale_lint_on_text_changed = 'always'
+  let g:ale_lint_on_enter = 0
+  let g:ale_lint_delay = 5000
+  let g:ale_sign_error = 'E'
+  let g:ale_sign_warning = 'W'
+  let g:ale_echo_cursor = 1
+  let g:ale_echo_msg_format = '[%linter%] %severity%: %s'
+  let g:ale_list_window_size = 6
+  let g:ale_linters = { 'python': ['flake8'] } " merged dict; no pylint in ale please
 
-let g:pydocstring_enable_mapping = 0
+elseif has_key(g:plugs, 'syntastic')
 
-let g:NERDSpaceDelims = 1
-let g:NERDMenuMode    = 0
+  let g:syntastic_javascript_checkers = [ 'eslint' ]
+  let g:syntastic_python_checkers = [ 'flake8' ]
 
-let g:increment_activator_no_default_key_mappings = 1
+  nmap <leader>sy :SyntastictoggleMode<cr>
+  nmap <leader>sl :SyntasticsetlocList<cr>:lw<cr>
+  nmap <leader>sj :JSContextColorToggle<cr>
+endif
+
+"{{{2 lightline
+let g:lightline = { 'colorscheme': 'jellybeans' }
+let g:lightline.mode_map = {
+      \ 'n':      '',
+      \ 'i':      'INSERT',
+      \ 'R':      'REPLACE',
+      \ 'v':      'VISUAL',
+      \ 'V':      'V-LINE',
+      \ 'c':      'COMMAND',
+      \ "\<C-v>": 'V-BLOCK',
+      \ 's':      'SELECT',
+      \ 'S':      'S-LINE',
+      \ "\<C-s>": 'S-BLOCK',
+      \ '?':      '      ' }
+  let g:lightline.tabline = {
+      \ 'left':  [ [ 'tabs' ] ],
+      \ 'right': [ ] }
+    let g:lightline.active = {
+      \ 'left':  [ [ 'mode', 'paste' ],
+      \          [ 'readonly', 'relativepath', 'modified' ] ],
+      \ 'right': [ [ 'lineinfo' ],
+      \          [ 'fileformat', 'fileencoding', 'filetype' ] ] }
+  let g:lightline.inactive = {
+      \ 'left':  [ [ 'relativepath' ] ],
+      \ 'right': [ [ 'lineinfo' ],
+      \ ] }
+
+"{{{2 increment-activator
 let g:increment_activator_filetype_candidates =
       \ {
       \ '_': [
@@ -191,58 +228,21 @@ let g:increment_activator_filetype_candidates =
       \   ],
       \ ],
     \ }
-
-if has("autocmd")
-  let g:lightline = { 'colorscheme': 'jellybeans' }
-  let g:lightline.mode_map = {
-        \ 'n':      '',
-        \ 'i':      'INSERT',
-        \ 'R':      'REPLACE',
-        \ 'v':      'VISUAL',
-        \ 'V':      'V-LINE',
-        \ 'c':      'COMMAND',
-        \ "\<C-v>": 'V-BLOCK',
-        \ 's':      'SELECT',
-        \ 'S':      'S-LINE',
-        \ "\<C-s>": 'S-BLOCK',
-        \ '?':      '      ' }
-		let g:lightline.tabline = {
-		    \ 'left':  [ [ 'tabs' ] ],
-		    \ 'right': [ ] }
-   		let g:lightline.active = {
-		    \ 'left':  [ [ 'mode', 'paste' ],
-		    \          [ 'readonly', 'relativepath', 'modified' ] ],
-		    \ 'right': [ [ 'lineinfo' ],
-		    \          [ 'fileformat', 'fileencoding', 'filetype' ] ] }
-    let g:lightline.inactive = {
-		    \ 'left':  [ [ 'relativepath' ] ],
-		    \ 'right': [ [ 'lineinfo' ],
-        \ ] }
-  endif
-
-" ycm, rip
-" nnoremap <leader>yj :YcmCompleter GoTo<CR>
-" nnoremap <leader>yr :YcmCompleter GoToReferences<CR>
-" nnoremap <leader>yh :YcmCompleter GetDoc<CR>
-
-" syntastic 
-nmap <leader>sy :SyntastictoggleMode<cr>
-nmap <leader>sl :SyntasticsetlocList<cr>:lw<cr>
-nmap <leader>sj :JSContextColorToggle<cr>
-
-" NrrwRgn
-nnoremap <leader>nr :NR<CR>
-vnoremap <leader>nr :NR<CR>
-
 nmap <Leader>aa <Plug>(increment-activator-increment)
 nmap <Leader>ax <Plug>(increment-activator-decrement)
 nmap <c-a>      <Plug>(increment-activator-increment)
 nmap <c-x>      <Plug>(increment-activator-decrement)
 
+
+"{{{2 NrrwRgn
+nnoremap <leader>nr :NR<CR>
+vnoremap <leader>nr :NR<CR>
+
+"{{{2 EasyAlign
 vmap <Enter> <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-" fzf is so fucking amazing (yes, fucking)
+"{{{2 fzf
 nmap <Leader>gf :GFiles<CR>
 nmap <Leader>gs :GFiles?<CR>
 nmap <Leader>f :Files<CR>
@@ -253,9 +253,10 @@ nmap <Leader>bl :BLines<CR>
 nmap <Leader>bb :Buffers<CR>
 nmap <Leader>k :Marks<CR>
 
-" ripgrep-vim
+"{{{2 ripgrep-vim
 nmap <Leader>rg :Rg<Space>
 
+"{{{2 gitgutter
 nmap [h <Plug>GitGutterPrevHunk
 nmap ]h <Plug>GitGutterNextHunk
 nmap <Leader>hs <Plug>GitGutterStageHunk

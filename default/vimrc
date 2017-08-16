@@ -5,14 +5,14 @@
 "{{{1 Plugins
 
 let g:configdir = '~/.vim'
-let g:libdir = '~/.vim'
+if has('win32')
+  let g:configdir = '~/vimfiles'
+endif
+let g:libdir = g:configdir
 if has('nvim')
   let g:configdir = '~/.config/nvim'
 else
   set nocompatible
-endif
-if has('win32')
-  let g:configdir = '~/vimfiles'
 endif
 
 function! Sourceiffr(target)
