@@ -18,6 +18,8 @@ $ vim
 ~/.vimrc: ./default/vimrc
 ~/.config/nvim/init.vim: ./default/vimrc
 ~/.vim/: ./default/vimdir/*
+~/.vim/autoload/plug.vim: @delete
+~/.vim/autoload/plug.old: @delete
 
 $ mux
 ~/.tmux.conf: ./default/tmux.conf

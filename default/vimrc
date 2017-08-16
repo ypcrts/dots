@@ -1,14 +1,9 @@
-"
-" ~/.vimrc
-
-
-"{{{1 Plugins
-
+"{{{1 Plugins Meta
 let g:configdir = '~/.vim'
 if has('win32')
   let g:configdir = '~/vimfiles'
 endif
-let g:libdir = g:configdir
+let g:libdir = expand(g:configdir)
 if has('nvim')
   let g:configdir = '~/.config/nvim'
 else
@@ -21,17 +16,29 @@ function! Sourceiffr(target)
   endif
 endfunc
 
-call Sourceiffr(g:libdir. '/autoload/pathogen.vim')
+"{{{2 Pathogen.vim
+call Sourceiffr(g:libdir . '/managedbootstrap/pathogen.vim')
 call pathogen#infect(g:libdir . '/pathogens/{}')
 
+"{{{2 Plug.vim
 let mapleader="\<Space>"
 if empty($SAFEVI) && $USER != 'root'
+  call Sourceiffr(g:libdir . '/managedbootstrap/plug.vim')
   call Sourceiffr(g:libdir . '/plugins.vim')
 else
   let g:safevi = 1
   echo 'NO PLUGINS LOADED'
 endif 
 
+
+"{{{1 Standard Base Configuration (syntax, utf8, ft, clipboard, 256 )
+"
+"{{{2 Clear Autocommands
+if has('autocmd')
+  autocmd!
+endif
+"
+"{{{2 No Magic File I/O
 set nobackup
 set writebackup
 set noswapfile
@@ -39,74 +46,64 @@ set noautowrite
 set noautowriteall
 set noautoread
 
-if has('autocmd') " clear all the autocommands that I never wanted
-  autocmd!
-endif
-
-"{{{1 Standard (syntax, utf8, ft, clipboard, 256 )
+"{{{2 Syntax highlighting, filetype plugin, indent
 filetype plugin on
 filetype indent on
 syntax on
 syntax sync minlines=256
 
+"{{{2 File encoding
 if has('multi_byte')
   set encoding=utf-8 " UTF-8 encoding for all new files
   set nobomb
 endif
-
 set ffs=unix,dos,mac " Try recognizing dos, unix, and mac line endings.
 
-set timeoutlen=900
-set ttimeoutlen=0
+"{{{2 Neovim-obseleted options
+if !has('nvim')
+  set ttyfast               " More redrawing characters sent to terminal
+  set ttymouse=xterm2       " More accurate mouse tracking
+endif
 
+"{{{1 8-bit and 24-bit color support
 if &t_Co > 2 || has('gui_running')
-
   if has('termguicolors') &&
-        \ matchstr(system("uname"), "Darwin") != '' &&
-        \ matchstr($TERM, 'rxvt.*') == ''
+        \ (  matchstr(system("uname"), "Darwin") != ''
+        \ || matchstr($TERM, 'rxvt.*') == ''  )
     " This nonsense can only be set if terminal has 24 bit colour support.
     " neovim does not intuit such a thing. programming is math not magic.
     " rxvt never has 24-bit support, so off.
     set termguicolors
   endif
-  if !has('nvim')
-    set ttyfast               " More redrawing characters sent to terminal
-    set ttymouse=xterm2       " More accurate mouse tracking
-  endif
 
   set hlsearch
 endif
 
-set undolevels=2048
-set tags=./tags,tags,.tags
 
-" TODO: This is really hideous. Fix it.
-" ugh you should really fix this (its one year later now)
-" whats that expression? if it aint broke...
-if !isdirectory(expand('~/.cache/vim/undo'))
-  if !isdirectory(expand('~/.cache/vim'))
-    if !isdirectory(expand('~/.cache'))
-      call mkdir(expand('~/.cache'), 'p', 0700)
-    endif
-    call mkdir(expand('~/.cache/vim'), 'p', 0700)
-  endif
-  call mkdir(expand('~/.cache/vim/undo'), 'p', 0700)
+"{{{1 undo & cache
+set undolevels=2048
+let s:cachedir=expand($XDG_CACHE_HOME . '/vim')
+let s:undocachedir=s:cachedir . '/undo'
+if !isdirectory(s:undocachedir)
+  call mkdir(s:undocachedir, 'p', 0700)
 endif
-if isdirectory(expand('~/.cache/vim/undo'))
-  set directory=~/.cache/vim
-  if !has('nvim')
-    set viminfo+=n~/.cache/vim/viminfo
-  endif
-  let g:netrw_home = expand('~/.cache/vim')
+if isdirectory(s:undocachedir)
+  let g:netrw_home=s:cachedir
+  let &directory=s:cachedir . '/swaps'
   if has('persistent_undo')
     set undofile
-    set undodir=~/.cache/vim/undo
+    let &undodir=s:undocachedir
   endif
 endif
 
+"{{{1 disable viminfo/ShaDa files
+if has('nvim') "
+  set shada="NONE"
+else
+  set viminfo="NONE"
+endif
 
-"{{{1 OS & GUI Settings
-
+"{{{1 font, cursor, emenu
 if has('gui_running')
   if has("gui_win32") " true on WOW64
       set guicursor+=a:blinkon0 " disable blinking cursor (gvimwin32)
@@ -122,10 +119,8 @@ if has('gui_running')
 
 else
     source $VIMRUNTIME/menu.vim
-    set wcm=<C-z>
     map <Leader>em :emenu <C-z>
 endif
-
 
 if has("win32")
  colorscheme ir_black
@@ -199,8 +194,14 @@ if has("autocmd")
   augroup END
 endif
 
-"{{{1 Visuals
+set tags=./tags,tags,.tags
 
+
+"{{{2 Key map/sequence timeout
+set timeoutlen=900
+set ttimeoutlen=0
+
+"{{{1 Visuals
 set title              " show title in console title bar
 set noruler            " no: display row, column and % of document
 set laststatus=2
@@ -217,7 +218,6 @@ set splitbelow
 " Prevent Vim from clobbering the scrollback buffer. See
 " http://www.shallowsky.com/linux/noaltscreen.html
 set t_ti= t_te=
-
 
 "{{{2 Cursor Column
 set nocursorline
@@ -292,8 +292,6 @@ if has("autocmd")
   au FileType cpp,c,java,sh,pl,php,asp setlocal autoindent cindent
   au FileType c,cpp,java setlocal foldmethod=syntax foldnestmax=5
   au FileType es6,javascript setlocal foldmethod=syntax
-  " Using https://github.com/tmhedberg/SimpylFold instead; fdm=expr
-  "au FileType python,python2,python3 setlocal foldmethod=indent
   au FileType crontab set nobackup nowritebackup
   au BufNewFile,BufRead  modprobe.conf setlocal syntax=modconf
   au BufNewFile,BufRead .tern-project set ft=json
@@ -423,6 +421,6 @@ noremap <silent> <Leader><Leader> :nohls<cr><c-l>
 nnoremap <Leader>ml :call ModelineStub()<CR>
 nnoremap <Leader>dts :call DeleteTrailingSpaces()<CR>
 
-"{{{1  Local config overrides now
+"{{{1  Local config overrides
 call Sourceiffr(g:configdir . ' /local.vim')
 
