@@ -405,6 +405,8 @@ nmap <silent> <Leader>zz A<C-R>=' ['.expand("$USER").' // '<CR><ESC><leader>zs<E
 "{{{2 Leader
 
 nnoremap <Leader>rc :tabnew $MYVIMRC<CR>
+nnoremap <Leader>rp :execute ":tabnew " . g:libdir . "/plugins.vim"<CR>
+nnoremap <Leader>rl :execute ":tabnew " . g:configdir . "/local.vim"<CR>
 
 " visual <Leader>d to black hole register
 vmap <silent> <leader>d "_d

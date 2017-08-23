@@ -47,14 +47,19 @@ if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'Shougo/neoinclude.vim'
   Plug 'zchee/deoplete-jedi'
-  " Plug 'zchee/deoplete-clang'
   Plug 'tweekmonster/deoplete-clang2', { 'commit': '787dd4dc7eeb5d1bc2fd3cefcf7bd07e48f4a962' }
+  Plug 'carlitux/deoplete-ternjs'
+  Plug 'wellle/tmux-complete.vim'
 else
-  "Plug 'valloric/youcompleteme', { 'do': 'echoerr \"You need to go compile YCM\"' }
+  Plug 'Shougo/neocomplete.vim'
+  " Plug 'valloric/youcompleteme', { 
+        " \ 'do': 'echoerr \"You need to go compile YCM\"',
+        " \ 'for': ['javascript']
+        " \ }
 endif
 Plug 'mattn/emmet-vim'
-Plug 'python-rope/ropevim'
-Plug 'ypcrts/vim-uncrustify',        { 'commit': 'bcf54fff8d58e0f4276ba22077562ead9814096a', 'for': ['c','cpp']  }
+Plug 'python-rope/ropevim', { 'for': 'python' }
+Plug 'ypcrts/vim-uncrustify', { 'commit': 'bcf54fff8d58e0f4276ba22077562ead9814096a', 'for': ['c','cpp']  }
 
 "{{{3 Syntax
 "{{{4 metapackages
@@ -76,9 +81,10 @@ Plug 'cespare/vim-toml', { 'for': 'toml' }
 "{{{4 esrever
 " Plug 'CaledoniaProject/VIM-IDC'
 " Plug 'alderz/smali-vim'
+Plug 'Shougo/vinarise.vim'
 
 "{{{3 Folding
-Plug 'ypcrts/vim-ini-fold',          { 'commit': 'b61a9ab242a316d2ba755c36c96888416162f1f4', 'for': ['gitignore','gitconfig','ini'] }
+Plug 'ypcrts/vim-ini-fold', { 'commit': 'b61a9ab242a316d2ba755c36c96888416162f1f4', 'for': ['gitignore','gitconfig','ini'] }
 Plug 'tmhedberg/SimpylFold', { 'for': 'python', 'commit': 'aa0371d9d708388f3ba385ccc67a7504586a20d9' }
 
 
@@ -127,13 +133,89 @@ let g:gitgutter_enabled = 1
 let g:js_context_colors_enabled = 0
 let g:js_context_colors_highlight_function_names = 0
 let g:javascript_plugin_jsdoc = 1
+let g:NERDSpaceDelims=1  " without this, comments r ugly af
 
 "{{{1 configuration
 "{{{2 completion plugin
 if has_key(g:plugs, 'deoplete.nvim')
   let g:deoplete#enable_at_startup = 1
 
-elseif has_key(g:plugs, 'youcompleteme')
+elseif has_key(g:plugs, 'neocomplete.vim') "{{{4
+  
+  " defaults pasted here
+
+  "Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+  " Disable AutoComplPop.
+  let g:acp_enableAtStartup = 0
+  " Use neocomplete.
+  let g:neocomplete#enable_at_startup = 1
+  " Use smartcase.
+  let g:neocomplete#enable_smart_case = 1
+  " Set minimum syntax keyword length.
+  let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+  " Define dictionary.
+  let g:neocomplete#sources#dictionary#dictionaries = {
+      \ 'default' : '',
+      \ 'vimshell' : $HOME.'/.vimshell_hist',
+      \ 'scheme' : $HOME.'/.gosh_completions'
+          \ }
+
+  " Define keyword.
+  if !exists('g:neocomplete#keyword_patterns')
+      let g:neocomplete#keyword_patterns = {}
+  endif
+  let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+  " Plugin key-mappings.
+  " inoremap <expr><C-g>     neocomplete#undo_completion()
+  " inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+  " Recommended key-mappings.
+  " <CR>: close popup and save indent.
+  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+  function! s:my_cr_function()
+    return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+    " For no inserting <CR> key.
+    "return pumvisible() ? "\<C-y>" : "\<CR>"
+  endfunction
+  " <TAB>: completion.
+  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+  " <C-h>, <BS>: close popup and delete backword char.
+  inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+  inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+  " Close popup by <Space>.
+  "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+
+  " AutoComplPop like behavior.
+  "let g:neocomplete#enable_auto_select = 1
+
+  " Shell like behavior(not recommended).
+  "set completeopt+=longest
+  "let g:neocomplete#enable_auto_select = 1
+  "let g:neocomplete#disable_auto_complete = 1
+  "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+  " Enable omni completion.
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+  " Enable heavy omni completion.
+  if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input_patterns = {}
+  endif
+  "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+  "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+  "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+  " For perlomni.vim setting.
+  " https://github.com/c9s/perlomni.vim
+  let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+"}}}4
+elseif has_key(g:plugs, 'youcompleteme') "{{{4
   let g:ycm_key_invoke_complete = '' "<C-Space> === <NUL>
   let g:ycm_key_detailed_diagnostics = '<leader>yd'
   let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<C-n>']
@@ -155,7 +237,8 @@ elseif has_key(g:plugs, 'youcompleteme')
         \ }
   nnoremap <leader>yj :YcmCompleter GoTo<CR>
   nnoremap <leader>yr :YcmCompleter GoToReferences<CR>
-  nnoremap <leader>yh :YcmCompleter GetDoc<CR>
+  nnoremap <leader>yh :YcmCompleter GetDoc<CR> 
+  "}}}4
 endif
 
 "{{{2 linter
@@ -168,7 +251,10 @@ if has_key(g:plugs, 'ale')
   let g:ale_echo_cursor = 1
   let g:ale_echo_msg_format = '[%linter%] %severity%: %s'
   let g:ale_list_window_size = 6
-  let g:ale_linters = { 'python': ['flake8'] } " merged dict; no pylint in ale please
+  let g:ale_completion_enabled = 0
+  let g:ale_linters = { 'python': ['flake8'],
+        \ 'c' : ['gcc-7']
+        \ } " merged dict; no pylint in ale please
 
 elseif has_key(g:plugs, 'syntastic')
 
@@ -177,6 +263,8 @@ elseif has_key(g:plugs, 'syntastic')
 
   nmap <leader>sy :SyntastictoggleMode<cr>
   nmap <leader>sl :SyntasticsetlocList<cr>:lw<cr>
+
+  "This has nothing to do with syntastic, but i use them together
   nmap <leader>sj :JSContextColorToggle<cr>
 endif
 
@@ -272,3 +360,4 @@ nmap [gg :GitGutterEnable<CR>
 nmap [gh :let g:gitgutter_diff_base = 'HEAD'<CR>
 nmap [gm :let g:gitgutter_diff_base = 'origin/master'<CR>
 nmap [gs :let g:gitgutter_diff_base = 'origin/staging'<CR>
+
