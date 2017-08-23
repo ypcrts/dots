@@ -10,7 +10,7 @@ silent call system('mkdir -p ' . g:configdir . '/plugged')
 call plug#begin(g:configdir . '/plugged')
 
 "{{{2 plugs
-Plug 'ypcrts/securemodelines', { 'commit': '9751f29699186a47743ff6c06e689f483058d77a' }
+Plug 'ypcrts/securemodelines', { 'commit': 'fa4e5868d60a68460903bc45044d4b3a18161caa' }
 " Plug 'jamessan/vim-gnupg'
 " Plug 'ypcrts/vim-gpg-sign'
 
@@ -58,7 +58,7 @@ else
   " \ }
 endif
 Plug 'mattn/emmet-vim'
-Plug 'python-rope/ropevim', { 'for': 'python' }
+" Plug 'python-rope/ropevim', { 'for': 'python' }
 " Plug 'ypcrts/vim-uncrustify', { 'commit': 'bcf54fff8d58e0f4276ba22077562ead9814096a', 'for': ['c','cpp']  }
 Plug 'Chiel92/vim-autoformat'
 
@@ -67,6 +67,7 @@ Plug 'Chiel92/vim-autoformat'
 "{{{4 metapackages
 " Plug 'sheerun/vim-polyglot' " 6d6574617061636b616765207365637572697479207269736b206666730a
 "{{{4 python ecosystems
+" TODO: FIXME FIXME FIXME DAD FIXME FIXME
 Plug '~/Projects/ansible-vim', { 'branch': 'j2-commentstring' }
 Plug 'tweekmonster/django-plus.vim'
 "{{{4 rust ecosystems

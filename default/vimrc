@@ -9,9 +9,10 @@ if has('nvim')
 else
   set nocompatible
 endif
+let g:configdir = expand(g:configdir)
 
 function! Sourceiffr(target)
-  if filereadable(glob(a:target))
+  if filereadable(a:target)
     execute 'source ' . a:target
   endif
 endfunc
@@ -126,12 +127,12 @@ if has("win32")
  colorscheme ir_black
 elseif exists('g:safevi')
   color elflord
-elseif has('termguicolors') && &termguicolors
-  " macos
-  let g:solarized_termtrans = 1
- set background=dark
- color solarized8_dark_high
+" elseif has('termguicolors') && &termguicolors
+"  set background=dark
+"   let g:solarized_termtrans = 1
+"   color solarized8_dark_high
 else
+  colorscheme basic-dark
   " rice
   augroup TransparentBackground
     au ColorScheme * hi Normal guibg=NONE ctermbg=NONE
@@ -424,5 +425,5 @@ nnoremap <Leader>ml :call ModelineStub()<CR>
 nnoremap <Leader>dts :call DeleteTrailingSpaces()<CR>
 
 "{{{1  Local config overrides
-call Sourceiffr(g:configdir . ' /local.vim')
+call Sourceiffr(g:configdir . "/local.vim")
 
