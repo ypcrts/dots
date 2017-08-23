@@ -6,7 +6,7 @@ if !(has('python') || has('python3') || has('nvim'))
 endif
 
 call Sourceiffr(g:libdir . '/plug.vim')
-"silent call system('mkdir -p ' . g:configdir . '/plugged')
+silent call system('mkdir -p ' . g:configdir . '/plugged')
 call plug#begin(g:configdir . '/plugged')
 
 "{{{2 plugs
@@ -52,14 +52,16 @@ if has('nvim')
   Plug 'wellle/tmux-complete.vim'
 else
   Plug 'Shougo/neocomplete.vim'
-  " Plug 'valloric/youcompleteme', { 
-        " \ 'do': 'echoerr \"You need to go compile YCM\"',
-        " \ 'for': ['javascript']
-        " \ }
+  " Plug 'valloric/youcompleteme', {
+  " \ 'do': 'echoerr \"You need to go compile YCM\"',
+  " \ 'for': ['javascript']
+  " \ }
 endif
 Plug 'mattn/emmet-vim'
 Plug 'python-rope/ropevim', { 'for': 'python' }
-Plug 'ypcrts/vim-uncrustify', { 'commit': 'bcf54fff8d58e0f4276ba22077562ead9814096a', 'for': ['c','cpp']  }
+" Plug 'ypcrts/vim-uncrustify', { 'commit': 'bcf54fff8d58e0f4276ba22077562ead9814096a', 'for': ['c','cpp']  }
+Plug 'Chiel92/vim-autoformat'
+
 
 "{{{3 Syntax
 "{{{4 metapackages
@@ -141,7 +143,7 @@ if has_key(g:plugs, 'deoplete.nvim')
   let g:deoplete#enable_at_startup = 1
 
 elseif has_key(g:plugs, 'neocomplete.vim') "{{{4
-  
+
   " defaults pasted here
 
   "Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
@@ -156,14 +158,14 @@ elseif has_key(g:plugs, 'neocomplete.vim') "{{{4
 
   " Define dictionary.
   let g:neocomplete#sources#dictionary#dictionaries = {
-      \ 'default' : '',
-      \ 'vimshell' : $HOME.'/.vimshell_hist',
-      \ 'scheme' : $HOME.'/.gosh_completions'
-          \ }
+        \ 'default' : '',
+        \ 'vimshell' : $HOME.'/.vimshell_hist',
+        \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
 
   " Define keyword.
   if !exists('g:neocomplete#keyword_patterns')
-      let g:neocomplete#keyword_patterns = {}
+    let g:neocomplete#keyword_patterns = {}
   endif
   let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
@@ -214,7 +216,7 @@ elseif has_key(g:plugs, 'neocomplete.vim') "{{{4
   " For perlomni.vim setting.
   " https://github.com/c9s/perlomni.vim
   let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-"}}}4
+  "}}}4
 elseif has_key(g:plugs, 'youcompleteme') "{{{4
   let g:ycm_key_invoke_complete = '' "<C-Space> === <NUL>
   let g:ycm_key_detailed_diagnostics = '<leader>yd'
@@ -237,7 +239,7 @@ elseif has_key(g:plugs, 'youcompleteme') "{{{4
         \ }
   nnoremap <leader>yj :YcmCompleter GoTo<CR>
   nnoremap <leader>yr :YcmCompleter GoToReferences<CR>
-  nnoremap <leader>yh :YcmCompleter GetDoc<CR> 
+  nnoremap <leader>yh :YcmCompleter GetDoc<CR>
   "}}}4
 endif
 
@@ -282,15 +284,15 @@ let g:lightline.mode_map = {
       \ 'S':      'S-LINE',
       \ "\<C-s>": 'S-BLOCK',
       \ '?':      '      ' }
-  let g:lightline.tabline = {
+let g:lightline.tabline = {
       \ 'left':  [ [ 'tabs' ] ],
       \ 'right': [ ] }
-    let g:lightline.active = {
+let g:lightline.active = {
       \ 'left':  [ [ 'mode', 'paste' ],
       \          [ 'readonly', 'relativepath', 'modified' ] ],
       \ 'right': [ [ 'lineinfo' ],
       \          [ 'fileformat', 'fileencoding', 'filetype' ] ] }
-  let g:lightline.inactive = {
+let g:lightline.inactive = {
       \ 'left':  [ [ 'relativepath' ] ],
       \ 'right': [ [ 'lineinfo' ],
       \ ] }
@@ -315,7 +317,7 @@ let g:increment_activator_filetype_candidates =
       \      'pick','reword','edit','squash','fixup','exec'
       \   ],
       \ ],
-    \ }
+      \ }
 nmap <Leader>aa <Plug>(increment-activator-increment)
 nmap <Leader>ax <Plug>(increment-activator-decrement)
 nmap <c-a>      <Plug>(increment-activator-increment)
@@ -361,3 +363,5 @@ nmap [gh :let g:gitgutter_diff_base = 'HEAD'<CR>
 nmap [gm :let g:gitgutter_diff_base = 'origin/master'<CR>
 nmap [gs :let g:gitgutter_diff_base = 'origin/staging'<CR>
 
+"{{{2 whut
+nmap <Leader>af :Autoformat<CR>
