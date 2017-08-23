@@ -131,6 +131,11 @@ else
   export TMOUT=0
 fi
 
+#{{{1 Bash history
+export HISTSIZE=65536 HISTFILESIZE=1048576
+export HISTIGNORE='&:[ ]*:exit'
+export HISTCONTROL='ignoreboth'  #ignore dups and space
+
 unset -f adjunct_path_with
 
 # for the benefit of tmux that is not -i
