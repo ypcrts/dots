@@ -21,7 +21,7 @@ optional arguments:
 
 ## `MANIFEST` syntax
 
-- `~/bin/destination_link: ./section/source_file` 
+- `~/bin/destination_link: ./section/source_file`
   - destination-to-source mapping, with the two arguments delimited by a colon
 
 - `$ bin`
@@ -33,6 +33,3 @@ optional arguments:
 - `@include: bin default`
    - includes `bin` and `default`
    - in each run of `install.py` includes are resolved so that they are only processed once
-
-
-
