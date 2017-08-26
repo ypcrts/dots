@@ -366,3 +366,4 @@ nmap [gs :let g:gitgutter_diff_base = 'origin/staging'<CR>
 
 "{{{2 whut
 nmap <Leader>af :Autoformat<CR>
+vmap <Leader>af :Autoformat<CR>
