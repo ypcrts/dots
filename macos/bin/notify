@@ -1,34 +1,52 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
-import sys 
-import sh
 import uuid
 import subprocess
+import argparse
 
-if sys.argv.__len__() != 1:
-    os.stderr.write("fatal invalid argc")
-    sys.exit(1)
 
-filename = "/tmp/notifyscript{:s}".format(uuid.uuid4())
-name = sh.basename(os.getcwd()).strip()
-mesg = sys.argv[1]
+def send(opts):
+    assert opts.name
+    assert opts.title
+    assert opts.sound
+    assert hasattr(opts.text, '__iter__')
 
-script = """
-  var app = Application.currentApplication();
+    filename = "/tmp/notifyscript-{:s}".format(str(uuid.uuid4()))
 
-    app.includeStandardAdditions = true
+    fkw = dict(name=opts.name,
+               text=' '.join(opts.text),
+               title=opts.title,
+               sound=opts.sound)
 
-    app.displayNotification("{:s}", {{
-      withTitle: "PageCloud",
-      subtitle: "{:s}",
-      soundName: "Frog"
-    }})
-""".format(name, mesg)
+    script = """
+    var app = Application.currentApplication();
 
-with open(filename, 'w') as f:
-    f.write(script)
+        app.includeStandardAdditions = true
 
-subprocess.call(["/usr/local/bin/reattach-to-user-namespace", "/usr/bin/osascript", "-l", "JavaScript", filename ])
+        app.displayNotification("{name:s}", {{
+        withTitle: "{title:s}",
+        subtitle: "{text:s}",
+        soundName: "{sound:s}"
+        }})
+    """.format(**fkw)
 
-sh.rm(filename)
+    with open(filename, 'w') as f:
+        f.write(script)
+
+    subprocess.call(["/usr/local/bin/reattach-to-user-namespace",
+                     "/usr/bin/osascript", "-l", "JavaScript", filename])
+
+    os.remove(filename)
+
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description='Send a macOS notification')
+    parser.add_argument('-N', '--name', type=str,
+                        default=os.path.basename(os.getcwd()))
+    parser.add_argument('-T', '--title', type=str, default='Notification')
+    parser.add_argument('text', type=str, nargs='+')
+    parser.add_argument('-s', '--sound', type=str, default='Frog', choices=['Frog', 'Glass', 'Basso', 'Morse', 'Purr', 'Submarine'])
+    opts = parser.parse_args()
+    send(opts)

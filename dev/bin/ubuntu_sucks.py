@@ -93,4 +93,3 @@ if __name__ == '__main__':
     )
     os.write(2, '\n')
     sys.stdout.write(json.dumps(writeme, indent=2))
-

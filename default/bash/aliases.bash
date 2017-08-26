@@ -21,10 +21,10 @@ if ls --group-directories-first 2>/dev/null >&2; then
 else
 alias ls='ls -hF'
 fi
-alias ll='l -lh'
-alias l1='l -1'
-alias la='l -A'
-alias lal='l -lA'
+alias ll='ls -lh'
+alias l1='ls -1'
+alias la='ls -A'
+alias lal='ls -lA'
 alias lla='lal'
 
 alias rmi='/bin/rm -i'
@@ -133,7 +133,6 @@ mosho  () { local TARGET="$1";shift;mosh "$@" -- "$TARGET" "~/bin/onemux"; }
 moshoo () { mosh -- "$1" "~/bin/onemux" "$2";                              }
 sshoo  () { ssh -t "$1" -- "~/bin/onemux" "$2";                            }
 
-#{{{1 cypherpunch
 alias rot13='tr a-zA-Z n-za-mN-ZA-M <<<'
 aes_encypt () {
   openssl enc -aes-256-cbc -e -in $1 -out "$1.aes"
@@ -144,7 +143,6 @@ aes_decrypt () {
 diggy () {
 	dig +nocmd "$1" any +multiline +noall +answer;
 }
-#{{{1 cleanout
 cleanout() {
   op="find . -type f -regextype posix-extended -regex '((.*\.(pyc|class|pyo|bak|tmp|toc|aux|log|cp|fn|tp|vr|pg|ky))|(.*\~))'"
   if [ $# -eq 1  ]; then
@@ -165,9 +163,6 @@ cleanout() {
     eval $op | column | $PAGER
   fi
 }
-#{{{1 loadenv
-
-
 loadenv () {
   local POSTLOAD=''
   case "$1" in
