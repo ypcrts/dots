@@ -74,6 +74,9 @@ $ dev
 ~/.gbp.conf: ./dev/gbp.conf
 ~/.ansible.cfg: ./dev/ansible.cfg
 
+$ gdbdash
+~/.gdbinit: ./dev/gdbinit-dashboard
+
 $ ssh
 ~/bin/: ./ssh/bin/*
 ~/.config/git/ssh.gitconfig: ./ssh/ssh.gitconfig
