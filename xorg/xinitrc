@@ -45,6 +45,7 @@ fi
 #~/bin/redshift-run &
 ~/bin/thinktouchpad off &
 /usr/bin/xscreensaver -no-splash &
+dunst &
 sxhkd &
 exec bspwm > .xinit.log 2>&1
 

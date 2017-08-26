@@ -105,7 +105,7 @@ super + alt + {_,control +}Tab
     bspc node --focus @{parent,brother}
 
 super + {Tab,shift + Tab}
-    bspc node --focus {next,prev}
+    bspc node --focus {next,prev}.active
 
 super + b
     bspc node -s biggest
