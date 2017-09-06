@@ -51,3 +51,4 @@ if [ -d ~/.fzf ]; then
   . ~/.fzf/shell/completion.bash 2>/dev/null
   . ~/.fzf/shell/key-bindings.bash 2>/dev/null
 fi
+. ~/.config/bash/buku-completion.bash
