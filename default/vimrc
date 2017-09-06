@@ -52,6 +52,7 @@ filetype plugin on
 filetype indent on
 syntax on
 syntax sync minlines=256
+let &spellfile = g:libdir . '/spell/en.utf-8.add' " otherwise, defaults to rtp[0] -_-
 
 "{{{2 File encoding
 if has('multi_byte')

@@ -81,6 +81,7 @@ Plug 'cespare/vim-toml', { 'for': 'toml' }
 "{{{5 linux / systems
 " Plug 'git://fedorapeople.org/home/fedora/wwoods/public_git/vim-scripts.git' "systemd
 " Plug 'PotatoesMaster/i3-vim-syntax'
+Plug 'vim-scripts/bats.vim'
 "{{{4 esrever
 " Plug 'CaledoniaProject/VIM-IDC'
 " Plug 'alderz/smali-vim'
