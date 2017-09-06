@@ -40,6 +40,7 @@
   s                 = status --short --branch -- .
   si                = status --short --branch --ignored -- .
   st                = status --short --branch
+  stv               = status --verbose
 
   tags              = tag -l
 
