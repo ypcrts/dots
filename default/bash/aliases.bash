@@ -166,6 +166,14 @@ cleanout() {
 loadenv () {
   local POSTLOAD=''
   case "$1" in
+    r*|reset)
+      if command -V nvm >/dev/null 2>&1; then
+        nvm unload
+      fi
+      if command -V deactivate >/dev/null 2>&1; then
+        deactivate
+      fi
+      ;;
     p*|py)
       if (($# >= 2)); then
         case "$2" in
