@@ -40,6 +40,7 @@ else
 endif
 Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
 Plug 'fisadev/vim-isort', { 'for': 'python' }
+Plug 'chrisbra/csv.vim'
 
 "{{{3 completion
 if has('nvim')
