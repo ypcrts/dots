@@ -138,7 +138,6 @@ let g:gitgutter_enabled = 1
 let g:js_context_colors_enabled = 0
 let g:js_context_colors_highlight_function_names = 0
 let g:javascript_plugin_jsdoc = 1
-let g:NERDSpaceDelims=1  " without this, comments r ugly af
 
 "{{{1 configuration
 "{{{2 completion plugin
@@ -366,6 +365,13 @@ nmap [gh :let g:gitgutter_diff_base = 'HEAD'<CR>
 nmap [gm :let g:gitgutter_diff_base = 'origin/master'<CR>
 nmap [gs :let g:gitgutter_diff_base = 'origin/staging'<CR>
 
-"{{{2 whut
+"{{{2 NERDCommenter
+let g:NERDSpaceDelims=1
+let g:NERDRemoveExtraSpaces=1
+let g:NERDCompactSexyComs=0
+let g:NERDTrimTrailingWhitespace=1
+
+"{{{2 whut - trash? - replace with your own less trash, but still trash?
+"          - or stop whining and contribute?  [ypcrts // 20170914T2058Z]
 nmap <Leader>af :Autoformat<CR>
 vmap <Leader>af :Autoformat<CR>
