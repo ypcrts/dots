@@ -369,6 +369,11 @@ nmap [gs :let g:gitgutter_diff_base = 'origin/staging'<CR>
 let g:NERDSpaceDelims=1
 let g:NERDRemoveExtraSpaces=1
 let g:NERDCompactSexyComs=0
+" vim 8 / neovim HEAD runtime: when ft==python, cms:=#\ %s
+"   -- when g:NERDSpaceDelims==1, then NERDComment results in double space
+let g:NERDCustomDelimiters = {
+      \ 'python': { 'left': '#', 'right': '' }
+      \ }
 let g:NERDTrimTrailingWhitespace=1
 
 "{{{2 whut - trash? - replace with your own less trash, but still trash?
