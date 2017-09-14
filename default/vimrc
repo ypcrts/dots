@@ -279,7 +279,7 @@ endf
 set foldtext=CustomFoldText()
 set foldmethod=marker
 set foldlevelstart=99
-set foldminlines=0
+set foldminlines=1
 
 "{{{2 Searching
 set incsearch  " increment search
