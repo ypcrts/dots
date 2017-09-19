@@ -370,11 +370,13 @@ if exists('$TMUX')
   map <silent> <C-k> :call TmuxOrSplitSwitch('k', 'U')<cr>
   map <silent> <C-l> :call TmuxOrSplitSwitch('l', 'R')<cr>
   map <silent> <C-\> :call TmuxOrSplitPrevious()<cr>
+  map <silent> <C-w>\ :call TmuxOrSplitPrevious()<cr>
 else
-  map <C-h> <C-w>h
-  map <C-j> <C-w>j
-  map <C-k> <C-w>k
-  map <C-l> <C-w>l
+  noremap <C-h> <C-w>h
+  noremap <C-j> <C-w>j
+  noremap <C-k> <C-w>k
+  noremap <C-l> <C-w>l
+  noremap <C-\> silent! execute 'wincmd p'<cr>
 endif
 
 " insert mode <C-k> inserts digraphs etc
