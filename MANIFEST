@@ -73,6 +73,7 @@ $ dev
 ~/.gdbinit: ./dev/gdbinit
 ~/.gbp.conf: ./dev/gbp.conf
 ~/.ansible.cfg: ./dev/ansible.cfg
+~/.config/pylintrc: ./dev/pylintrc
 
 $ gdbdash
 ~/.gdbinit: ./dev/gdbinit-dashboard
