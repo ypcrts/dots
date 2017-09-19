@@ -256,14 +256,14 @@ if has_key(g:plugs, 'ale')
   let g:ale_echo_msg_format = '[%linter%] %severity%: %s'
   let g:ale_list_window_size = 6
   let g:ale_completion_enabled = 0
-  let g:ale_linters = { 'python': ['flake8'],
+  let g:ale_linters = { 'python': ['flake8', 'pylint'],
         \ 'c' : ['gcc-7']
         \ } " merged dict; no pylint in ale please
 
 elseif has_key(g:plugs, 'syntastic')
 
   let g:syntastic_javascript_checkers = [ 'eslint' ]
-  let g:syntastic_python_checkers = [ 'flake8' ]
+  let g:syntastic_python_checkers = [ 'flake8', 'pylint' ]
 
   nmap <leader>sy :SyntastictoggleMode<cr>
   nmap <leader>sl :SyntasticsetlocList<cr>:lw<cr>
