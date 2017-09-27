@@ -48,7 +48,8 @@ source_if_exists ~/.config/bash/hosts/local.private.sh
 unset HOSTIDENT
 
 if [ -d ~/.fzf ]; then
-  . ~/.fzf/shell/completion.bash 2>/dev/null
+  # Completion is bloody broken in fzf @ 45d4c57 
+  # . ~/.fzf/shell/completion.bash 2>/dev/null
   . ~/.fzf/shell/key-bindings.bash 2>/dev/null
 fi
 . ~/.config/bash/buku-completion.bash
