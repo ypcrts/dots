@@ -27,6 +27,7 @@ has () {
 
 adjunct_path_with "/sbin"              true
 adjunct_path_with "/usr/sbin"          true
+adjunct_path_with "/usr/local/sbin"    true
 adjunct_path_with "/usr/local/bin"     true
 adjunct_path_with "${HOME}/bin"        false
 adjunct_path_with "${HOME}/.cargo/bin" false
