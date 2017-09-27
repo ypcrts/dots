@@ -101,6 +101,7 @@ Plug 'tpope/vim-fugitive'
 " TODO: cr die webapi-vim neuigkeiten, scheiße
 Plug 'mattn/gist-vim',     { 'commit': 'f0d63579eab7548cf12f979dc52ef5a370ecbe63' }
 Plug 'mattn/webapi-vim',   { 'commit': 'e3fa93f29a3a0754204002775e140d8a9acfd7fd' }
+" Plug 'baverman/vial-http', { 'commit': 'NULL' }
 
 "{{{3 Colourschemes
 Plug 'w0ng/vim-hybrid'
