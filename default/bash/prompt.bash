@@ -28,25 +28,26 @@ bash_prompt_setup () {
   local BEGRENZER='✱'
   local NUTZERZEIGEN=0
 
-
   if [[ "$SSH_TTY" ]]; then
     BEGRENZER='▞'
     NUTZERZEIGEN=1
   fi
 
-  if ((EUID > 0)); then
-    local NUTZER="$(id -un)"
-    case "$NUTZER" in
-      ypcrts)
-        ;;
-      *)
-        NUTZERZEIGEN=1
-        FARBE="$(__STRFARBE__ $NUTZER)"
-        ;;
-    esac
-  else
-    FARBE=31
-    NUTZERZEIGEN=1
+  if ! ((__ZUHAUSE_PROMPT)); then
+    if ((EUID == 0)); then
+      FARBE=31
+      NUTZERZEIGEN=1
+    else
+      local NUTZER="$(id -un)"
+      case "$NUTZER" in
+        ypcrts)
+          ;;
+        *)
+          NUTZERZEIGEN=1
+          FARBE="$(__STRFARBE__ $NUTZER)"
+          ;;
+      esac
+    fi
   fi
 
   local F="\[\e[0;${FARBE}m\]"
