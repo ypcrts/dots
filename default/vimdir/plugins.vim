@@ -10,7 +10,7 @@ silent call system('mkdir -p ' . g:configdir . '/plugged')
 call plug#begin(g:configdir . '/plugged')
 
 "{{{2 plugs
-Plug 'ypcrts/securemodelines', { 'commit': 'fa4e5868d60a68460903bc45044d4b3a18161caa' }
+Plug 'ypcrts/securemodelines', { 'commit': '33f695221cea4d965a47ab24a78fa2646c5e417e' }
 " Plug 'jamessan/vim-gnupg'
 " Plug 'ypcrts/vim-gpg-sign'
 
@@ -60,7 +60,7 @@ else
 endif
 Plug 'mattn/emmet-vim'
 " Plug 'python-rope/ropevim', { 'for': 'python' }
-" Plug 'ypcrts/vim-uncrustify', { 'commit': 'bcf54fff8d58e0f4276ba22077562ead9814096a', 'for': ['c','cpp']  }
+" Plug 'ypcrts/vim-uncrustify', { 'for': ['c','cpp']  }
 Plug 'Chiel92/vim-autoformat'
 
 
