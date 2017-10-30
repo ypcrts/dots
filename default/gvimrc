@@ -1,0 +1,17 @@
+" assert has('gui_running')
+"
+"{{{1 font, cursor
+if has("gui_win32")
+    set guicursor+=a:blinkon0 " disable blinking cursor (gvimwin32)
+    let &guifont="Consolas:h10"
+else
+    let &guifont="Terminus\ 10"
+endif
+
+"{{{1 guioptions
+" [+c text dialogues instead of popups]
+" http://vimdoc.sourceforge.net/htmldoc/options.html#%27guioptions%27
+set guioptions=aceg
+" (m)enubar scrollba(r) (T)(t)oolbar
+" set guioptions-=mrTt
+

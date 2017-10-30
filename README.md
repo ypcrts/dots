@@ -1,12 +1,13 @@
-# dots-dom0
+# dots
 
 ```
-usage: install.py [-h] [-n] [-m MANIFEST] [-f | -p] [-v]
-                  [section [section ...]]
+usage: manifest.py [-h] [-n] [-m MANIFEST] [-f] [-v]
+                   [{install,purge,inspect}] [section [section ...]]
 
 creates symlinks described by a manifest
 
 positional arguments:
+  {install,purge,inspect}
   section               manifest target
 
 optional arguments:
@@ -14,8 +15,7 @@ optional arguments:
   -n, --dry-run         nop out all syscalls, verbose
   -m MANIFEST, --manifest MANIFEST
                         path to custom manifest file
-  -f, --force           on install, remove any existing files or links
-  -p, --purge           remove the link or file at target paths
+  -f, --force           allow clobbering files in target paths
   -v, --verbose
 ```
 
@@ -32,4 +32,4 @@ optional arguments:
 
 - `@include: bin default`
    - includes `bin` and `default`
-   - in each run of `install.py` includes are resolved so that they are only processed once
+   - in each run of `manifest.py` includes are resolved recursively so that they are only processed once

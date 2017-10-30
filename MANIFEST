@@ -16,10 +16,18 @@ $ shell
 
 $ vim
 ~/.vimrc: ./default/vimrc
+~/.gvimrc: ./default/gvimrc
 ~/.config/nvim/init.vim: ./default/vimrc
 ~/.vim/: ./default/vimdir/*
 ~/.vim/autoload/plug.vim: @delete
 ~/.vim/autoload/plug.old: @delete
+
+$ vimfiles
+~/vimfiles/: ./default/vimdir/*
+~/_vimrc: ./default/vimrc
+~/_gvimrc: ./default/gvimrc
+~/vimfiles/autoload/plug.vim: @delete
+~/vimfiles/autoload/plug.old: @delete
 
 $ mux
 ~/.tmux.conf: ./default/tmux.conf
@@ -39,6 +47,9 @@ $ macos
 @include: default
 ~/bin/: ./macos/bin/*
 ~/.config/bash/os-aliases.bash: ./macos/aliases.bash
+
+$ powershell
+~/My Documents/WindowsPowerShell/profile.ps1: ./windows/profile.ps1
 
 #--------------------------------------------------------------------------------
 
@@ -96,3 +107,6 @@ $ thinkpad
 
 $ macbook
 @include: default macos dev ssh gpg
+
+$ windows
+@include: vimfiles powershell git curl

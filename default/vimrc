@@ -105,25 +105,6 @@ else
   set viminfo="NONE"
 endif
 
-"{{{1 font, cursor, emenu
-if has('gui_running')
-  if has("gui_win32") " true on WOW64
-      set guicursor+=a:blinkon0 " disable blinking cursor (gvimwin32)
-      let &guifont="Consolas:h10"
-  else
-      let &guifont="Terminus\ 10"
-  endif
-  " [+c text dialogues instead of popups]
-  " http://vimdoc.sourceforge.net/htmldoc/options.html#%27guioptions%27
-  set guioptions=aceg
-  " (m)enubar scrollba(r) (T)(t)oolbar
-  " set guioptions-=mrTt
-
-else
-    source $VIMRUNTIME/menu.vim
-    map <Leader>em :emenu <C-z>
-endif
-
 if has("win32")
  colorscheme ir_black
 elseif exists('g:safevi')

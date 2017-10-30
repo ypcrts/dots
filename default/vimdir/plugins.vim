@@ -2,6 +2,7 @@
 "{{{1 bootstrap
 "{{{2 meta
 if !(has('python') || has('python3') || has('nvim'))
+  echo 'no pythonsss'
   finish
 endif
 
@@ -51,8 +52,10 @@ if has('nvim')
   Plug 'tweekmonster/deoplete-clang2', { 'commit': '787dd4dc7eeb5d1bc2fd3cefcf7bd07e48f4a962' }
   Plug 'carlitux/deoplete-ternjs'
   Plug 'wellle/tmux-complete.vim'
-else
+elseif v:version >= 703 && has('lua')
   Plug 'Shougo/neocomplete.vim'
+else
+  " TODO: completion without lua?
   " Plug 'valloric/youcompleteme', {
   " \ 'do': 'echoerr \"You need to go compile YCM\"',
   " \ 'for': ['javascript']
@@ -91,7 +94,6 @@ Plug 'Shougo/vinarise.vim'
 "{{{3 Folding
 Plug 'ypcrts/vim-ini-fold', { 'commit': 'b61a9ab242a316d2ba755c36c96888416162f1f4', 'for': ['gitignore','gitconfig','ini'] }
 Plug 'tmhedberg/SimpylFold', { 'for': 'python', 'commit': 'aa0371d9d708388f3ba385ccc67a7504586a20d9' }
-
 
 "{{{3 Git/VCS
 Plug 'airblade/vim-gitgutter'
@@ -269,7 +271,7 @@ elseif has_key(g:plugs, 'syntastic')
   nmap <leader>sy :SyntastictoggleMode<cr>
   nmap <leader>sl :SyntasticsetlocList<cr>:lw<cr>
 
-  "This has nothing to do with syntastic, but i use them together
+  "This has nothing to do with syntastic, but i use them together <- lie
   nmap <leader>sj :JSContextColorToggle<cr>
 endif
 
