@@ -1,4 +1,6 @@
 "{{{1 Plugins Meta
+set shortmess=aoOstTAI " shorten all messages except written
+set report=0           " Always report the number of lines changed by a cmd
 let g:configdir = '~/.vim'
 if has('win32')
   let g:configdir = '~/vimfiles'
@@ -29,7 +31,7 @@ if empty($SAFEVI) && $USER != 'root'
 else
   let g:safevi = 1
   echo 'NO PLUGINS LOADED'
-endif 
+endif
 
 
 "{{{1 Standard Base Configuration (syntax, utf8, ft, clipboard, 256 )
@@ -185,15 +187,17 @@ set timeoutlen=900
 set ttimeoutlen=0
 
 "{{{1 Visuals
+"{{{2 Statuslines
+set ruler
+set laststatus=1
+set showmode           " hide secondary statusline
+set shortmess=aoOstTAI " shorten all messages except written
+set report=0           " Always report the number of lines changed by a cmd
+
 set title              " show title in console title bar
-set noruler            " no: display row, column and % of document
-set laststatus=2
-set noshowmode         " hide secondary statusline
 set noerrorbells
 set novisualbell
 set nonumber
-set shortmess=aoOstTAI " shorten all messages except written
-set report=0           " Always report the number of lines changed by a cmd
 
 set splitright
 set splitbelow
@@ -388,25 +392,36 @@ nmap <silent> <leader>zg A<C-R>=' [ypcrts // '<CR><ESC><leader>zs<ESC>A<C-R>=']'
 nmap <silent> <Leader>zz A<C-R>=' ['.expand("$USER").' // '<CR><ESC><leader>zs<ESC>A<C-R>=']'<CR><ESC>
 
 "{{{2 Leader
+nnoremap <Leader>on :setlocal number!<CR>
+nnoremap <Leader>or :setlocal relativenumber!<CR>
+nnoremap <Leader>os :setlocal spell!<CR>
+nnoremap <Leader>ow :setlocal wrap!<CR>
+nnoremap <Leader>ol :setlocal list!<CR>
+nnoremap <Leader>occ :setlocal cursorcolumn!<CR>
+nnoremap <Leader>ocl :setlocal cursorline!<CR>
 
 nnoremap <Leader>rc :tabnew $MYVIMRC<CR>
 nnoremap <Leader>rp :execute ":tabnew " . g:libdir . "/plugins.vim"<CR>
 nnoremap <Leader>rl :execute ":tabnew " . g:configdir . "/local.vim"<CR>
 
 " visual <Leader>d to black hole register
-vmap <silent> <leader>d "_d
+nmap <silent> <Leader>dd "_dd
+vmap <silent> <Leader>d "_d
 
 nnoremap <leader>dgr :diffget REMOTE<CR>
 nnoremap <leader>dgb :diffget BASE<CR>
 nnoremap <leader>dgl :diffget LOCAL<CR>
 
-nnoremap <leader>8 :%!autopep8 -a -a -a -<CR>
-vnoremap <leader>8 :!autopep8 -a -a -a -<CR>
+nnoremap <leader>8 :%!python -m autopep8 -a -a -a -<CR>
+vnoremap <leader>8 :!python -m autopep8 -a -a -a -<CR>
 nmap <silent> <leader>cp :Pydocstring<CR>
 
 noremap <silent> <Leader><Leader> :nohls<cr><c-l>
-nnoremap <Leader>ml :call ModelineStub()<CR>
-nnoremap <Leader>dts :call DeleteTrailingSpaces()<CR>
+nnoremap <Leader>ml :call modelinestub#do()<CR>
+nnoremap <Leader>dts :call formatz#DeleteTrailingSpaces()<CR>
+
+
+" }}}1
 
 "{{{1  Local config overrides
 call Sourceiffr(g:configdir . "/local.vim")
