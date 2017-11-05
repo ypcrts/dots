@@ -55,6 +55,11 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 [ -n "$XDG_CACHE_HOME"  ] || export XDG_CACHE_HOME="$HOME/.cache"
 [ -n "$XDG_DATA_HOME"   ] || export XDG_DATA_HOME="$HOME/.local/share"
 
+if has go; then
+  export GOPATH="${HOME}/Go"
+fi
+
+
 #{{{1 Less
 # Mouse-wheel scroll can be disabled by -X (disable screen clearing)
 # Remove -X and -F (exit if the content fits on one screen) to enable mouse-wheel scroll
@@ -65,7 +70,7 @@ fi
 
 #{{{1 Pretty colours
 export GREP_COLOR="1;33"
-export LESS_TERMCAP_mb=$'\E[01;31m' LESS_TERMCAP_md=$'\E[01;34m' LESS_TERMCAP_me=$'\E[0m' LESS_TERMCAP_se=$'\E[0m' LESS_TERMCAP_so=$'\E[01;30;03;36m' LESS_TERMCAP_ue=$'\E[0m' LESS_TERMCAP_us=$'\E[01;35m'
+export LESS_TERMCAP_mb=$'\e[01;31m' LESS_TERMCAP_md=$'\e[01;34m' LESS_TERMCAP_me=$'\e[0m' LESS_TERMCAP_se=$'\e[0m' LESS_TERMCAP_so=$'\e[01;30;03;36m' LESS_TERMCAP_ue=$'\e[0m' LESS_TERMCAP_us=$'\e[01;35m'
 
 #{{{1 fzf
 if [ -x ~/.fzf/bin/fzf ]; then
