@@ -71,13 +71,18 @@ endif
 
 "{{{1 8-bit and 24-bit color support
 if &t_Co > 2 || has('gui_running')
-  if has('termguicolors') &&
-        \ (  matchstr(system("uname"), "Darwin") != ''
-        \ || matchstr($TERM, 'rxvt.*') == ''  )
+
+  " vim8, tmux-2.5, iterm3: b&w so force it off
+  if has('nvim') ||
+        \ has('termguicolors')
+        \ && match(system('uname'), 'Darwin') == 0
+        \ && match($TERM, '\v(screen|rxvt).*') == -1
     " This nonsense can only be set if terminal has 24 bit colour support.
     " neovim does not intuit such a thing. programming is math not magic.
     " rxvt never has 24-bit support, so off.
     set termguicolors
+  else
+    set notermguicolors
   endif
 
   set hlsearch
@@ -194,7 +199,7 @@ set ttimeoutlen=0
 "{{{1 Visuals
 "{{{2 Statuslines
 set ruler
-set laststatus=1
+set laststatus=2
 set showmode           " hide secondary statusline
 set shortmess=aoOstTAI " shorten all messages except written
 set report=0           " Always report the number of lines changed by a cmd
