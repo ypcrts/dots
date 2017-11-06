@@ -181,6 +181,11 @@ endif
 
 set tags=./tags,tags,.tags
 
+"{{2 netrw the underappreciated secret weapon
+let g:netrw_banner = 0
+let g:netrw_browse_split = 4 " vsplit
+let g:netrw_winsize = 20
+let g:netrw_liststyle = 3
 
 "{{{2 Key map/sequence timeout
 set timeoutlen=900
@@ -272,7 +277,7 @@ set ignorecase " case-insensitive search
 set smartcase  " uppercase causes case-sensitive search
 set nogdefault " Disabled - See http://j.mp/1mZvnrt  (no `g` on `:s`)
 
-"{{{2 Filetype Autocommands
+"{{{1 Filetype Autocommands
 if has("autocmd")
   au FileType helpfile setlocal nonumber
   au FileType mail,tex setlocal textwidth=72
@@ -392,11 +397,13 @@ nmap <silent> <leader>zg A<C-R>=' [ypcrts // '<CR><ESC><leader>zs<ESC>A<C-R>=']'
 nmap <silent> <Leader>zz A<C-R>=' ['.expand("$USER").' // '<CR><ESC><leader>zs<ESC>A<C-R>=']'<CR><ESC>
 
 "{{{2 Leader
+nnoremap <Leader>v :Vexplore<CR>
 nnoremap <Leader>on :setlocal number!<CR>
 nnoremap <Leader>or :setlocal relativenumber!<CR>
 nnoremap <Leader>os :setlocal spell!<CR>
 nnoremap <Leader>ow :setlocal wrap!<CR>
 nnoremap <Leader>ol :setlocal list!<CR>
+nnoremap <Leader>om :setlocal modifiable!<CR>
 nnoremap <Leader>occ :setlocal cursorcolumn!<CR>
 nnoremap <Leader>ocl :setlocal cursorline!<CR>
 
