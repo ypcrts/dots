@@ -49,6 +49,7 @@
   lol               = log --graph --date-order --pretty=lol
   people            = shortlog -s -n --email
 
+  sm                = submodule
   wt                = worktree
   mt                = mergetool --no-prompt
   rl                = reflog --decorate
