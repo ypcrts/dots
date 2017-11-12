@@ -25,7 +25,7 @@ call pathogen#infect(g:libdir . '/pathogens/{}')
 
 "{{{2 Plug.vim
 let mapleader="\<Space>"
-if empty($SAFEVI) && $USER != 'root'
+if empty($SAFEVI) && $USER != 'root' && $USER != 'admin'
   call Sourceiffr(g:libdir . '/managedbootstrap/plug.vim')
   call Sourceiffr(g:libdir . '/plugins.vim')
 else
