@@ -1,1 +1,20 @@
 startup_message off
+shell ${SHELL}
+defscrollback 65536
+defnonblock on
+defutf8 on
+defflow off
+maptimeout 5
+bind h focus left
+bind j focus down
+bind k focus up
+bind l focus right
+bind r source ~/.screenrc
+bind C layout new
+term screen-256color
+rendition so kb
+ignorecase on
+nethack on
+attrcolor b ".I"
+altscreen on
+vbell on
