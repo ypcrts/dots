@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+"""
+webmshare.com python client by ypcrts
+"""
+
 from __future__ import print_function
 
 import sys
@@ -25,6 +29,9 @@ def main(
         soundOff=True,
         autoplay=True,
         loop=True):
+    """
+    for webm and gif only
+    """
     assert fileExpiration == 'never' or isinstance(fileExpiration, int)
     s = requests.Session()
     s.headers = {
@@ -93,4 +100,8 @@ def main(
 
 
 if __name__ == '__main__':
-    main(*sys.argv[1:])
+    try:
+        from fire import Fire
+        Fire(main)
+    except ImportError:
+        main(*sys.argv[1:])
