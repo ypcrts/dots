@@ -73,10 +73,11 @@ endif
 if &t_Co > 2 || has('gui_running')
 
   " vim8, tmux-2.5, iterm3: b&w so force it off
-  if has('nvim') ||
-        \ has('termguicolors')
+  if has('termguicolors') && (
+        \ (has('nvim') && match($TERM, '^screen$') == 0)
         \ && match(system('uname'), 'Darwin') == 0
         \ && match($TERM, '\v(screen|rxvt).*') == -1
+        \ )
     " This nonsense can only be set if terminal has 24 bit colour support.
     " neovim does not intuit such a thing. programming is math not magic.
     " rxvt never has 24-bit support, so off.
@@ -403,6 +404,7 @@ nmap <silent> <Leader>zz A<C-R>=' ['.expand("$USER").' // '<CR><ESC><leader>zs<E
 
 "{{{2 Leader
 nnoremap <Leader>v :Vexplore<CR>
+
 nnoremap <Leader>on :setlocal number!<CR>
 nnoremap <Leader>or :setlocal relativenumber!<CR>
 nnoremap <Leader>os :setlocal spell!<CR>
@@ -415,6 +417,16 @@ nnoremap <Leader>ocl :setlocal cursorline!<CR>
 nnoremap <Leader>rc :tabnew $MYVIMRC<CR>
 nnoremap <Leader>rp :execute ":tabnew " . g:libdir . "/plugins.vim"<CR>
 nnoremap <Leader>rl :execute ":tabnew " . g:configdir . "/local.vim"<CR>
+
+nnoremap ]q :cnext<CR>
+nnoremap [q :cprevious<CR>
+nnoremap ]Q :cnfile<CR>
+nnoremap [Q :cpfile<CR>
+
+nnoremap ]l :lnext<CR>
+nnoremap [l :lprevious<CR>
+nnoremap ]L :lnfile<CR>
+nnoremap [L :lpfile<CR>
 
 " visual <Leader>d to black hole register
 nmap <silent> <Leader>dd "_dd
@@ -429,6 +441,7 @@ vnoremap <leader>8 :!python -m autopep8 -a -a -a -<CR>
 nmap <silent> <leader>cp :Pydocstring<CR>
 
 noremap <silent> <Leader><Leader> :nohls<cr><c-l>
+
 nnoremap <Leader>ml :call modelinestub#do()<CR>
 nnoremap <Leader>dts :call formatz#DeleteTrailingSpaces()<CR>
 
