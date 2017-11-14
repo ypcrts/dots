@@ -130,11 +130,14 @@
   pretty = tiny
 
 [pretty]
-  tiny  = %C(auto,green)%h %C(auto,blue)%<(8,trunc)%an %C(auto,reset)%<(60,trunc)%s %C(auto,red)%d%C(auto,reset)
-  dated = %C(auto,green)%h %C(auto,blue)%<(8,trunc)%an %C(auto,reset)%<(60,trunc)%s %cd%C(auto,reset) %C(auto,red)%D%C(auto,reset)
-  find  = %C(auto,green)%h %C(auto,red)%d %C(auto,blue)%<(8,trunc)%an %C(auto,reset)%<(60,trunc)%s %C(auto,reset)
-  lol   = %C(auto,red)%h%C(auto,reset)%C(auto,yellow)%d%C(auto,reset) %C(auto,blue)%an%C(auto,reset) - %s %C(auto,green)(%cr)%C(auto,reset)
-  long  = %C(auto,green)%h %C(auto,blue)%<(15,trunc)%an %C(auto,reset)%<(70,trunc)%s %<(20)%cd%C(auto,red)%D %C(auto,reset)
+  ; hey jerk, if you type the first letters it works
+  tiny     = %C(auto,green)%h %C(auto,blue)%<(8,trunc)%an %C(auto,reset)%<(60,trunc)%s %C(auto,red)%d%C(auto,reset)
+  findtiny = %C(auto,green)%h %C(auto,red)%d %C(auto,blue)%<(8,trunc)%an %C(auto,reset)%<(60,trunc)%s %C(auto,reset)
+
+  lol      = %C(auto,red)%h%C(auto,reset)%C(auto,yellow)%d%C(auto,reset) %C(auto,blue)%an%C(auto,reset) - %s %C(auto,green)(%cr)%C(auto,reset)
+
+  dated    = %C(auto,green)%h %C(auto,blue)%<(8,trunc)%an %C(auto,reset)%<(60,trunc)%s %cd%C(auto,reset) %C(auto,red)%D%C(auto,reset)
+  longdated     = %C(auto,green)%h %C(auto,blue)%<(15,trunc)%an %C(auto,reset)%<(70,trunc)%s %<(20)%cd%C(auto,red)%D %C(auto,reset)
 
 [rebase]
   stat              = true
