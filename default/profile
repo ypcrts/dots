@@ -76,8 +76,10 @@ export LESS_TERMCAP_mb=$'\e[01;31m' LESS_TERMCAP_md=$'\e[01;34m' LESS_TERMCAP_me
 if [ -x ~/.fzf/bin/fzf ]; then
   adjunct_path_with "${HOME}/.fzf/bin" false
   [ -d ~/.fzf/man ] && export MANPATH="$MANPATH:~/.fzf/man"
-  export FZF_DEFAULT_COMMAND='ag -g ""'             # This uses agignore and gitignore
-  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+  # Disabled: use agignore; allows using rg or ag by default code
+  # export FZF_DEFAULT_COMMAND='ag -g ""'             # This uses agignore and gitignore
+  # export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 fi
 
 #{{{1 OS Specific
