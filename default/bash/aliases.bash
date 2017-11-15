@@ -123,25 +123,21 @@ alias k=keys
 alias rek=rekey
 
 
-#{{{1 TMUX and SSH
-tmuxa  () { [ -z "$TMUX" ] && { tmux attach -d || tmux; }                  }
-sshux  () { ssh "$@" -t -- 'tmux a -d || tmux';                               }
+#{{{1 tmux, ssh, mosh
+sshux  () { ssh "$@" -t -- 'tmux a -d || tmux';                            }
 
 ssho   () { ssh -t "$@" -- "exec ~/bin/onemux";                            }
-mosho  () { local TARGET="$1";shift;mosh "$@" -- "$TARGET" "~/bin/onemux"; }
+mosho  () { TARGET="$1";shift;mosh "$@" -- "$TARGET" "~/bin/onemux"; }
 
 moshoo () { mosh -- "$1" "~/bin/onemux" "$2";                              }
 sshoo  () { ssh -t "$1" -- "~/bin/onemux" "$2";                            }
 
-alias rot13='tr a-zA-Z n-za-mN-ZA-M <<<'
-aes_encypt () {
-  openssl enc -aes-256-cbc -e -in $1 -out "$1.aes"
-}
-aes_decrypt () {
-  openssl enc -aes-256-cbc -d -in $1 -out "${1%.*}"
-}
+alias rot13='tr a-zA-Z n-za-mN-ZA-M'
+alias troll='tr a-zA-Z qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
+alias llort='tr qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM a-zA-Z'
+
 diggy () {
-	dig +nocmd "$1" any +multiline +noall +answer;
+	dig +nocmd "$@" any +multiline +noall +answer;
 }
 cleanout() {
   op="find . -type f -regextype posix-extended -regex '((.*\.(pyc|class|pyo|bak|tmp|toc|aux|log|cp|fn|tp|vr|pg|ky))|(.*\~))'"
