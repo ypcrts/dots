@@ -8,7 +8,10 @@ mover () {
   fi
   set -xe
 
-  local CRYPT_DIR="/crypt"
+  if [[ "x$CRYPT_DIR" = 'x' ]]; then
+    >&2 echo "set \$CRYPT_DIR please"
+    exit 22
+  fi
   local ASSET_ORIGIN="$1"
   local ASSET_NAME="$(basename $ASSET_ORIGIN)"
   local ASSET_DIR="$(dirname $ASSET_ORIGIN)"
