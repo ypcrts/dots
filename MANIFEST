@@ -39,6 +39,7 @@ $ git
  
 $ curl
 ~/.curlrc: ./default/curlrc
+~/.digrc: ./default/digrc
 
 $ default
 @include: shell vim mux git curl bin
