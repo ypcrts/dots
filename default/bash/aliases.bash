@@ -1,40 +1,46 @@
 # vi: sts=2 ts=2 sw=2 et fdm=marker
 
 #{{{1 history, dirs, vim, ls
-alias h='history'
-alias j="jobs -l"
-alias p='cd ~/Projects'
-alias cdtl='cd "$(git rev-parse --show-toplevel)"'
-alias dirs='dirs -v'
+alias \
+  e='loadenv' \
+  h='history' \
+  j='jobs -l' \
+  p='cd ~/Projects' \
+  cdtl='cd "$(git rev-parse --show-toplevel)"' \
+  rmi='/bin/rm -i' \
+  ll='ls -lh' \
+  l1='ls -1' \
+  la='ls -A' \
+  lal='ls -lA' \
+  lla='lal' \
+  tree='tree -C' \
+  grep='grep --color=auto' \
+  dr='docker' \
+  drc='docker-compose' \
+  npmx='PATH="$(git rev-parse --show-toplevel || echo ".")/node_modules/.bin:$PATH"' \
+  k='keys' \
+  rek='rekey' \
+  rot13='tr a-zA-Z n-za-mN-ZA-M' \
+  troll='tr a-zA-Z qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM' \
+  llort='tr qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM a-zA-Z' \
+  tzu="TZ='utc'"
+
 
 if command -V nvim >/dev/null 2>&1; then
-  alias nvim="COLORTERM=256 nvim"
-  alias nvi='nvim'
-  alias vim='nvim'
-  alias vi='nvim'
+  alias \
+    nvi='nvim' \
+    vim='nvim' \
+    vi='nvim'
 fi
 
-alias tree='tree -C'
-alias grep='grep --color=auto'
 if ls --group-directories-first 2>/dev/null >&2; then
   alias ls='ls --color=auto -hF --group-directories-first'
 else
 alias ls='ls -hF'
 fi
-alias ll='ls -lh'
-alias l1='ls -1'
-alias la='ls -A'
-alias lal='ls -lA'
-alias lla='lal'
 
-alias rmi='/bin/rm -i'
-
-alias dr='docker'
-alias drc='docker-compose'
-alias npmx='PATH="$(git rev-parse --show-toplevel || echo ".")/node_modules/.bin:$PATH"'
 
 #{{{1 Language and LC
-alias tzu="TZ='utc'"
 lca () {
   myusage () {
       printf "USAGE:\tlca (c|us|gb|fr|de)\n\tI select UTF-8 LCs except with 'c'.\n\tUse me with export. My brother is lang."
@@ -63,8 +69,9 @@ lang () {
   fi
   export LANG
   case "$1" in
-    en|EN) LANG='en_GB.UTF-8' ;;
     de|DE) LANG='de_DE.UTF-8' ;;
+    en|EN) LANG='en_GB.UTF-8' ;;
+    es|ES) LANG='es_ES.UTF-8' ;;
     fr|FR) LANG='fr_FR.UTF-8' ;;
     *)     LANG="${1}.UTF-8"  ;;
   esac
@@ -76,26 +83,26 @@ reagent () {
   [ "$1" = "-q" ] && QUIET=1
 
   if [ -n "$SSH_AUTH_SOCK" ] && ssh-add -l >/dev/null 2>&1; then
-    [ -z "$QUIET" ] && printf "Keyed agent active\n"
+    [ -z "$QUIET" ] && echo "Keyed agent active"
     return 0
   fi
   local agents="$(find /tmp -type s -path '/tmp/ssh-*/agent.*' 2>/dev/null)"
   if [ "$agents" = '' ]; then
-    [ -z "$QUIET" ] && printf "No agents found\n"
+    [ -z "$QUIET" ] && echo "No agents found"
     return 1
   fi
   for agent in $agents; do
     export SSH_AUTH_SOCK="$agent"
 
     if ssh-add -l >/dev/null 2>&1; then
-      [ -z "$QUIET" ] && printf "Found keyed agent: $agent\n"
+      [ -z "$QUIET" ] && echo "Found keyed agent: $agent"
       ssh-add -l
       return 0
     fi
     printf "."
   done
 
-  [ -z "$QUIET" ] && printf "No agents are keyed\n"
+  [ -z "$QUIET" ] && echo "No agents are keyed"
   return 1
 }
 rekey () {
@@ -103,7 +110,7 @@ rekey () {
   [ "$1" = "-q" ] && QUIET=1
 
   reagent -q
-  printf "Rekeying $agent\n"
+  echo "Rekeying $agent"
   if ssh-add; then
     return 0
   fi
@@ -119,8 +126,6 @@ keys() {
   rekey && return 0
   newagent
 }
-alias k=keys
-alias rek=rekey
 
 
 #{{{1 tmux, ssh, mosh
@@ -132,14 +137,9 @@ mosho  () { TARGET="$1";shift;mosh "$@" -- "$TARGET" "~/bin/onemux"; }
 moshoo () { mosh -- "$1" "~/bin/onemux" "$2";                              }
 sshoo  () { ssh -t "$1" -- "~/bin/onemux" "$2";                            }
 
-alias rot13='tr a-zA-Z n-za-mN-ZA-M'
-alias troll='tr a-zA-Z qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
-alias llort='tr qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM a-zA-Z'
 
-diggy () {
-	dig +nocmd "$@" any +multiline +noall +answer;
-}
 cleanout() {
+  # TODO: make separate util
   op="find . -type f -regextype posix-extended -regex '((.*\.(pyc|class|pyo|bak|tmp|toc|aux|log|cp|fn|tp|vr|pg|ky))|(.*\~))'"
   if [ $# -eq 1  ]; then
     case "$1" in
@@ -159,6 +159,7 @@ cleanout() {
     eval $op | column | $PAGER
   fi
 }
+#{{{1 loadenv magic
 loadenv () {
   local POSTLOAD=''
   case "$1" in
@@ -183,9 +184,10 @@ loadenv () {
         esac
       fi
       printf "Loading virtualenvwrapper... "
-      if source_if_exists /usr/share/virtualenvwrapper/virtualenvwrapper.sh || \
-        source_if_exists /usr/bin/virtualenvwrapper.sh || \
-        source_if_exists /usr/local/bin/virtualenvwrapper.sh; then
+      if source_any \
+        /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
+        /usr/bin/virtualenvwrapper.sh \
+        /usr/local/bin/virtualenvwrapper.sh; then
         printf "OK\n"
         [ -n "$POSTLOAD" ] && eval "$POSTLOAD"
         return 0
@@ -196,15 +198,17 @@ loadenv () {
       ;;
     n*|nvm|npm|node)
       nvm current >/dev/null 2>&1 || \
-        source_if_exists "$HOME/.nvm/nvm.sh" || \
-        source_if_exists "/usr/local/opt/nvm/nvm.sh"
+        source_any \
+          "$HOME/.nvm/nvm.sh" \
+          "/usr/local/opt/nvm/nvm.sh"
       ;;
     rvm|ruby)
       source_if_exists "$HOME/.rvm/scripts/rvm"
       ;;
     rubygems|gems)
       #http://guides.rubygems.org/faqs/#user-install
-      if command -v ruby 2>&1 >/dev/null && command -v gem 2>&1 >/dev/null; then
+      if command -v ruby 2>&1 >/dev/null \
+        && command -v gem 2>&1 >/dev/null; then
         adjunct_path_with "$(ruby -rubygems -e 'puts Gem.user_dir')/bin" false
       fi
       ;;
@@ -214,4 +218,32 @@ loadenv () {
       ;;
   esac
 }
-alias e='loadenv'
+checkenv () {
+  local opt_delete=0
+  [[ $# -gt 0 ]] && case $1 in
+    -h|--help)
+      echo 'checkenv: inspects virtualenv and pipenv environment vars' \
+           '-d    deletes all found vars'
+      ;;
+    -d|-f|--delete)
+      opt_delete=1
+      ;;
+  esac
+  if ((opt_delete)); then
+    for var in $(env | grep -iE '^pip|^virtual\_env' | sed 's:=.*$::'); do
+      unset "$var"
+    done
+  else
+    for var in SHLVL $(env | grep -iE '^pip|^virtual_env'); do
+      echo "${var}=${!var}"
+    done
+  fi
+}
+checkpath () {
+    IFS=':'
+    echo "PATH="
+    for var in $PATH; do
+      echo -e "\t$var"
+    done
+    IFS=' '
+}

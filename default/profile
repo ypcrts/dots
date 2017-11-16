@@ -2,10 +2,10 @@
 
 export PATH
 adjunct_path_with () {
-  adjunctor="$1" # the directory  ## WARN: DO NOT USE TRAILING SLASH OR THE WORLD ENDS!
-  override="$2"  # if $2 is true: $1 is prefixed to PATH; else $1 is appended to PATH
+  local adjunctor="$1" # the directory  ## WARN: DO NOT USE TRAILING SLASH OR THE WORLD ENDS!
+  local override="$2"  # if $2 is true: $1 is prefixed to PATH; else $1 is appended to PATH
 
-  if ! [ -d "$adjunctor" ]; then
+  if ! [[ -d "$adjunctor" ]]; then
     return 1
   fi
 
@@ -31,7 +31,7 @@ adjunct_path_with "/usr/local/sbin"    true
 adjunct_path_with "/usr/local/bin"     true
 adjunct_path_with "${HOME}/bin"        false
 adjunct_path_with "${HOME}/.cargo/bin" false
-adjunct_path_with "${HOME}/Go/bin" false
+adjunct_path_with "${HOME}/Go/bin"     false
 adjunct_path_with "${HOME}/.local/bin" false
 
 

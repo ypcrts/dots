@@ -319,6 +319,12 @@ nnoremap gb :bn<CR>
 nnoremap gB :bp<CR>
 nnoremap Y y$
 
+if has('nvim')
+  " Hey neovim authors, this isn't emacs.
+  " oenvaqnzntr rireljurer
+  tnoremap <ESC> <C-\><C-n>
+endif
+
 " Center the cursor on the search word when using 'n'
 " http://git.z3bra.org/cgit.cgi/dotfiles/tree/vimrc
 nmap n nzz

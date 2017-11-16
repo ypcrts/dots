@@ -1,9 +1,10 @@
-#/bin/bash -i
+#/bin/bash
+set -eo pipefail
 
 mover () {
-  if [[ -z "$1" ]]; then
-    printf "USAGE: $0 ASSET"
-    printf "\n\t\tASSET\tmust be specified with full path\n"
+  if [[ "x$1" = "x" ]]; then
+    printf "USAGE: $(basename $0) ASSET"
+    printf "\n\tASSET\tmust be specified with full path\n"
     exit 1
   fi
   set -xe
@@ -12,13 +13,14 @@ mover () {
     >&2 echo "set \$CRYPT_DIR please"
     exit 22
   fi
+  CRYPT_DIR="$(readlink -e "$CRYPT_DIR")"
   local ASSET_ORIGIN="$1"
   local ASSET_NAME="$(basename $ASSET_ORIGIN)"
-  local ASSET_DIR="$(dirname $ASSET_ORIGIN)"
+  local ASSET_DIR="$(readlink -e "$(dirname $ASSET_ORIGIN)")"
 
   mkdir -p "${CRYPT_DIR}${ASSET_DIR}"
   mv -t "${CRYPT_DIR}${ASSET_DIR}" "$ASSET_ORIGIN"
-  ln --relative --symbolic -t "$ASSET_DIR" "${CRYPT_DIR}${ASSET_DIR}/$ASSET_NAME"
+  ln -s "${CRYPT_DIR}/${ASSET_DIR}/${ASSET_NAME}" "${ASSET_NAME}"
 
 }
 
