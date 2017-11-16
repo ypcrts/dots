@@ -18,7 +18,7 @@ Plug 'ypcrts/securemodelines', { 'commit': '33f695221cea4d965a47ab24a78fa2646c5e
 Plug 'editorconfig/editorconfig-vim'
 Plug 'Konfekt/FastFold'
 Plug 'tpope/vim-eunuch'
-" Plug 'itchyny/lightline.vim'
+Plug 'itchyny/lightline.vim'
 Plug 'nishigori/increment-activator'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'

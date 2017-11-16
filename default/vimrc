@@ -69,24 +69,38 @@ if !has('nvim')
   set ttymouse=xterm2       " More accurate mouse tracking
 endif
 
-"{{{1 8-bit and 24-bit color support
+"{{{1 4-bit, 8-bit and 24-bit color support
 if &t_Co > 2 || has('gui_running')
+  set hlsearch
 
-  " vim8, tmux-2.5, iterm3: b&w so force it off
-  if has('termguicolors') && (
-        \ (has('nvim') && match($TERM, '^screen$') == 0)
-        \ && match(system('uname'), 'Darwin') == 0
-        \ && match($TERM, '\v(screen|rxvt).*') == -1
-        \ )
+  " match() is like
+  if has('termguicolors') && has('nvim') && (
+    \   ( match(system('uname'), 'Darwin') == 0
+    \     && match($TERM, '^\v(screen|rxvt)-256.*$') == 0
+    \   )
+    \   || !empty($ITERM_SESSION_ID)
+    \ )
+
+
     " This nonsense can only be set if terminal has 24 bit colour support.
     " neovim does not intuit such a thing. programming is math not magic.
     " rxvt never has 24-bit support, so off.
+
     set termguicolors
+
+    " STILL BROKEN IN VIM800/TMUX2.6 - github issues galore
+    " XXX: When unbroken should remove has('nvim') from conditional
+
+    " " vim8, tmux-2.5, iterm3: b&w so force it off
+    " if v:version >= 800
+    "   " see `:help term.txt`
+    "   let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
+    "   let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
+    " endif
   else
     set notermguicolors
   endif
 
-  set hlsearch
 endif
 
 
