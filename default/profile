@@ -1,43 +1,26 @@
 # vi: ft=sh sts=2 sw=2 et
-# This file should targets portable /bin/sh
+# This file targets portable /bin/sh
 
-export PATH EDITOR VISUAL
 
 # Function setup
 #-------------------------------------------------------------------------------
 has () { command -V $1 2>/dev/null >/dev/null; }
 ADJUNCT_PATH () {
-  local adjunct="$1" # no traililng slash
-  local override="$2"
+  # $1 := candidate path with no trailing slash
+  # $2 := iff 'OVERRIDE' prepend instead of append
   case "$PATH" in
-    *$adjunct*) return 0 ;;
+    *:$1:*|$1:*|*:$1)  return 0 ;;
   esac
-  if ! [ -d "$adjunct" ]; then
+  if ! [ -d "$1" ]; then
     return 1
   fi
-  if [ "$override" = 'OVERRIDE' ]; then
-    PATH="$PATH:$adjunct"
+  if [ "x$2" = 'xOVERRIDE' ]; then
+    PATH="$1:$PATH"
   else
-    PATH="$adjunct:$PATH"
+    PATH="$PATH:$1"
   fi
 }
 
-# PATH=
-if [ $EUID -eq 0 ]; then
-  ADJUNCT_PATH '/usr/local/sbin'    OVERRIDE
-  ADJUNCT_PATH '/opt/local/sbin'    OVERRIDE
-  ADJUNCT_PATH '/usr/sbin'          OVERRIDE 
-  ADJUNCT_PATH '/sbin'              OVERRIDE
-fi
-
-ADJUNCT_PATH '/opt/local/bin'     
-ADJUNCT_PATH '/usr/local/bin'     
-ADJUNCT_PATH '/bin'
-ADJUNCT_PATH '/usr/bin'
-ADJUNCT_PATH ~/bin        
-ADJUNCT_PATH ~/.fzf/bin
-ADJUNCT_PATH ~/.cargo/bin 
-ADJUNCT_PATH ~/.local/bin 
 
 # Constants
 #-------------------------------------------------------------------------------
@@ -56,6 +39,29 @@ export \
   LESS_TERMCAP_ue=$'\e[0m' \
   LESS_TERMCAP_us=$'\e[01;35m'
 
+# Computed Constants and PATH
+#-------------------------------------------------------------------------------
+
+# TODO: Specified paths need to be emptied from PATH first to prevent conflicts
+# to ensure the override order. You can't use an empty PATH because you need to
+# inherit from system and parent process.
+ADJUNCT_PATH ~/.local/bin
+ADJUNCT_PATH ~/.cargo/bin
+ADJUNCT_PATH ~/.fzf/bin
+ADJUNCT_PATH ~/bin
+ADJUNCT_PATH '/usr/bin'
+ADJUNCT_PATH '/bin'
+ADJUNCT_PATH '/usr/local/bin'       OVERRIDE
+ADJUNCT_PATH '/opt/local/bin'       OVERRIDE
+
+if [ $EUID -eq 0 ]; then
+  ADJUNCT_PATH '/opt/local/sbin'    OVERRIDE
+  ADJUNCT_PATH '/usr/local/sbin'    OVERRIDE
+  ADJUNCT_PATH '/usr/sbin'          OVERRIDE
+  ADJUNCT_PATH '/sbin'              OVERRIDE
+fi
+export PATH EDITOR VISUAL
+
 for e in nvim vim vi ed; do
   has $e && EDITOR=$e && break
 done
@@ -68,7 +74,7 @@ VISUAL="$EDITOR"
 [ -n "$XDG_CACHE_HOME"  ] || export XDG_CACHE_HOME="$HOME/.cache"
 [ -n "$XDG_DATA_HOME"   ] || export XDG_DATA_HOME="$HOME/.local/share"
 
-ADJUNCT_PATH "${GOPATH}/bin"     
+ADJUNCT_PATH "${GOPATH}/bin"
 
 
 #{{{1 fzf

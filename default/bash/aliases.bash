@@ -179,31 +179,31 @@ loadenv () {
             return $?
             ;;
           *)
-            POSTLOAD="workon $2 || mkvirtualenv $2"
+            POSTLOAD="workon $2 >/dev/null 2>&1 || mkvirtualenv $2"
             ;;
         esac
       fi
-      printf "Loading virtualenvwrapper... "
-      if source_any \
+      echo -n "Loading virtualenvwrapper... "
+      if SOURCE_FIRST \
         /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
         /usr/bin/virtualenvwrapper.sh \
         /usr/local/bin/virtualenvwrapper.sh; then
-        printf "OK\n"
-        [ -n "$POSTLOAD" ] && eval "$POSTLOAD"
+        echo "OK"
+        [[ -n "$POSTLOAD" ]] && eval "$POSTLOAD"
         return 0
       else
-        printf "failed!\n"
+        echo "failed!"
         return 1
       fi
       ;;
     n*|nvm|npm|node)
       nvm current >/dev/null 2>&1 || \
-        source_any \
+        SOURCE_FIRST \
           "$HOME/.nvm/nvm.sh" \
-          "/usr/local/opt/nvm/nvm.sh"
+          '/usr/local/opt/nvm/nvm.sh'
       ;;
     rvm|ruby)
-      source_if_exists "$HOME/.rvm/scripts/rvm"
+      SOURCE_TRY "$HOME/.rvm/scripts/rvm"
       ;;
     rubygems|gems)
       #http://guides.rubygems.org/faqs/#user-install
@@ -233,14 +233,13 @@ checkenv () {
       unset "$var"
     done
   else
-    for var in SHLVL $(env | grep -iE '^pip|^virtual_env'); do
-      echo "${var}=${!var}"
+    for line in SHLVL $(env | grep -iE '^pip|^virtual_env'); do
+      echo "$line"
     done
   fi
 }
 checkpath () {
     IFS=':'
-    echo "PATH="
     for var in $PATH; do
       echo -e "\t$var"
     done
