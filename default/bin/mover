@@ -7,20 +7,19 @@ mover () {
     printf "\n\tASSET\tmust be specified with full path\n"
     exit 1
   fi
-  set -xe
 
   if [[ "x$CRYPT_DIR" = 'x' ]]; then
     >&2 echo "set \$CRYPT_DIR please"
     exit 22
   fi
-  CRYPT_DIR="$(readlink -e "$CRYPT_DIR")"
+  CRYPT_DIR="$(realpath "$CRYPT_DIR")"
   local ASSET_ORIGIN="$1"
   local ASSET_NAME="$(basename $ASSET_ORIGIN)"
-  local ASSET_DIR="$(readlink -e "$(dirname $ASSET_ORIGIN)")"
+  local ASSET_DIR="$(realpath "$(dirname $ASSET_ORIGIN)")"
 
-  mkdir -p "${CRYPT_DIR}${ASSET_DIR}"
-  mv -t "${CRYPT_DIR}${ASSET_DIR}" "$ASSET_ORIGIN"
-  ln -s "${CRYPT_DIR}/${ASSET_DIR}/${ASSET_NAME}" "${ASSET_NAME}"
+  mkdir -vp "${CRYPT_DIR}${ASSET_DIR}"
+  mv -v "$ASSET_ORIGIN" "${CRYPT_DIR}${ASSET_DIR}"
+  ln -s "${CRYPT_DIR}${ASSET_DIR}/${ASSET_NAME}" "${ASSET_NAME}"
 
 }
 
