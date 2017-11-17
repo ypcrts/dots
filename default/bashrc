@@ -1,12 +1,22 @@
 # vi: ft=sh sts=2 ts=2 sw=2 et
+# This file targets bash 3, guarding 4.
 
-# http://wiki.bash-hackers.org/scripting/bashchanges
-set -o vi noclobber
+SOURCE_TRY() {
+  [[ -f "$1" ]] && . "$1" && return 0
+  return 1
+}
+
+SOURCE_FIRST () {
+  while [[ $# -gt 0 ]]; do
+     SOURCE_TRY "$1" && return 0
+    shift
+  done
+  return 1
+}
 
 shopt_enabled=(
   # glob
   dotglob
-  failglob                 # don't pass failed globs
   nocaseglob
 
   # history
@@ -36,6 +46,7 @@ shopt_disabled=(
   sourcepath
 
   # default offs
+  failglob                 # don't pass failed globs
   execfail
   huponexit
   lithist
@@ -65,36 +76,24 @@ shopt -s ${shopt_enabled[@]}
 shopt -u ${shopt_disabled[@]}
 unset shopt_enabled shopt_disabled
 
-source_if_exists () {
-  if [[ -f "$1" ]]; then
-    . "$1"
-    return 0
-  fi
-  return 1
-}
-
-source_any () {
-  while [[ $# -gt 0 ]]; do
-    source_if_exists "$1" && return 0
-    shift
-  done
-  return 1
-}
+# http://wiki.bash-hackers.org/scripting/bashchanges
+set -o vi noclobber
 
 . ~/.config/bash/git.bash
 . ~/.config/bash/prompt.bash
 . ~/.config/bash/aliases.bash
-. ~/.config/bash/buku-completion.bash
-source_if_exists ~/.config/bash/os-aliases.bash
-eval "$(dircolors -b ~/.config/bash/dircolors/dircolors.256dark) 2>/dev/null >/dev/null"
+
+SOURCE_TRY ~/.config/bash/os-aliases.bash
+SOURCE_TRY ~/.config/bash/buku-completion.bash
+#  SOURCE_TRY ~/.fzf/shell/completion.bash 2>/dev/null  # broken
+ SOURCE_TRY ~/.fzf/shell/key-bindings.bash 2>/dev/null
+ 
+# eval "$(dircolors -b ~/.config/bash/dircolors/dircolors.256dark) 2>/dev/null >/dev/null"
 
 [[ -z "$HOSTNAME" ]] && HOSTNAME="$(hostname)"
-HOSTIDENT="$(printf '%s' "$HOSTNAME" | sed 's/\..*//')"
-source_if_exists ~/.config/bash/hosts/"${HOSTIDENT}.sh"
-source_if_exists ~/.config/bash/hosts/"${HOSTIDENT}.private.sh"
-source_if_exists ~/.config/bash/hosts/local.private.sh
+HOSTIDENT="$(echo -n "$HOSTNAME" | sed 's/\..*//')"
+ SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.sh"
+ SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.private.sh"
+ SOURCE_TRY ~/.config/bash/hosts/local.private.sh
 unset HOSTIDENT
 
-# Completion is bloody broken in fzf @ 45d4c57
-# source_if_exists ~/.fzf/shell/completion.bash 2>/dev/null
-source_if_exists ~/.fzf/shell/key-bindings.bash 2>/dev/null

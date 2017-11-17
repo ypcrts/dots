@@ -207,8 +207,7 @@ loadenv () {
       ;;
     rubygems|gems)
       #http://guides.rubygems.org/faqs/#user-install
-      if command -v ruby 2>&1 >/dev/null \
-        && command -v gem 2>&1 >/dev/null; then
+      if has ruby && has gem; then
         adjunct_path_with "$(ruby -rubygems -e 'puts Gem.user_dir')/bin" false
       fi
       ;;

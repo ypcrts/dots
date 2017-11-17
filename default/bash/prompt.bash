@@ -15,7 +15,7 @@ bash_prompt_setup () {
   __STRFARBE__ ()  {
     (($# != 1)) && return 1
     local HEXY
-    HEXY="$(echo -n "$1" | md5sum | sed 's:^\([0-9a-f]*\).*$:\U\1:')"
+    HEXY="$(echo -n "$1" | md5 | sed 's:^\([0-9a-f]*\).*$:\U\1:')"
 		if command -V bc >/dev/null 2>&1; then
       echo "ibase=16;((${HEXY}+2)%5)+20" | bc
 		else
