@@ -161,7 +161,7 @@ cleanout() {
 }
 #{{{1 loadenv magic
 loadenv () {
-  local POSTLOAD=''
+  local venv_name=''
   case "$1" in
     r*|reset)
       if command -V nvm >/dev/null 2>&1; then
@@ -175,25 +175,28 @@ loadenv () {
       if (($# >= 2)); then
         case "$2" in
           .|-l|--local)
-            source_if_exists "./bin/activate"
+            SOURCE_TRY ./bin/activate
             return $?
             ;;
           *)
-            POSTLOAD="workon $2 >/dev/null 2>&1 || mkvirtualenv $2"
+            venv_name="$2"
             ;;
         esac
       fi
-      echo -n "Loading virtualenvwrapper... "
-      if SOURCE_FIRST \
-        /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
-        /usr/bin/virtualenvwrapper.sh \
-        /usr/local/bin/virtualenvwrapper.sh; then
-        echo "OK"
-        [[ -n "$POSTLOAD" ]] && eval "$POSTLOAD"
-        return 0
-      else
-        echo "failed!"
-        return 1
+      if ! has mkvirtualenv || ! has workon; then
+        echo -n "Loading virtualenvwrapper... "
+        if SOURCE_FIRST \
+          /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
+          /usr/bin/virtualenvwrapper.sh \
+          /usr/local/bin/virtualenvwrapper.sh; then
+          echo "OK"
+        else
+          echo "failed!"
+          return 1
+        fi
+      fi
+      if [[ -n "$venv_name" ]]; then
+        workon "$venv_name" >/dev/null 2>&1 || mkvirtualenv "$venv_name"
       fi
       ;;
     n*|nvm|npm|node)

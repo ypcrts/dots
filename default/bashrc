@@ -35,11 +35,11 @@ shopt_enabled=(
   interactive_comments
   progcomp
   promptvars
+  checkwinsize    #  DANGER: update LINES and COLUMNS after each command
 )
 
 shopt_disabled=(
   # turned off defaults
-  checkwinsize    #  DANGER: update LINES and COLUMNS after each command
   hostcomplete    #  triggers on @
   extglob         #  strange quanitfiers with groups
   cdable_vars     #  if cd arg does not match, search env vars (was $ hard to type?)
