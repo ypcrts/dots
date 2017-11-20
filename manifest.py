@@ -8,8 +8,8 @@ import logging
 import os
 import sys
 from os import chdir, makedirs, remove, symlink
-from os.path import (basename, dirname, exists, expanduser, isdir, join,
-        lexists, normpath)
+from os.path import (basename, dirname, exists, expanduser, isdir, islink,
+                     join, lexists, normpath)
 from pprint import pprint
 from shutil import rmtree
 
