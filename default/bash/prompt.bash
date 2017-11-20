@@ -14,12 +14,18 @@ bash_prompt_setup () {
   # param $1 str to hash
   __STRFARBE__ ()  {
     (($# != 1)) && return 1
-    local HEXY
-    HEXY="$(echo -n "$1" | openssl dgst -md5 | sed 's:^\([0-9a-f]*\).*$:\U\1:')"
+    local HEXY='1'
+    for humbug in md5sum md5 "openssl dgst -md5"; do
+      # `openssl dgst` may have prefix like `(stdin)= abec112098`
+      if has $humbug; then
+        HEXY="$(echo -n "$1" | $humbug | sed 's:^.*\([0-9a-f]\{32\}\).*$:\U\1:')"
+        break
+      fi
+    done
 		if command -V bc >/dev/null 2>&1; then
       echo "ibase=16;((${HEXY}+2)%5)+20" | bc
 		else
-			python -uEc "import os;os.write(1,'{:d}'.format(int('${HASH}',16)%0x5+0x20))"
+			python -uEc "import os;os.write(1,'{:d}'.format(int('${HEXY}',16)%0x5+0x20))"
 		fi
   }
   __INTFARBE__ ()  {
