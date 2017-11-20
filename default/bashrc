@@ -18,6 +18,7 @@ shopt_enabled=(
   # glob
   dotglob
   nocaseglob
+  extglob                  #  strange quanitfiers with groups, needed for completitions
 
   # history
   cmdhist                  # put multiline commands into history
@@ -41,7 +42,6 @@ shopt_enabled=(
 shopt_disabled=(
   # turned off defaults
   hostcomplete    #  triggers on @
-  extglob         #  strange quanitfiers with groups
   cdable_vars     #  if cd arg does not match, search env vars (was $ hard to type?)
   sourcepath
 
