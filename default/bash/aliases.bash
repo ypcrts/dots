@@ -23,7 +23,8 @@ alias \
   rot13='tr a-zA-Z n-za-mN-ZA-M' \
   troll='tr a-zA-Z qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM' \
   llort='tr qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM a-zA-Z' \
-  tzu="TZ='utc'"
+  tzu="TZ='utc'" \
+  sshadd='ssh-add'
 
 
 if command -V nvim >/dev/null 2>&1; then
