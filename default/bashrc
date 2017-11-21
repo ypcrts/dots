@@ -1,19 +1,22 @@
-# vi: ft=sh sts=2 ts=2 sw=2 et
+# vi: ft=sh tw=0 ts=2 sw=2 sts=2 fdm=marker fmr={{{,}}} et:
+# vi: ft=sh sts=2 ts=2 sw=2 fdm=markert et
 # This file targets bash 3, guarding 4.
 
-SOURCE_TRY() {
-  [[ -f "$1" ]] && . "$1" && return 0
-  return 1
-}
+#{{{1 functions
+#-------------------------------------------------------------------------------
+SOURCE_TRY () { [[ -f "$1" ]] && . "$1"; }
 
 SOURCE_FIRST () {
   while [[ $# -gt 0 ]]; do
-     SOURCE_TRY "$1" && return 0
+    SOURCE_TRY "$1" && return 0
     shift
   done
   return 1
 }
 
+#{{{1 shopt, set
+#-------------------------------------------------------------------------------
+# http://wiki.bash-hackers.org/scripting/bashchanges
 shopt_enabled=(
   # glob
   dotglob
@@ -57,7 +60,6 @@ shopt_disabled=(
   xpg_echo
 )
 
-
 if [[ "$BASH_VERSINFO" -ge 4 ]]; then
   shoptions+=(
     checkhash
@@ -76,23 +78,37 @@ shopt -s ${shopt_enabled[@]}
 shopt -u ${shopt_disabled[@]}
 unset shopt_enabled shopt_disabled
 
-# http://wiki.bash-hackers.org/scripting/bashchanges
 set -o vi noclobber
 
+#{{{1 history
+#-------------------------------------------------------------------------------
+export \
+  HISTSIZE=65536 \
+  HISTFILESIZE=1048576 \
+  HISTIGNORE='&:[ ]*:exit' \
+  HISTCONTROL='ignoreboth'  #ignore dups and space
+
+#{{{1 include tiers
+#-------------------------------------------------------------------------------
+SOURCE_TRY ~/.config/bash/buku-completion.bash
+
+#  SOURCE_TRY ~/.fzf/shell/completion.bash 2>/dev/null  # broken
+SOURCE_TRY ~/.fzf/shell/key-bindings.bash 2>/dev/null
+ 
+#{{{1 includes first
+#-------------------------------------------------------------------------------
 . ~/.config/bash/git.bash
 . ~/.config/bash/prompt.bash
 . ~/.config/bash/aliases.bash
-
 SOURCE_TRY ~/.config/bash/os-aliases.bash
-SOURCE_TRY ~/.config/bash/buku-completion.bash
-#  SOURCE_TRY ~/.fzf/shell/completion.bash 2>/dev/null  # broken
- SOURCE_TRY ~/.fzf/shell/key-bindings.bash 2>/dev/null
- 
+
 # eval "$(dircolors -b ~/.config/bash/dircolors/dircolors.256dark) 2>/dev/null >/dev/null"
 
+#{{{1 includes hostwise
+#-------------------------------------------------------------------------------
 [[ -z "$HOSTNAME" ]] && HOSTNAME="$(hostname)"
 HOSTIDENT="$(echo -n "$HOSTNAME" | sed 's/\..*//')"
- SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.sh"
- SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.private.sh"
- SOURCE_TRY ~/.config/bash/hosts/local.private.sh
-unset HOSTIDENT
+SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.sh"
+SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.private.sh"
+SOURCE_TRY ~/.config/bash/hosts/local.private.sh
+unset HOSTIDENT SOURCE_TRY SOURCE_FIRST

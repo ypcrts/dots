@@ -37,7 +37,7 @@ fi
 if ls --group-directories-first 2>/dev/null >&2; then
   alias ls='ls --color=auto -hF --group-directories-first'
 else
-alias ls='ls -hF'
+  alias ls='ls -hF'
 fi
 
 

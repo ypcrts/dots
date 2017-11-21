@@ -1,8 +1,7 @@
 # vi: ft=sh sts=2 sw=2 et
 # This file targets portable /bin/sh
 
-
-# Function setup
+#{{{1 Functions
 #-------------------------------------------------------------------------------
 has () { command -V $1 2>/dev/null >/dev/null; }
 ADJUNCT_PATH () {
@@ -22,44 +21,35 @@ ADJUNCT_PATH () {
 }
 
 
-# Constants
+#{{{1 Constants
 #-------------------------------------------------------------------------------
 export \
+  TMOUT=0 \
   MOSH_ESCAPE_KEY='~' \
   VIRTUAL_ENV_DISABLE_PROMPT=1 \
-  LESS="--no-init --quit-if-one-screen --quit-on-intr --force --dumb --ignore-case --no-lessopen --RAW-CONTROL-CHARS --tilde --shift 8 --chop-long-lines" \
-  LESSSECURE='1' LESSHISTFILE='-' LESSCHARSET='utf-8' \
-  PAGER='/usr/bin/less' \
+  PAGER='less' \
   GREP_COLOR="1;33" \
   LESS_TERMCAP_mb=$'\e[01;31m' \
   LESS_TERMCAP_md=$'\e[01;34m' \
+  LESS_TERMCAP_so=$'\e[01;30;03;36m' \
   LESS_TERMCAP_me=$'\e[0m' \
   LESS_TERMCAP_se=$'\e[0m' \
-  LESS_TERMCAP_so=$'\e[01;30;03;36m' \
   LESS_TERMCAP_ue=$'\e[0m' \
-  LESS_TERMCAP_us=$'\e[01;35m'
+  LESS_TERMCAP_us=$'\e[01;35m' \
+  LESSSECURE='1' LESSHISTFILE='-' LESSCHARSET='utf-8' \
+  LESS="--no-init --quit-if-one-screen --quit-on-intr --force --dumb --ignore-case --no-lessopen --RAW-CONTROL-CHARS --tilde --shift 8 --chop-long-lines"
 
-# Computed Constants and PATH
+#{{{1 Computed Constants and PATH
 #-------------------------------------------------------------------------------
 
 # TODO: Specified paths need to be emptied from PATH first to prevent conflicts
 # to ensure the override order. You can't use an empty PATH because you need to
 # inherit from system and parent process.
-ADJUNCT_PATH ~/.local/bin
-ADJUNCT_PATH ~/.cargo/bin
-ADJUNCT_PATH ~/.fzf/bin
-ADJUNCT_PATH ~/bin
+
 ADJUNCT_PATH '/usr/bin'
 ADJUNCT_PATH '/bin'
 ADJUNCT_PATH '/usr/local/bin'       OVERRIDE
-ADJUNCT_PATH '/opt/local/bin'       OVERRIDE
 
-if [ $EUID -eq 0 ]; then
-  ADJUNCT_PATH '/opt/local/sbin'    OVERRIDE
-  ADJUNCT_PATH '/usr/local/sbin'    OVERRIDE
-  ADJUNCT_PATH '/usr/sbin'          OVERRIDE
-  ADJUNCT_PATH '/sbin'              OVERRIDE
-fi
 export PATH EDITOR VISUAL
 
 for e in nvim vim vi ed; do
@@ -67,23 +57,27 @@ for e in nvim vim vi ed; do
 done
 VISUAL="$EDITOR"
 
-# Overridable constants
+#{{{1 Overridable constants
 #--------------------------------------------------------------------------------
 [ -n "$GOPATH" ] || export GOPATH="$HOME/Go"
 [ -n "$XDG_CONFIG_HOME" ] || export XDG_CONFIG_HOME="$HOME/.config"
 [ -n "$XDG_CACHE_HOME"  ] || export XDG_CACHE_HOME="$HOME/.cache"
 [ -n "$XDG_DATA_HOME"   ] || export XDG_DATA_HOME="$HOME/.local/share"
 
-ADJUNCT_PATH "${GOPATH}/bin"
-
-
 #{{{1 fzf
+# TODO: package manager? something? ur trash
+ADJUNCT_PATH ~/.fzf/bin
 [ -d ~/.fzf/man ] && export MANPATH="$MANPATH:~/.fzf/man"
 
 #{{{1 OS Specific
 case "$OSTYPE" in
   darwin*)
-    # ADJUNCT_PATH /usr/local/opt/coreutils/libexec/gnubin true
+    ADJUNCT_PATH /usr/local/opt/coreutils/libexec/gnubin OVERRIDE
+    ADJUNCT_PATH /opt/local/libexec/gnubin/              OVERRIDE
+    ADJUNCT_PATH /opt/local/bin                          OVERRIDE
+    if [ $EUID -eq 0 ]; then
+      ADJUNCT_PATH /opt/local/sbin OVERRIDE
+    fi
     export \
       CLICOLOR=1 \
       LSCOLORS=ExFxCxDxBxegedabagacad \
@@ -101,28 +95,32 @@ case "$OSTYPE" in
 esac
 
 
+#{{{1 iamgr00t amirite?
+if [ $EUID -eq 0 ]; then
+  ADJUNCT_PATH /usr/local/sbin    OVERRIDE
+  ADJUNCT_PATH /usr/sbin          OVERRIDE
+  ADJUNCT_PATH /sbin              OVERRIDE
+  TMOUT=300
+fi
+
+
 #{{{1 Guard for non-interactive shells
 case $- in
   *i*)  ;;
   *)   return ;;
 esac
 
+#{{{1 PATH for Humans (Hi Kenneth!)
+ADJUNCT_PATH ~/.local/bin
+ADJUNCT_PATH "${GOPATH}/bin"
+ADJUNCT_PATH ~/.cargo/bin
+ADJUNCT_PATH ~/bin
+
+
+#{{{1 Cleanup
+unset ADJUNCT_PATH has
+
 #{{{1 Disable flow control
 stty -ixon
 
-#{{{1 TMOUT
-if [ $EUID -eq 0 ]; then
-  export TMOUT=300
-else
-  export TMOUT=0
-fi
-
-#{{{1 Bash history
-export \
-  HISTSIZE=65536 \
-  HISTFILESIZE=1048576 \
-  HISTIGNORE='&:[ ]*:exit' \
-  HISTCONTROL='ignoreboth'  #ignore dups and space
-
-# for the benefit of tmux that is not -i
-. ~/.bashrc
+[ -n "$BASH_VERSINFO" ] && . ~/.bashrc
