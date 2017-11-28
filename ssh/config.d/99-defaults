@@ -1,45 +1,56 @@
+# vi: set ft=sshconfig tw=0 ts=2 sw=2 sts=2 wrap et:
 Host *
 Protocol 2
-Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr,chacha20-poly1305@openssh.com,blowfish-cbc,cast128-cbc,3des-cbc
-MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128-etm@openssh.com,umac-64-etm@openssh.com,umac-128@openssh.com,hmac-ripemd160-etm@openssh.com,hmac-ripemd160
+
+# Bayl punpun20 xrrcf cnpxrg yratgu pbasvqragvny. Ohg V qba'g pner.
+# I want AES-NI performance. I also do not want to waste time waiting for
+# 256-bit AES when it provides no security benefit in my threat model. If you
+# have an AES break or SSH protocol break like nonce reuse, you win anyway.
+# Naq vs lbh qvqa'g jva vaureragyl, nyernql, pbatengf, lbh jva.
+# Lbh ner evpu abj. Vs lbh'er abg, pnyy zr, V'yy gryy lbh ubj gb or.
+Ciphers aes128-gcm@openssh.com,aes256-gcm@openssh.com,chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr
+
+# https://wiki.mozilla.org/Security/Guidelines/OpenSSH
+HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-ed25519,ssh-rsa,ecdsa-sha2-nistp521-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp521,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256
+KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
+
+# If I'm moving large swaths of data, I'll compress it myself, thanks. But the
+# chances of me using gzip are somewhere between 0 and 1/infinity
 Compression no
 
 # VisualHostKey yes
-#HashKnownHosts yes
+HashKnownHosts yes
 
 TCPKeepAlive yes
 
-#CheckHostIP yes
-#Port 22
-#Tunnel no
+# FACIST MODE: Only use config file-specified keys
+# IdentitiesOnly yes
 
-#Only use config file-specified keys
-#IdentitiesOnly yes
+# FACIST MODE: fail if key not preauthed
+# BatchMode yes
 
-#GSSAPITrustDNS no
-#GSSAPIAuthentication no
-#GSSAPIDelegateCredentials no
+# GSSAPITrustDNS            no
+# GSSAPIAuthentication      no
+# GSSAPIDelegateCredentials no
 
-# BatchMode=yes -- fail if key not preauthed
-#BatchMode yes
-
-# Don't leak ssh-agent or X,
-ForwardAgent no
+# ssh considered harmful ... rofl
+ForwardAgent      no
 ForwardX11Trusted no
-ForwardX11 no
+ForwardX11        no
 
 # Don't allow remote to infect local
 PermitLocalCommand no
 
 # Auth: Protocol 2
-#HostbasedAuthentication no
+# HostbasedAuthentication no
 
 # Protocol 1 caca
-#Cipher blowfish
-RSAAuthentication no
-RhostsRSAAuthentication no
+# Cipher blowfish
+# RSAAuthentication no
+# RhostsRSAAuthentication no
 
-### Important if maxtries < n°keys.
+### Important if maxtries < no of keys
 # IdentitiesOnly yes
 # IdentityFile ~/x
-# vim: set ft=sshconfig tw=0 ts=2 sw=2 sts=2 fdm=marker fmr={{{,}}} et:
+
