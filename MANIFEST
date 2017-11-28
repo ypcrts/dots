@@ -2,6 +2,7 @@
 
 $ bin
 ~/bin/: ./default/bin/*
+~/bin/manifest.py: ./manifest.py
 
 $ shell
 ~/.profile: ./default/profile

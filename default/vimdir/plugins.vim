@@ -358,15 +358,13 @@ nmap <Leader>hs <Plug>GitGutterStageHunk
 nmap <Leader>hu <Plug>GitGutterUndoHunk
 nmap <Leader>hp <Plug>GitGutterPreviewHunk
 
-nmap ]og :GitGutterLineHighlightsDisable<CR>
-nmap [og :GitGutterLineHighlightsEnable<CR>
+nmap <Leader>ogg :GitGutterToggle<CR>
+nmap <Leader>hh :GitGutterLineHighlightsToggle<CR>
 
-nmap ]gg :GitGutterDisable<CR>
-nmap [gg :GitGutterEnable<CR>
-
-nmap [gh :let g:gitgutter_diff_base = 'HEAD'<CR>
-nmap [gm :let g:gitgutter_diff_base = 'origin/master'<CR>
-nmap [gs :let g:gitgutter_diff_base = 'origin/staging'<CR>
+nmap <Leader>ggb :let g:gitgutter_diff_base =
+nmap <Leader>ggh :let g:gitgutter_diff_base = 'HEAD'<CR>
+nmap <Leader>ggm :let g:gitgutter_diff_base = 'origin/master'<CR>
+nmap <Leader>ggs :let g:gitgutter_diff_base = 'origin/staging'<CR>
 
 "{{{2 NERDCommenter
 let g:NERDSpaceDelims=1

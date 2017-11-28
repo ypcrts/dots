@@ -75,6 +75,11 @@ case "$OSTYPE" in
     ADJUNCT_PATH /usr/local/opt/coreutils/libexec/gnubin OVERRIDE
     ADJUNCT_PATH /opt/local/libexec/gnubin/              OVERRIDE
     ADJUNCT_PATH /opt/local/bin                          OVERRIDE
+    if [ -d /opt/local/share/man ]; then
+      # TODO: ADJUNCT_PATH with ${!SOMEPATHVAR} underlaying
+      #       HI FUTURE SELF: remember u get so grumpy if manpath is wrong before u change dis
+      MANPATH="$MANPATH:/opt/local/share/man"
+    fi
     if [ $EUID -eq 0 ]; then
       ADJUNCT_PATH /opt/local/sbin OVERRIDE
     fi
@@ -118,7 +123,7 @@ ADJUNCT_PATH ~/bin
 
 
 #{{{1 Cleanup
-unset ADJUNCT_PATH has
+unset ADJUNCT_PATH
 
 #{{{1 Disable flow control
 stty -ixon

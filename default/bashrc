@@ -111,4 +111,4 @@ HOSTIDENT="$(echo -n "$HOSTNAME" | sed 's/\..*//')"
 SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.sh"
 SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.private.sh"
 SOURCE_TRY ~/.config/bash/hosts/local.private.sh
-unset HOSTIDENT SOURCE_TRY SOURCE_FIRST
+unset HOSTIDENT
