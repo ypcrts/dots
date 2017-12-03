@@ -6,7 +6,8 @@ $ bin
 
 $ shell
 ~/.profile: ./default/profile
-~/.bash_profile: @delete
+~/.bash_history: /dev/null
+~/.bash_profile: ./default/bash_profile
 ~/.bash_logout: ./default/bash_logout
 ~/.logout: @delete
 ~/.bashrc: ./default/bashrc
@@ -16,19 +17,16 @@ $ shell
 ~/.ipython/profile_default/ipython_config.py: ./default/ipython_config.py
 
 $ vim
-~/.vimrc: ./default/vimrc
-~/.gvimrc: ./default/gvimrc
-~/.config/nvim/init.vim: ./default/vimrc
+~/.vimrc: @delete
+~/.gvimrc: @delete
+~/.config/nvim/init.vim: ./default/vimdir/vimrc
+~/.config/nvim/ginit.vim: ./default/vimdir/gvimrc
 ~/.vim/: ./default/vimdir/*
-~/.vim/autoload/plug.vim: @delete
-~/.vim/autoload/plug.old: @delete
 
 $ vimfiles
+~/_vimrc: @delete
+~/_gvimrc: @delete
 ~/vimfiles/: ./default/vimdir/*
-~/_vimrc: ./default/vimrc
-~/_gvimrc: ./default/gvimrc
-~/vimfiles/autoload/plug.vim: @delete
-~/vimfiles/autoload/plug.old: @delete
 
 $ mux
 ~/.tmux.conf: ./default/tmux.conf
@@ -100,6 +98,9 @@ $ gpg
 ~/.caff/gnupghome/gpg.conf: ./gpg/caff-gpg.conf
 ~/.gnupg/dirmngr.conf: ./gpg/dirmngr.conf
 ~/.gnupg/gpg.conf: ./gpg/gpg.conf
+
+$ comms
+~/.muttrc: ./comms/muttrc
 
 #--------------------------------------------------------------------------------
 

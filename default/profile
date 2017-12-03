@@ -53,7 +53,7 @@ ADJUNCT_PATH '/usr/local/bin'       OVERRIDE
 export PATH EDITOR VISUAL
 
 for e in nvim vim vi ed; do
-  has $e && EDITOR=$e && break
+  has $e && EDITOR="$(command -v $e)" && break
 done
 VISUAL="$EDITOR"
 
@@ -93,7 +93,7 @@ case "$OSTYPE" in
     [ -n "$SYSTEMD_LESS"  ] || export SYSTEMD_LESS="${LESS}"
     export BROWSER
     for THIS in firefox firefox-esr brave w3m links2 chromium x-www-browser; do
-      has $THIS && BROWSER=$THIS && break
+      has $THIS && BROWSER="$(command -v $THIS)" && break
     done
     ;;
   *) return ;;
@@ -117,6 +117,7 @@ esac
 
 #{{{1 PATH for Humans (Hi Kenneth!)
 ADJUNCT_PATH ~/.local/bin
+ADJUNCT_PATH ~/.luarocks/bin
 ADJUNCT_PATH "${GOPATH}/bin"
 ADJUNCT_PATH ~/.cargo/bin
 ADJUNCT_PATH ~/bin
@@ -124,8 +125,3 @@ ADJUNCT_PATH ~/bin
 
 #{{{1 Cleanup
 unset ADJUNCT_PATH
-
-#{{{1 Disable flow control
-stty -ixon
-
-[ -n "$BASH_VERSINFO" ] && . ~/.bashrc

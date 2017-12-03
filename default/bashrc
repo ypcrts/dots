@@ -1,5 +1,4 @@
 # vi: ft=sh tw=0 ts=2 sw=2 sts=2 fdm=marker fmr={{{,}}} et:
-# vi: ft=sh sts=2 ts=2 sw=2 fdm=markert et
 # This file targets bash 3, guarding 4.
 
 #{{{1 functions
@@ -7,12 +6,40 @@
 SOURCE_TRY () { [[ -f "$1" ]] && . "$1"; }
 
 SOURCE_FIRST () {
-  while [[ $# -gt 0 ]]; do
+  while (( $# > 0 )); do
     SOURCE_TRY "$1" && return 0
     shift
   done
   return 1
 }
+
+#{{{1 include tiers
+#-------------------------------------------------------------------------------
+SOURCE_TRY ~/.config/bash/buku-completion.bash
+
+#  SOURCE_TRY ~/.fzf/shell/completion.bash 2>/dev/null  # broken
+SOURCE_TRY ~/.fzf/shell/key-bindings.bash 2>/dev/null
+ 
+#{{{1 includes first
+#-------------------------------------------------------------------------------
+. ~/.config/bash/git.bash
+. ~/.config/bash/prompt.bash
+. ~/.config/bash/aliases.bash
+SOURCE_TRY ~/.config/bash/os-aliases.bash
+
+# eval "$(dircolors -b ~/.config/bash/dircolors/dircolors.256dark) 2>/dev/null >/dev/null"
+
+#{{{1 includes hostwise
+#-------------------------------------------------------------------------------
+[[ -z "$HOSTNAME" ]] && HOSTNAME="$(hostname)"
+HOSTIDENT="$(echo -n "$HOSTNAME" | sed 's/\..*//')"
+SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.sh"
+SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.private.sh"
+SOURCE_TRY ~/.config/bash/hosts/local.private.sh
+unset HOSTIDENT
+
+#{{{1 Disable flow control
+stty -ixon
 
 #{{{1 shopt, set
 #-------------------------------------------------------------------------------
@@ -88,27 +115,3 @@ export \
   HISTIGNORE='&:[ ]*:exit' \
   HISTCONTROL='ignoreboth'  #ignore dups and space
 
-#{{{1 include tiers
-#-------------------------------------------------------------------------------
-SOURCE_TRY ~/.config/bash/buku-completion.bash
-
-#  SOURCE_TRY ~/.fzf/shell/completion.bash 2>/dev/null  # broken
-SOURCE_TRY ~/.fzf/shell/key-bindings.bash 2>/dev/null
- 
-#{{{1 includes first
-#-------------------------------------------------------------------------------
-. ~/.config/bash/git.bash
-. ~/.config/bash/prompt.bash
-. ~/.config/bash/aliases.bash
-SOURCE_TRY ~/.config/bash/os-aliases.bash
-
-# eval "$(dircolors -b ~/.config/bash/dircolors/dircolors.256dark) 2>/dev/null >/dev/null"
-
-#{{{1 includes hostwise
-#-------------------------------------------------------------------------------
-[[ -z "$HOSTNAME" ]] && HOSTNAME="$(hostname)"
-HOSTIDENT="$(echo -n "$HOSTNAME" | sed 's/\..*//')"
-SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.sh"
-SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.private.sh"
-SOURCE_TRY ~/.config/bash/hosts/local.private.sh
-unset HOSTIDENT

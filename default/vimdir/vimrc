@@ -1,60 +1,46 @@
-"{{{1 Plugins Meta
+" vi: sw=2:sts=2:ts=2:et
+"{{{1 Meta
+set nocompatible
 set shortmess=aoOstTAI " shorten all messages except written
 set report=0           " Always report the number of lines changed by a cmd
-let g:configdir = '~/.vim'
-if has('win32')
-  let g:configdir = '~/vimfiles'
-endif
-let g:libdir = expand(g:configdir)
-if has('nvim')
-  let g:configdir = '~/.config/nvim'
-else
-  set nocompatible
-endif
-let g:configdir = expand(g:configdir)
 
-function! Sourceiffr(target)
-  if filereadable(a:target)
-    execute 'source ' . a:target
-  endif
-endfunc
+let mapleader = "\<Space>"
+let g:vimdir = has('win32') ? '~/vimfiles' : '~/.vim'
+exe 'set' 'rtp=' . g:vimdir . '/,'. $VIMRUNTIME
+let g:vimdir = fnameescape(expand(g:vimdir))
 
-"{{{2 Pathogen.vim
-call Sourceiffr(g:libdir . '/managedbootstrap/pathogen.vim')
-call pathogen#infect(g:libdir . '/pathogens/{}')
-
-"{{{2 Plug.vim
-let mapleader="\<Space>"
-if empty($SAFEVI) && $USER != 'root' && $USER != 'admin'
-  call Sourceiffr(g:libdir . '/managedbootstrap/plug.vim')
-  call Sourceiffr(g:libdir . '/plugins.vim')
-else
+"{{{2 Plugins
+if ($USER == 'root' || $USER == 'admin')
+    \ && empty($NOSAFEVI) || !empty($SAFEVI)
+  echo '[SAVEVI] NO PLUGINS LOADED: ' . (empty($SAFEVI) ? '' . $USER : '') .  '[SAFEVI]'
   let g:safevi = 1
-  echo 'NO PLUGINS LOADED'
+else
+  if !empty($NOSAFEVI)
+    echomsg 'Danger: NOSAFEVI SET'
+  endif
+  exe 'source' g:vimdir . '/plugins.vimrc'
 endif
 
 
 "{{{1 Standard Base Configuration (syntax, utf8, ft, clipboard, 256 )
 "
 "{{{2 Clear Autocommands
-if has('autocmd')
-  autocmd!
-endif
+autocmd!
 "
-"{{{2 No Magic File I/O
+"{{{2 Danger: Magic File I/O
 set nobackup
 set writebackup
 set noswapfile
 set noautowrite
-set noautowriteall
+set autowriteall
 set noautoread
 
 "{{{2 Syntax highlighting, filetype plugin, indent
-filetype plugin on
-filetype indent on
+filetype plugin indent on
 syntax on
 syntax sync minlines=256
-let &spellfile = g:libdir . '/spell/en.utf-8.add' " otherwise, defaults to rtp[0] -_-
+set synmaxcol=256
+"let &spellfile = g:vimdir . '/spell/en.utf-8.add' " defaults to rtp[0] -_-
 
 "{{{2 File encoding
 if has('multi_byte')
@@ -106,7 +92,7 @@ endif
 
 "{{{1 undo & cache
 set undolevels=2048
-let s:cachedir=expand($XDG_CACHE_HOME . '/vim')
+let s:cachedir=expand(($XDG_CACHE_HOME? $XDG_CACHE_HOME : '~/.cache') . '/vim')
 let s:undocachedir=s:cachedir . '/undo'
 if !isdirectory(s:undocachedir)
   call mkdir(s:undocachedir, 'p', 0700)
@@ -127,10 +113,8 @@ else
   set viminfo="NONE"
 endif
 
-if has("win32")
+if has("win32") || exists('g:safevi')
  colorscheme ir_black
-elseif exists('g:safevi')
-  color elflord
 " elseif has('termguicolors') && &termguicolors
 "  set background=dark
 "   let g:solarized_termtrans = 1
@@ -162,16 +146,16 @@ set formatoptions=qn1jtc
 
 set linebreak        " wrap lines at chars in &breakat'
 set nowrap
+set display=lastline,uhex
 
 set history=1000
-set synmaxcol=1024
 
 "{{{1 Interaction (Keys, Mouse).
 
 set backspace=2           " =2: full backspacing capabilities (indent,eol,start)
 set nojoinspaces          " never joing lines with two spaces
 
-set mouse=                " set mouse=nv " enable mouse in normal, visual
+set mouse=nvch            " set mouse=nv " enable mouse in normal, visual
 set mousehide             " Hide the mouse when typing text
 set nostartofline         " Avoid moving cursor to BOL when jumping around
 
@@ -221,7 +205,8 @@ set report=0           " Always report the number of lines changed by a cmd
 
 set title              " show title in console title bar
 set noerrorbells
-set novisualbell
+set visualbell t_vb=
+set lazyredraw
 set nonumber
 
 set splitright
@@ -242,7 +227,7 @@ set nocursorcolumn
   " autocmd winleave * set nocursorcolumn | set nocursorline
 " augroup end
 
-"{{{2  Wildmenu
+"{{{2 Wildmenu
 if has('wildmenu')
  " enhanced tab-completion shows all matching cmds in a popup menu
  set wildmenu
@@ -325,38 +310,43 @@ if has('nvim')
   tnoremap <ESC> <C-\><C-n>
 endif
 
-" Center the cursor on the search word when using 'n'
-" http://git.z3bra.org/cgit.cgi/dotfiles/tree/vimrc
-nmap n nzz
-nmap N Nzz
+" Center the cursor a lot
+nnoremap <silent> <C-]> <C-]>zz
+nnoremap <silent> *     *zz
+nnoremap <silent> #     #zz
+nnoremap <silent> g*    g*zz
+nnoremap <silent> g#    g#zz
+nnoremap <silent> gd    gdzz
+nnoremap <silent> n     nzz
+nnoremap <silent> N     Nzz
 
 " Q formats paragraphs, instead of entering ex mode
 noremap Q gq
 nnoremap <silent> gqJ :call Exe#ExeWithOpts('norm! gqj', { 'tw' : 2147483647 })<CR>
 
-" K should behave like J
-nnoremap K kJ
+" K should behave like J, rip
+nnoremap K :echomsg "stop using this, it hurts you when you're not home"<CR>
 
-nnoremap <buffer> <Left> <Nop>
+nnoremap <buffer> <Left>  <Nop>
 nnoremap <buffer> <Right> <Nop>
-nnoremap <buffer> <Up> <Nop>
-nnoremap <buffer> <Down> <Nop>
+nnoremap <buffer> <Up>    <Nop>
+nnoremap <buffer> <Down>  <Nop>
 
-inoremap <buffer> <Left> <Esc>
+inoremap <buffer> <Left>  <Esc>
 inoremap <buffer> <Right> <Esc>
-inoremap <buffer> <Up> <Esc>
-inoremap <buffer> <Down> <Esc>
+inoremap <buffer> <Up>    <Esc>
+inoremap <buffer> <Down>  <Esc>
 
-vnoremap <buffer> <Left> <Nop>
+vnoremap <buffer> <Left>  <Nop>
 vnoremap <buffer> <Right> <Nop>
-vnoremap <buffer> <Up> <Nop>
-vnoremap <buffer> <Down> <Nop>
+vnoremap <buffer> <Up>    <Nop>
+vnoremap <buffer> <Down>  <Nop>
 
 "{{{2 splits, tmux aware.
 " pieced together from:
 " https://github.com/christoomey/vim-tmux-navigator
 " http://www.codeography.com/2013/06/19/navigating-vim-and-tmux-splits
-if exists('$TMUX')
+if empty('$TMUX')
   let g:tmux_is_last_pane = 0
   au WinEnter * let g:tmux_is_last_pane = 0
   function! TmuxOrSplitSwitch(wincmd, tmuxdir)
@@ -435,8 +425,8 @@ nnoremap <Leader>occ :setlocal cursorcolumn!<CR>
 nnoremap <Leader>ocl :setlocal cursorline!<CR>
 
 nnoremap <Leader>rc :tabnew $MYVIMRC<CR>
-nnoremap <Leader>rp :execute ":tabnew " . g:libdir . "/plugins.vim"<CR>
-nnoremap <Leader>rl :execute ":tabnew " . g:configdir . "/local.vim"<CR>
+nnoremap <Leader>rp :execute ":tabnew"  g:vimdir . "/plugins.vimrc"<CR>
+nnoremap <Leader>rl :execute ":tabnew"  g:vimdir . "/local.vimrc"<CR>
 
 nnoremap ]q :cnext<CR>
 nnoremap [q :cprevious<CR>
@@ -450,24 +440,30 @@ nnoremap [L :lpfile<CR>
 
 " visual <Leader>d to black hole register
 nmap <silent> <Leader>dd "_dd
-vmap <silent> <Leader>d "_d
+vmap <silent> <Leader>d  "_d
 
 nnoremap <leader>dgr :diffget REMOTE<CR>
 nnoremap <leader>dgb :diffget BASE<CR>
 nnoremap <leader>dgl :diffget LOCAL<CR>
+nnoremap dgr :diffget REMOTE<CR>
+nnoremap dgb :diffget BASE<CR>
+nnoremap dgl :diffget LOCAL<CR>
 
-nnoremap <leader>8 :%!python -m autopep8 -a -a -a -<CR>
-vnoremap <leader>8 :!python -m autopep8 -a -a -a -<CR>
-nmap <silent> <leader>cp :Pydocstring<CR>
+nnoremap <leader>8 :%!python  -m autopep8 -a -a -a -<CR>
+vnoremap <leader>8 :!python   -m autopep8 -a -a -a -<CR>
+
+nmap     <silent>  <leader>cp :Pydocstring<CR>
 
 noremap <silent> <Leader><Leader> :nohls<cr><c-l>
 
-nnoremap <Leader>ml :call modelinestub#do()<CR>
+nnoremap <Leader>ml  :call modelinestub#do()<CR>
 nnoremap <Leader>dts :call formatz#DeleteTrailingSpaces()<CR>
-
 
 " }}}1
 
 "{{{1  Local config overrides
-call Sourceiffr(g:configdir . "/local.vim")
-
+let s:localvimrc = g:vimdir . "/local.vim"
+if filereadable(s:localvimrc)
+  exe 'source' s:localvimrc
+endif
+unlet s:localvimrc
