@@ -24,6 +24,7 @@ Plug    'nishigori/increment-activator'
 Plug        'tpope/vim-surround'
 Plug        'tpope/vim-repeat'
 Plug   'scrooloose/nerdcommenter'
+Plug   'scrooloose/nerdtree'
 Plug     'chrisbra/NrrwRgn'
 
 " I only have one fetish and it's junegunn's code.
@@ -395,6 +396,10 @@ let g:NERDCustomDelimiters = {
       \ 'python': { 'left': '#', 'right': '' }
       \ }
 let g:NERDTrimTrailingWhitespace=1
+
+"{{{2 NERDTree
+let g:NERDTreeIgnore = ['\~$', '\.pyc$']
+nnoremap <Leader>nt :NERDTree<CR>
 
 "{{{2 whut - trash? - replace with your own less trash, but still trash?
 "          - or stop whining and contribute?  [ypcrts // 20170914T2058Z]

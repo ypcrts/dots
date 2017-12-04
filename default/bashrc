@@ -13,30 +13,6 @@ SOURCE_FIRST () {
   return 1
 }
 
-#{{{1 include tiers
-#-------------------------------------------------------------------------------
-SOURCE_TRY ~/.config/bash/buku-completion.bash
-
-#  SOURCE_TRY ~/.fzf/shell/completion.bash 2>/dev/null  # broken
-SOURCE_TRY ~/.fzf/shell/key-bindings.bash 2>/dev/null
- 
-#{{{1 includes first
-#-------------------------------------------------------------------------------
-. ~/.config/bash/git.bash
-. ~/.config/bash/prompt.bash
-. ~/.config/bash/aliases.bash
-SOURCE_TRY ~/.config/bash/os-aliases.bash
-
-# eval "$(dircolors -b ~/.config/bash/dircolors/dircolors.256dark) 2>/dev/null >/dev/null"
-
-#{{{1 includes hostwise
-#-------------------------------------------------------------------------------
-[[ -z "$HOSTNAME" ]] && HOSTNAME="$(hostname)"
-HOSTIDENT="$(echo -n "$HOSTNAME" | sed 's/\..*//')"
-SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.sh"
-SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.private.sh"
-SOURCE_TRY ~/.config/bash/hosts/local.private.sh
-unset HOSTIDENT
 
 #{{{1 Disable flow control
 stty -ixon
@@ -115,3 +91,27 @@ export \
   HISTIGNORE='&:[ ]*:exit' \
   HISTCONTROL='ignoreboth'  #ignore dups and space
 
+#{{{1 include tiers
+#-------------------------------------------------------------------------------
+SOURCE_TRY ~/.config/bash/buku-completion.bash
+
+#  SOURCE_TRY ~/.fzf/shell/completion.bash 2>/dev/null  # broken
+SOURCE_TRY ~/.fzf/shell/key-bindings.bash 2>/dev/null
+ 
+#{{{1 includes first
+#-------------------------------------------------------------------------------
+. ~/.config/bash/git.bash
+. ~/.config/bash/prompt.bash
+. ~/.config/bash/aliases.bash
+SOURCE_TRY ~/.config/bash/os-aliases.bash
+
+# eval "$(dircolors -b ~/.config/bash/dircolors/dircolors.256dark) 2>/dev/null >/dev/null"
+
+#{{{1 includes hostwise
+#-------------------------------------------------------------------------------
+[[ -z "$HOSTNAME" ]] && HOSTNAME="$(hostname)"
+HOSTIDENT="$(echo -n "$HOSTNAME" | sed 's/\..*//')"
+SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.sh"
+SOURCE_TRY ~/.config/bash/hosts/"${HOSTIDENT}.private.sh"
+SOURCE_TRY ~/.config/bash/hosts/local.private.sh
+unset HOSTIDENT
