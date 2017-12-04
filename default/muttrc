@@ -1,0 +1,110 @@
+# vi: ft=muttrc tw=0 ts=2 sw=2 sts=2 fdm=marker fmr=###,$$$ et:
+
+source ~/.muttrc.private
+
+###1 PGP
+# set pgp_replysign
+# set crypt_replyencrypt
+set pgp_use_gpg_agent = yes
+set pgp_verify_sig
+
+###1 imap
+set ssl_starttls = yes
+unset imap_passive
+set imap_keepalive = 300
+set mail_check = 60
+set spoolfile = '+INBOX'
+set postponed = +[Gmail]/Drafts
+
+###1 obsoleted in neomutt
+# set header_cache = "~/.cache/mutt"
+# set message_cachedir  = "~/.cache/mutt"
+
+set beep=no
+set sort="threads"
+set autoedit = yes
+set edit_headers = yes
+
+###1 Color
+set my_norm=color253
+set my_bg=color233
+set my_comm=color244
+
+color status     color218 color234
+color search     black    color96
+
+###2 Index
+color index      $my_norm $my_bg   ~R
+color index      color123 $my_bg   ~U
+color index      color13  $my_bg   ~D
+color index      black    color96  ~T
+color index      black    color206 ~F
+color tree       color218 $my_bg
+
+###2 Message
+color message    color252 black
+color attachment color218 color234
+color hdrdefault $my_comm black
+color signature  $my_comm black
+color quoted0    $my_comm black
+color quoted1    color182 black
+color quoted2    $my_comm black
+color quoted3    color182 black
+color quoted4    $my_comm black
+color quoted5    color182 black
+color quoted6    $my_comm black
+color quoted7    color182 black
+
+color header     color150 black    '^from:'
+color header     color150 black    '^subject:'
+
+auto_view text/html application/text application/pdf
+alternative_order text/enriched text/html text/plain text
+
+lists .*@googlegroups.com .*@lists.debian.org
+
+###1 Macros and Keybinds
+set my_list=index,attach,browser,alias,postpone,pgp
+
+macro index,pager y "<save-message>=[Gmail]/All Mail<enter><enter>" "Archive"
+macro index,pager d "<save-message>=[Gmail]/Trash<enter><enter>" "Trash"
+
+bind $my_list,pager  g noop
+macro $my_list,pager gg <Home>
+macro $my_list,pager G  <End>
+macro index,pager    gi <change-folder>$spoolfile<Enter>
+macro index,pager    ga <change-folder>$mbox<Enter>
+macro index,pager    gt <change-folder>$trash<Enter>
+macro index,pager    gs <change-folder>=[Gmail]/Starred<enter>
+macro index,pager    gS <change-folder>=self/[Gmail].Spam<Enter>
+macro index,pager    gd <change-folder>=[Gmail]/Drafts<enter>
+macro index,pager    \' <change-folder>?<toggle-mailboxes>
+# bind  browser        \' exit
+# macro browser u <search>^\.\.$<Enter>
+
+macro $my_list,pager <Space> <next-page>
+macro $my_list,pager \Cf     <next-page>
+macro $my_list,pager f       <next-page>
+macro $my_list,pager \Cb     <previous-page>
+macro $my_list,pager b       <previous-page>
+bind  $my_list,pager e       next-line
+bind  $my_list,pager \e\007e half-down
+bind  $my_list,pager y       previous-line
+bind  $my_list,pager \e\007y half-up
+bind  $my_list,pager n       search-next
+bind  $my_list,pager N       search-opposite
+bind  $my_list       zt      current-top
+bind  $my_list       zz      current-middle
+bind  $my_list       zb      current-bottom
+macro index,pager    <Tab>   <next-unread>
+macro index,pager    ]       <next-unread>
+macro index,pager    [       <previous-unread>
+macro $my_list       \Cn     <next-thread>
+macro $my_list       \Cp     <previous-thread>
+bind $my_list,pager  \\ search
+
+bind  index       zM collapse-all
+bind  index       zR collapse-all
+bind  index,pager S  sync-mailbox
+macro index,pager m  <set-flag>N
+macro index,pager M  <clear-flag>N
