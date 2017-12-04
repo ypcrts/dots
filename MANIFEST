@@ -31,6 +31,7 @@ $ vimfiles
 $ mux
 ~/.tmux.conf: ./default/tmux.conf
 ~/.screenrc: ./default/screenrc
+~/.w3m/: ./default/w3m/*
 
 $ git
 ~/.gitignore: ./default/gitignore

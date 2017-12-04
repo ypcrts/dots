@@ -1,0 +1,4 @@
+keymap_file keymap
+extbrowser /usr/bin/open
+editor vim
+user_agent
