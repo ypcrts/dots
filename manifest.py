@@ -67,9 +67,10 @@ class Manifest(dict):
     def _parse_line_section_declaration(line):
         has_prefix = line and len(line) and line[0] == "$"
         if not has_prefix:
-           return None
+            return None
         if line[-1] in '@*:':
-           raise IllegalSyntax("section name {:s} cannot end in {:s}".format(line[:-1], line[-1]))
+            raise IllegalSyntax(
+                "section name {:s} cannot end in {:s}".format(line[:-1], line[-1]))
         return line.strip("$").strip()
 
     @staticmethod
@@ -78,15 +79,18 @@ class Manifest(dict):
 
     @staticmethod
     def _is_macro_or_parsed(rubberducky):
-        return rubberducky and (not isinstance(rubberducky, str) or rubberducky.startswith('@'))
+        return rubberducky and (
+            not isinstance(
+                rubberducky,
+                str) or rubberducky.startswith('@'))
 
     @staticmethod
     def _parse_part_terminal_glob(part):
         return part and isinstance(part, str) and part.endswith("*")
 
     def _parse(self, fp):
-       section = None
-       for (i, line) in enumerate(fp, 1):
+        section = None
+        for (i, line) in enumerate(fp, 1):
             line = line.strip()
             if self._parse_line_comment(line):
                 continue
@@ -94,12 +98,13 @@ class Manifest(dict):
             new_section = self._parse_line_section_declaration(line)
             if new_section:
                 if new_section in self:
-                    raise IllegalSyntax("line {:d}: duplicate section declaration".format(i))
+                    raise IllegalSyntax(
+                        "line {:d}: duplicate section declaration".format(i))
                 section = self[new_section] = dict()
                 continue
             elif section is None:
                 raise IllegalSyntax("line {:d}: target definition before "
-                        "section declaration".format(i))
+                                    "section declaration".format(i))
 
             paths = line.split(":", 2)
             unparsed_separators = paths[-1].find(':') > -1
@@ -113,26 +118,26 @@ class Manifest(dict):
             if dest_is_macro:
                 if dest not in self.DEST_MACROS:
                     raise IllegalSyntax(
-                            "line {:d}: invalid {:}".format(
-                                i, dest))
+                        "line {:d}: invalid {:}".format(
+                            i, dest))
 
             if dest == self.INCLUDE_MACRO:
                 src = set(src.split(' '))
             elif src_is_macro:
                 if src not in self.SRC_MACROS:
                     raise IllegalSyntax(
-                            "line {:d}: invalid {:}".format(
-                                i, src))
+                        "line {:d}: invalid {:}".format(
+                            i, src))
 
             if not (dest_is_macro or src_is_macro):
                 if dest in section:
                     raise IllegalSyntax("line {:d}: target redefinition `{:}` "
-                            "in same section".format(i, dest))
+                                        "in same section".format(i, dest))
 
                 has_glob = self._parse_part_terminal_glob(src)
                 assert has_glob ^ (not dest.endswith('/')), \
-                        'line {:d}: glob dest must be directory '\
-                        'ending with `/`'.format(i)
+                    'line {:d}: glob dest must be directory '\
+                    'ending with `/`'.format(i)
 
             section[dest] = src
 
@@ -162,7 +167,7 @@ class Manifest(dict):
                 assert False
             return
         assert exists(src), \
-                "Manifest src `{:}` does not exist on the filesystem".format(src)
+            "Manifest src `{:}` does not exist on the filesystem".format(src)
         try:
             symlink(src, destname, target_is_directory=isdir(src))
             log.warning('linked %s' % dest)
@@ -184,10 +189,10 @@ class Manifest(dict):
                     included.update(src)
                     for sn in src:
                         assert sn != section_name,\
-                                "cannot include `{:}` inside itself'\
+                            "cannot include `{:}` inside itself'\
                                 '!".format(section_name)
                         assert sn in self, \
-                                "cannot include `{:}` '\
+                            "cannot include `{:}` '\
                                 '- does not exist".format(section_name)
                         for s in self.iter_section(sn, included):
                             yield s
@@ -232,8 +237,9 @@ class Actions:
             for key in self.manifest.keys()
         ))
 
-    @staticmethod
-    def _assert_symlink_works():
+    def _assert_symlink_works(self):
+        if self.args.no_preflight:
+            return True
         nonce = 'symlinknonce-lkjho8ho98hp923h4iouh90sa0d98u9d8j1p92d8'
         target = nonce + '.target'
         try:
@@ -247,20 +253,24 @@ class Actions:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-            description='creates symlinks described by a manifest')
+        description='creates symlinks described by a manifest')
     parser.add_argument('action',
-            choices=('install', 'purge', 'inspect'),
-            nargs='?', default='install')
+                        choices=('install', 'purge', 'inspect'),
+                        nargs='?', default='install')
     parser.add_argument('section',
-            help='manifest target', type=str, nargs='*')
+                        help='manifest target', type=str, nargs='*')
     parser.add_argument('-n', '--dry-run', action='store_true',
-            help='nop out all syscalls, verbose')
+                        help='nop out all syscalls, verbose')
     parser.add_argument('-m', '--manifest', type=str,
-            help='path to custom manifest file',
-            default='./MANIFEST')
+                        help='path to custom manifest file',
+                        default='./MANIFEST')
     parser.add_argument('-f', '--force', action='store_true',
-            help='allow clobbering files in target paths')
+                        help='allow clobbering files in target paths')
     parser.add_argument('-v', '--verbose', default=0, action='count')
+    parser.add_argument(
+        '--no-preflight',
+        action='store_true',
+        dest='no_preflight')
 
     args = parser.parse_args()
 
@@ -277,7 +287,6 @@ if __name__ == '__main__':
         log.setLevel(logging.DEBUG)
     elif args.verbose >= 1:
         log.setLevel(logging.INFO)
-
 
     m = Manifest(force=args.force, path=args.manifest)
     args.section = list(map(lambda sn: sn.rstrip('/'), args.section))

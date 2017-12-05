@@ -24,7 +24,9 @@ alias \
   troll='tr a-zA-Z qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM' \
   llort='tr qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM a-zA-Z' \
   tzu="TZ='utc'" \
-  sshadd='ssh-add'
+  sshadd='ssh-add' \
+  w3mdump='w3m -dump -s -T text/html' \
+  w3mdumpwithlinks='w3m -dump -s -T text/html -o display_link=yes -o decode_url=yes -o display_link_number=yes'
 
 
 if command -V nvim >/dev/null 2>&1; then
