@@ -346,22 +346,14 @@ vnoremap <buffer> <Down>  <Nop>
 " pieced together from:
 " https://github.com/christoomey/vim-tmux-navigator
 " http://www.codeography.com/2013/06/19/navigating-vim-and-tmux-splits
-if ! empty($TMUX)
+nmap <silent> <C-h> :call tmux#switch('h')<cr>
+nmap <silent> <C-j> :call tmux#switch('j')<cr>
+nmap <silent> <C-k> :call tmux#switch('k')<cr>
+nmap <silent> <C-l> :call tmux#switch('l')<cr>
 
-  nnoremap <silent> <C-h>  call tmux#switch('h', 'L')<cr>
-  nnoremap <silent> <C-j>  call tmux#switch('j', 'D')<cr>
-  nnoremap <silent> <C-k>  call tmux#switch('k', 'U')<cr>
-  nnoremap <silent> <C-l>  call tmux#switch('l', 'R')<cr>
-  nnoremap <silent> <C-\>  call tmux#previous()<cr>
-  nnoremap <silent> <C-w>\ call tmux#previous()<cr>
+nmap <C-\>  :call tmux#previous()<cr>
+" nnoremap <C-w>\\ call tmux#previous()<cr>
 
-else
-  nnoremap <C-h> <C-w>h
-  nnoremap <C-j> <C-w>j
-  nnoremap <C-k> <C-w>k
-  nnoremap <C-l> <C-w>l
-  nnoremap <C-\> silent! execute 'wincmd p'<cr>
-endif
 
 " insert mode <C-k> inserts digraphs etc
 inoremap <C-k> <C-k>
