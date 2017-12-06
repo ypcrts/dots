@@ -158,15 +158,6 @@ super + alt + control + {h,j,k,l}
 super+ alt + control + shift + {h,j,k,l}
     bspc node {@west -r +20,@south -r -20,@north -r +20,@east -r -20}
 
-# ~button1
-#     bspc pointer --grab focus
-
-# super + button{1-3}
-#     bspc pointer --grab {move,resize_side,resize_corner}
-
-# super + @button{1-3}
-#     bspc pointer --ungrab
-
 # {{{1 Launch
 
 super + Return
