@@ -17,10 +17,15 @@ super + alt + control + shift + XF86LaunchA
     pkill -x panel;  \
     notify-send --urgency=normal --expire-time=500 'panel killed'
 
+super + alt + control + Delete
+    /usr/bin/xscreensaver-command --lock
+
+# windows xp got me like
 super + l
     /usr/bin/xscreensaver-command --lock
 
-super + alt + control + Delete
+# macOS High Sierra got me like
+ctrl + alt + super + q
     /usr/bin/xscreensaver-command --lock
 
 #    notify-send --urgency=critical --expire-time=500 'Locking...'; \
