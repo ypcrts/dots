@@ -93,13 +93,16 @@ super + {braceright,braceleft}
     GAP=$(( $(bspc config -d focused window_gap) {+,-} 2 )); \
     bspc config -d focused window_gap $(( GAP < 0? 0 : GAP ))
 
-super + equal
-    notify-send "Desktops++"; \
-    bspc monitor --add-desktops "$(($(bspc query -D | wc -l)+1))"
-
-super + minus
-    ( bspc monitor --remove-desktops "$(bspc query --desktops --desktop focused)" ) && \
-    notify-send "Desktops--"
+## bspwm 0.9.2 removed `bspc --remove-desktops`
+# RIP - in loving memory of our dear desktops that can't be removed
+#
+# super + equal
+#     notify-send "Desktops++"; \
+#     bspc monitor --add-desktops "$(($(bspc query -D | wc -l)+1))"
+#
+# super + minus
+#     ( bspc monitor --remove-desktops "$(bspc query --desktops --desktop focused)" ) && \
+#     notify-send "Desktops--"
 
 # {{{1 Windows
 
