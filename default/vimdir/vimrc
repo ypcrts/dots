@@ -12,7 +12,7 @@ let g:vimdir = fnameescape(expand(g:vimdir))
 "{{{2 Plugins
 if ($USER == 'root' || $USER == 'admin')
     \ && empty($NOSAFEVI) || !empty($SAFEVI)
-  echo '[SAVEVI] NO PLUGINS LOADED: ' . (empty($SAFEVI) ? '' . $USER : '') .  '[SAFEVI]'
+  echo '[SAFEVI] NO PLUGINS LOADED: ' . (empty($SAFEVI) ? '' . $USER : '')
   let g:safevi = 1
 else
   if !empty($NOSAFEVI)

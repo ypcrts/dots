@@ -35,15 +35,23 @@ $ mux
 $ git
 ~/.gitignore: ./default/gitignore
 ~/.gitconfig: ./default/gitconfig
- 
-$ curl
+
+$ ssh
+~/bin/: ./ssh/bin/*
+~/.config/git/ssh.gitconfig: ./ssh/ssh.gitconfig
+~/.ssh/config.d/: ./ssh/config.d*
+
+$ net
 ~/.curlrc: ./default/curlrc
 ~/.digrc: ./default/digrc
 ~/.w3m/: ./default/w3m/*
 ~/.muttrc: ./default/muttrc
 
 $ default
-@include: shell vim mux git curl bin
+@include: shell vim mux git net bin ssh
+# everything above this line is part of default
+
+#--------------------------------------------------------------------------------
 
 $ macos
 @include: default
@@ -78,7 +86,7 @@ $ awesome
 
 #--------------------------------------------------------------------------------
 
-$ dev 
+$ dev
 ~/bin/: ./dev/bin/*
 ~/.ctags: ./dev/ctags
 ~/.uncrustify.cfg: ./dev/uncrustify.cfg
@@ -91,27 +99,19 @@ $ dev
 $ gdbdash
 ~/.gdbinit: ./dev/gdbinit-dashboard
 
-$ ssh
-~/bin/: ./ssh/bin/*
-~/.config/git/ssh.gitconfig: ./ssh/ssh.gitconfig
-~/.ssh/config.d/: ./ssh/config.d*
-
 $ gpg
 ~/.caff/gnupghome/gpg.conf: ./gpg/caff-gpg.conf
 ~/.gnupg/dirmngr.conf: ./gpg/dirmngr.conf
 ~/.gnupg/gpg.conf: ./gpg/gpg.conf
 
-$ comms
-~/.muttrc: ./comms/muttrc
-
 #--------------------------------------------------------------------------------
 
 $ thinkpad
-@include: default bspwm dev ssh gpg
+@include: default bspwm dev gpg
 ~/bin/: ./thinkpad/bin/*
 
 $ macbook
-@include: default macos dev ssh gpg
+@include: default macos dev gpg
 
 $ windows
-@include: vimfiles powershell git curl
+@include: vimfiles powershell git net
