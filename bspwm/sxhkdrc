@@ -41,7 +41,7 @@ super + alt + control + BackSpace
     systemctl suspend
 
 super + alt + control + XF86AudioMute
-    urxvt -e /bin/sh -c 'echo "Poweroff? [yN]"; read x; if [ "$x" = "y" ]; then echo "shutting down"; systemctl poweroff;  fi'
+    urxvt -e /bin/sh -c 'echo "Poweroff? [yN]"; read x; if [ "$x" = "y" ]; then echo "shutting down"; poweroff;  fi'
 
 # {{{1 monitors
 super + bracketright
