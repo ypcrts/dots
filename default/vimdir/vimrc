@@ -107,11 +107,11 @@ if isdirectory(s:undocachedir)
 endif
 
 "{{{1 disable viminfo/ShaDa files
-if has('nvim') "
-  set shada="NONE"
-else
-  set viminfo="NONE"
-endif
+" if has('nvim') "
+"   set shada="NONE"
+" else
+"   set viminfo="NONE"
+" endif
 
 if has("win32") || exists('g:safevi')
  colorscheme ir_black
