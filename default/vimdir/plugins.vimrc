@@ -9,8 +9,6 @@ endif
 
 call plug#begin(expand('<sfile>:p:h') . '/plugged')
 
-let s:plugs = {}
-
 "{{{2 plugs
 Plug   'ypcrts/securemodelines', { 'commit': '33f695221cea4d965a47ab24a78fa2646c5e417e' }
 " Plug 'jamessan/vim-gnupg'
@@ -156,10 +154,10 @@ let g:javascript_plugin_jsdoc = 1
 
 "{{{1 configuration
 "{{{2 completion plugin
-if has_key(s:plugs, 'deoplete.nvim')
+if has_key(g:plugs, 'deoplete.nvim')
   let g:deoplete#enable_at_startup = 1
 
-elseif has_key(s:plugs, 'neocomplete.vim') "{{{4
+elseif has_key(g:plugs, 'neocomplete.vim') "{{{4
 
   " defaults pasted here
 
@@ -234,7 +232,7 @@ elseif has_key(s:plugs, 'neocomplete.vim') "{{{4
   " https://github.com/c9s/perlomni.vim
   let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
   "}}}4
-elseif has_key(s:plugs, 'youcompleteme') "{{{4
+elseif has_key(g:plugs, 'youcompleteme') "{{{4
   let g:ycm_key_invoke_complete = '' "<C-Space> === <NUL>
   let g:ycm_key_detailed_diagnostics = '<leader>yd'
   let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<C-n>']
@@ -261,7 +259,7 @@ elseif has_key(s:plugs, 'youcompleteme') "{{{4
 endif
 
 "{{{2 linter
-if has_key(s:plugs, 'ale')
+if has_key(g:plugs, 'ale')
   let g:ale_lint_on_text_changed = 'always'
   let g:ale_lint_on_enter = 0
   let g:ale_lint_delay = 5000
@@ -271,11 +269,11 @@ if has_key(s:plugs, 'ale')
   let g:ale_echo_msg_format = '[%linter%] %severity%: %s'
   let g:ale_list_window_size = 6
   let g:ale_completion_enabled = 0
-  let g:ale_linters = { 'python': ['flake8', 'pylint'],
+  let g:ale_linters = { 'python': ['flake8'],
         \ 'c' : ['gcc-7']
         \ } " merged dict; no pylint in ale please
 
-elseif has_key(s:plugs, 'syntastic')
+elseif has_key(g:plugs, 'syntastic')
 
   let g:syntastic_javascript_checkers = [ 'eslint' ]
   let g:syntastic_python_checkers = [ 'flake8', 'pylint' ]
