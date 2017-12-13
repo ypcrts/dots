@@ -1,5 +1,6 @@
 # vi: ft=sh tw=0 ts=2 sw=2 sts=2 fdm=marker fmr={{{,}}} et:
 # This file targets bash 3, guarding 4.
+. ~/.profile
 
 #{{{1 functions
 #-------------------------------------------------------------------------------
@@ -86,6 +87,7 @@ set -o vi noclobber
 #{{{1 history
 #-------------------------------------------------------------------------------
 export \
+  HISTFILE=/tmp/bash_history_$UID.lol \
   HISTSIZE=65536 \
   HISTFILESIZE=1048576 \
   HISTIGNORE='&:[ ]*:exit' \

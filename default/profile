@@ -99,14 +99,17 @@ case "$OSTYPE" in
   *) return ;;
 esac
 
-
 #{{{1 iamgr00t amirite?
-if [ $EUID -eq 0 ]; then
+FOWN="$(stat -L -c %u ~/.profile 2>/dev/null)" \
+  || FOWN="$(stat -L -f %u ~/.profile 2>/dev/null)" \
+  || FOWN=9999
+if [ $EUID != "$FOWN" ] || [ $EUID -eq 0 ]; then
+  TMOUT=300
   ADJUNCT_PATH /usr/local/sbin    OVERRIDE
   ADJUNCT_PATH /usr/sbin          OVERRIDE
   ADJUNCT_PATH /sbin              OVERRIDE
-  TMOUT=300
 fi
+unset FOWN
 
 
 #{{{1 Guard for non-interactive shells
