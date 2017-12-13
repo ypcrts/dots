@@ -188,15 +188,13 @@ super + r
     rofi -show run
 
 super + space
-    rofi -show combi -combi-modi ssh,run,window
+    rofi -show combi -combi-modi run,window
 
 super + control + Tab
     rofi -show window -lines 10 -columns 8
 
 XF86Tools
-    wmctrl -xa "Firefox" || exec firefox-esr
-# firefox-esr for debian unstable
-# wmctrl -xa "Iceweasel" || exec iceweasel
+    wmctrl -xa "Firefox" || ( exec firefox || exec firefox-esr )
 
 XF86Search
     wmctrl -xa "Chromium" || exec chromium
