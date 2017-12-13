@@ -121,11 +121,12 @@ if has("win32") || exists('g:safevi')
 "   color solarized8_dark_high
 else
   colorscheme basic-dark
-  " rice
-  augroup TransparentBackground
-    au ColorScheme * hi Normal guibg=NONE ctermbg=NONE
-  augroup END
-  color basic-dark
+  if ! has('gvim')
+    augroup TransparentBackground
+      au ColorScheme * hi Normal guibg=NONE ctermbg=NONE
+    augroup END
+  endif
+  colorscheme basic-dark
 endif
 
 "{{{1 Code format & Indenting
