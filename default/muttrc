@@ -2,19 +2,54 @@
 
 source ~/.muttrc.private
 
+###1 Crypto
+set crypt_autoencrypt           = no
+set crypt_autopgp               = yes
+set crypt_autosign              = no
+set crypt_autosmime             = yes
+set crypt_confirmhook           = yes
+set crypt_opportunistic_encrypt = no
+set crypt_replyencrypt          = yes
+set crypt_replysign             = yes
+set crypt_replysignencrypted    = yes
+set crypt_timestamp             = yes
+set crypt_use_gpgme             = yes
+set crypt_use_pka               = no
+set crypt_verify_sig            = yes
+
+###1 TLS
+set ssl_starttls     = yes
+set ssl_use_sslv3    = no
+set ssl_use_tlsv1    = no
+set ssl_use_tlsv1_1  = no
+set ssl_use_tlsv1_2  = yes
+set ssl_verify_dates = yes
+set ssl_verify_host  = yes
+
 ###1 PGP
-# set pgp_replysign
-# set crypt_replyencrypt
-set pgp_use_gpg_agent = yes
-set pgp_verify_sig
+set pgp_auto_decode     = yes
+set pgp_autoinline      = no
+set pgp_check_exit      = yes
+set pgp_entry_format    = "%4n %t%f %4l/0x%k %-4a %2c %u"
+set pgp_good_sign       = "Good signature from"
+set pgp_ignore_subkeys  = yes
+set pgp_encrypt_self    = yes
+set pgp_long_ids        = no
+set pgp_mime_auto       = no
+set pgp_replyinline     = no
+set pgp_retainable_sigs = yes
+set pgp_show_unusable   = no
+set pgp_sort_keys       = address
+set pgp_strict_enc      = yes
+set pgp_timeout         = 3600
 
 ###1 imap
 set ssl_starttls = yes
 unset imap_passive
 set imap_keepalive = 300
 set mail_check = 60
-set spoolfile = '+INBOX'
-set postponed = +[Gmail]/Drafts
+# set spoolfile = '+INBOX'
+# set postponed = +[Gmail]/Drafts
 
 ###1 obsoleted in neomutt
 # set header_cache = "~/.cache/mutt"
@@ -96,12 +131,13 @@ bind  $my_list,pager N       search-opposite
 bind  $my_list       zt      current-top
 bind  $my_list       zz      current-middle
 bind  $my_list       zb      current-bottom
+bind  index,pager    c       mail
 macro index,pager    <Tab>   <next-unread>
 macro index,pager    ]       <next-unread>
 macro index,pager    [       <previous-unread>
 macro $my_list       \Cn     <next-thread>
 macro $my_list       \Cp     <previous-thread>
-bind $my_list,pager  \\ search
+bind $my_list,pager  \\      search
 
 bind  index       zM collapse-all
 bind  index       zR collapse-all
