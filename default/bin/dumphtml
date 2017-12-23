@@ -1,0 +1,27 @@
+#!/bin/sh
+
+WITH_LINKS=0
+
+if [ $# -gt 1 ]; then
+  case "$1" in
+    -l|--links)
+      WITH_LINKS=1
+      ;;
+    -*)
+      >&2 echo "fatal - invalid option: $1"
+      exit 7
+      ;;
+  esac
+  shift
+fi
+
+if [ $# -lt 1 ]; then
+  >&2 echo "fatal - target filename missing"
+  exit 11
+fi
+
+if [ "$WITH_LINKS" -eq 1 ]; then
+  exec w3m -dump -s -T text/html -o display_link=yes -o decode_url=yes -o display_link_number=yes "$@"
+fi
+
+exec w3m -dump -s -T text/html "$@"

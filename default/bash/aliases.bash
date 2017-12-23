@@ -8,25 +8,17 @@ alias \
   p='cd ~/Projects' \
   cdtl='cd "$(git rev-parse --show-toplevel)"' \
   rmi='/bin/rm -i' \
-  ll='ls -lh' \
-  l1='ls -1' \
   la='ls -A' \
-  lal='ls -lA' \
-  lla='lal' \
   tree='tree -C' \
   grep='grep --color=auto' \
   dr='docker' \
   drc='docker-compose' \
   npmx='PATH="$(git rev-parse --show-toplevel || echo ".")/node_modules/.bin:$PATH"' \
   k='keys' \
-  rek='rekey' \
   rot13='tr a-zA-Z n-za-mN-ZA-M' \
   troll='tr a-zA-Z qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM' \
   llort='tr qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM a-zA-Z' \
-  tzu="TZ='utc'" \
-  sshadd='ssh-add' \
-  w3mdump='w3m -dump -s -T text/html' \
-  w3mdumpwithlinks='w3m -dump -s -T text/html -o display_link=yes -o decode_url=yes -o display_link_number=yes'
+  tzu="TZ='utc'"
 
 
 if command -V nvim >/dev/null 2>&1; then
