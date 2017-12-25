@@ -18,15 +18,12 @@ alias \
   rot13='tr a-zA-Z n-za-mN-ZA-M' \
   troll='tr a-zA-Z qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM' \
   llort='tr qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM a-zA-Z' \
-  tzu="TZ='utc'"
-
-
-if command -V nvim >/dev/null 2>&1; then
-  alias \
-    nvi='nvim' \
-    vim='nvim' \
-    vi='nvim'
-fi
+  tzu="TZ='utc'" \
+  jctl='journalctl' \
+  ctl='systemctl' \
+  sctl='sudo systemctl' \
+  e='$EDITOR' \
+  v='$VISUAL'
 
 if ls --group-directories-first 2>/dev/null >&2; then
   alias ls='ls --color=auto -hF --group-directories-first'

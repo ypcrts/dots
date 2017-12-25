@@ -67,6 +67,7 @@ VISUAL="$EDITOR"
 #{{{1 fzf
 # TODO: package manager? something? ur trash
 ADJUNCT_PATH ~/.fzf/bin
+export FZF_COMPLETION_TRIGGER='*'
 [ -d ~/.fzf/man ] && export MANPATH="$MANPATH:~/.fzf/man"
 
 #{{{1 OS Specific

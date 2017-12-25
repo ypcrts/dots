@@ -97,7 +97,7 @@ export \
 #-------------------------------------------------------------------------------
 SOURCE_TRY ~/.config/bash/buku-completion.bash
 
-#  SOURCE_TRY ~/.fzf/shell/completion.bash 2>/dev/null  # broken
+[[ $- == *i* ]] && SOURCE_TRY ~/.fzf/shell/completion.bash 2>/dev/null
 SOURCE_TRY ~/.fzf/shell/key-bindings.bash 2>/dev/null
  
 #{{{1 includes first

@@ -188,16 +188,17 @@ super + r
     rofi -show run
 
 super + space
-    rofi -show combi -combi-modi run,window
+    rofi -show combi -combi-modi run,window,drun
 
-super + control + Tab
-    rofi -show window -lines 10 -columns 8
+super + Tab ; space
+    rofi -show window
 
-XF86Tools
-    wmctrl -xa "Firefox" || ( exec firefox || exec firefox-esr )
-
-XF86Search
-    wmctrl -xa "Chromium" || exec chromium
+# # Unused keybinds in dom0 are just a vulnerabfeature
+# XF86Tools
+#     wmctrl -xa "Firefox" || ( exec firefox || exec firefox-esr )
+#
+# XF86Search
+#     wmctrl -xa "Chromium" || exec chromium
 
 
 # {{{1 Fn Keys

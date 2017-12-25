@@ -92,7 +92,10 @@ endif
 
 "{{{1 undo & cache
 set undolevels=2048
-let s:cachedir=expand(($XDG_CACHE_HOME? $XDG_CACHE_HOME : '~/.cache') . '/vim')
+let s:cachedir='/tmp/vim-cache' . $USER
+if has('win32')
+  let s:cachedir=g:vimdir . '/cache'
+endif
 let s:undocachedir=s:cachedir . '/undo'
 if !isdirectory(s:undocachedir)
   call mkdir(s:undocachedir, 'p', 0700)
