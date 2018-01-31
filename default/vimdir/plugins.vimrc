@@ -57,7 +57,7 @@ if has('nvim')
   Plug       'Shougo/neoinclude.vim'
   Plug        'zchee/deoplete-jedi',   { 'for': 'python' }
   Plug 'tweekmonster/deoplete-clang2', { 'commit': '787dd4dc7eeb5d1bc2fd3cefcf7bd07e48f4a962' }
-  Plug     'carlitux/deoplete-ternjs', { 'for': 'javascript' }
+  " Plug     'carlitux/deoplete-ternjs', { 'for': 'javascript' }
   Plug       'wellle/tmux-complete.vim'
 elseif v:version >= 703 && has('lua')
   Plug 'Shougo/neocomplete.vim'
@@ -88,8 +88,9 @@ Plug   'rust-lang/rust.vim',                { 'for': 'rust' }
 Plug  'racer-rust/vim-racer',               { 'for': 'rust' }
 Plug     'cespare/vim-toml',                { 'for': 'toml' }
 "{{{4 javascript ecosystems
-" Plug    'pangloss/vim-javascript',          { 'for': 'javascript' }
-" Plug     'bigfish/vim-js-context-coloring', { 'commit': '6c90329664f3b0a58b05e2a5207c94da0d83a51c', 'for': 'javascript', 'do': 'nvm use 6 && npm install --upgrade' }
+Plug    'pangloss/vim-javascript',          { 'for': 'javascript' }
+" Plug     'bigfish/vim-js-context-coloring', { 'commit': '6c90329664f3b0a58b05e2a5207c94da0d83a51c', 'for': 'javascript', 'do': 'echo "consider npm install --upgrade"' }
+" this does not work for js files with syntax errors
 " Plug 'digitaltoad/vim-jade',                { 'for': ['jade'] }
 "{{{5 linux / systems
 " Plug 'git://fedorapeople.org/home/fedora/wwoods/public_git/vim-scripts.git' "systemd
@@ -214,11 +215,11 @@ elseif has_key(g:plugs, 'neocomplete.vim') "{{{4
   "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
   " Enable omni completion.
-  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
   autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+  autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python        setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
 
   " Enable heavy omni completion.
   if !exists('g:neocomplete#sources#omni#input_patterns')
@@ -281,7 +282,9 @@ elseif has_key(g:plugs, 'syntastic')
   nmap <leader>sy :SyntastictoggleMode<cr>
   nmap <leader>sl :SyntasticsetlocList<cr>:lw<cr>
 
-  "This has nothing to do with syntastic, but i use them together <- lie
+endif
+
+if has_key(g:plugs, 'vim-js-context-coloring')
   nmap <leader>sj :JSContextColorToggle<cr>
 endif
 
@@ -361,10 +364,12 @@ nmap <Leader>rg  :Rg!<cr>
 
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   'rg --column --line-number --no-heading --color=always '.<q-args>,
+  \    1,
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
+  \   <bang>0
+  \   )
 
 command! -bang -nargs=? -complete=dir Files
   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)

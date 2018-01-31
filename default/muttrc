@@ -51,6 +51,9 @@ set mail_check = 60
 # set spoolfile = '+INBOX'
 # set postponed = +[Gmail]/Drafts
 
+###1 smtp
+set smtp_authenticators = "gssapi:login"
+
 ###1 obsoleted in neomutt
 # set header_cache = "~/.cache/mutt"
 # set message_cachedir  = "~/.cache/mutt"
@@ -101,19 +104,10 @@ lists .*@googlegroups.com .*@lists.debian.org
 ###1 Macros and Keybinds
 set my_list=index,attach,browser,alias,postpone,pgp
 
-macro index,pager y "<save-message>=[Gmail]/All Mail<enter><enter>" "Archive"
-macro index,pager d "<save-message>=[Gmail]/Trash<enter><enter>" "Trash"
-
 bind $my_list,pager  g noop
 macro $my_list,pager gg <Home>
 macro $my_list,pager G  <End>
-macro index,pager    gi <change-folder>$spoolfile<Enter>
-macro index,pager    ga <change-folder>$mbox<Enter>
-macro index,pager    gt <change-folder>$trash<Enter>
-macro index,pager    gs <change-folder>=[Gmail]/Starred<enter>
-macro index,pager    gS <change-folder>=self/[Gmail].Spam<Enter>
-macro index,pager    gd <change-folder>=[Gmail]/Drafts<enter>
-macro index,pager    \' <change-folder>?<toggle-mailboxes>
+macro index,pager    \' <change-folder>?
 # bind  browser        \' exit
 # macro browser u <search>^\.\.$<Enter>
 
