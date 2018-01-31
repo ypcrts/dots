@@ -22,7 +22,6 @@ alias \
   jctl='journalctl' \
   ctl='systemctl' \
   sctl='sudo systemctl' \
-  e='$EDITOR' \
   v='$VISUAL'
 
 if ls --group-directories-first 2>/dev/null >&2; then
@@ -196,6 +195,15 @@ loadenv () {
         SOURCE_FIRST \
           "$HOME/.nvm/nvm.sh" \
           '/usr/local/opt/nvm/nvm.sh'
+        [ $# -le 1 ] && return
+        case "$2" in
+          u*|use)
+            nvm use
+            ;;
+          *)
+            nvm "$@"
+            ;;
+        esac
       ;;
     rvm|ruby)
       SOURCE_TRY "$HOME/.rvm/scripts/rvm"
