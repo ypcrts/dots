@@ -264,9 +264,7 @@ if __name__ == '__main__':
         description='creates symlinks described by a manifest')
     parser.add_argument('action',
                         choices=('install', 'purge', 'inspect'),
-                        nargs='?', default='install')
-    parser.add_argument('section',
-                        help='manifest target', type=str, nargs='*')
+                        nargs='?', type=str, default='inspect')
     parser.add_argument('-n', '--dry-run', action='store_true',
                         help='nop out all syscalls, verbose')
     parser.add_argument('-m', '--manifest', type=str,
@@ -275,10 +273,14 @@ if __name__ == '__main__':
     parser.add_argument('-f', '--force', action='store_true',
                         help='allow clobbering files in target paths')
     parser.add_argument('-v', '--verbose', default=0, action='count')
-    parser.add_argument(
-        '--no-preflight',
+    parser.add_argument('-d', '--dir', type=str, default=None,
+                        help='override HOME and USERPROFILE (tilde expansion)')
+    parser.add_argument( '--no-preflight',
+        help='skip the preflight sanity checks',
         action='store_true',
         dest='no_preflight')
+    parser.add_argument('section',
+                        help='manifest target', type=str, nargs='*')
 
     args = parser.parse_args()
 
@@ -290,6 +292,9 @@ if __name__ == '__main__':
         makedirs = nop(makedirs)
         symlink = nop(symlink)
         chdir = nop(chdir)
+
+    if args.dir:
+        os.environ['HOME'] = os.environ['USERPROFILE'] = args.dir
 
     if args.verbose >= 2:
         log.setLevel(logging.DEBUG)
