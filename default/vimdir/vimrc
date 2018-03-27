@@ -5,9 +5,9 @@ set shortmess=aoOstTAI " shorten all messages except written
 set report=0           " Always report the number of lines changed by a cmd
 
 let mapleader = "\<Space>"
-let g:vimdir = has('win32') ? '~/vimfiles' : '~/.vim'
-exe 'set' 'rtp=' . g:vimdir . '/,'. $VIMRUNTIME
-let g:vimdir = fnameescape(expand(g:vimdir))
+let s:tildevimdir = has('win32') ? '~/vimfiles' : '~/.vim'
+let g:vimdir = fnameescape(expand(s:tildevimdir))
+exe 'set' 'rtp=' . s:tildevimdir . '/,'. fnameescape($VIMRUNTIME)
 
 "{{{2 Plugins
 if ($USER == 'root' || $USER == 'admin')
