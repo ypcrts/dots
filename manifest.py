@@ -15,6 +15,8 @@ from shutil import rmtree
 
 
 is_windows = sys.platform in ('win32', 'cygwin',)
+# is_linux = sys.platform.startswith('linux')
+# is_macos = sys.platform ==  'darwin'
 PY3 = sys.version_info >= (3, 0, 0,)
 if PY3:
     def iteritems(obj): return obj.items()
@@ -24,6 +26,7 @@ else:
     # Due to missing py2 os.symlink: but could call using ctypes
 
     def iteritems(obj): return obj.iteritems()
+
 
 
 STARTDIR = os.getcwd()
@@ -169,7 +172,12 @@ class Manifest(dict):
         assert exists(src), \
             "Manifest src `{:}` does not exist on the filesystem".format(src)
         try:
-            symlink(src, destname, target_is_directory=isdir(src))
+            # XXX: Following line's kwarg is useless. [ypcrts // 20180120]
+            # symlink(src, destname, target_is_directory=isdir(src))
+            # XXX: No kwargs in py3. Should be unnecessary per docs:
+            #     "If the target is present, the type of the symlink will be created to match."
+            #      - https://docs.python.org/3.6/library/os.html
+            symlink(src, destname)
             log.warning('linked %s' % dest)
         except OSError as e:
             log.error('failure - %s :: %s' % (e, dest))
