@@ -58,16 +58,15 @@ endif
 "{{{1 4-bit, 8-bit and 24-bit color support
 if &t_Co > 2 || has('gui_running')
   set hlsearch
+endif
 
-  " match() is like
-  if has('termguicolors') && has('nvim') && (
-    \   ( match(system('uname'), 'Darwin') == 0
-    \     && match($TERM, '^\v(screen|rxvt)-256.*$') == 0
-    \   )
-    \   || !empty($ITERM_SESSION_ID)
-    \ )
-
-
+if has('termguicolors')
+  if has('nvim') && (
+        \   ( match(system('uname'), 'Darwin') == 0
+        \     && match($TERM, '^\v(screen|rxvt)-256.*$') == 0
+        \   )
+        \   || !empty($ITERM_SESSION_ID)
+        \ )
     " This nonsense can only be set if terminal has 24 bit colour support.
     " neovim does not intuit such a thing. programming is math not magic.
     " rxvt never has 24-bit support, so off.
@@ -86,7 +85,6 @@ if &t_Co > 2 || has('gui_running')
   else
     set notermguicolors
   endif
-
 endif
 
 
