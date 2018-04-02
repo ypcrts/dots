@@ -28,14 +28,14 @@ export \
   MOSH_ESCAPE_KEY='~' \
   VIRTUAL_ENV_DISABLE_PROMPT=1 \
   PAGER='less' \
-  GREP_COLOR="1;33" \
-  LESS_TERMCAP_mb=$'\e[01;31m' \
-  LESS_TERMCAP_md=$'\e[01;34m' \
-  LESS_TERMCAP_so=$'\e[01;30;03;36m' \
-  LESS_TERMCAP_me=$'\e[0m' \
-  LESS_TERMCAP_se=$'\e[0m' \
-  LESS_TERMCAP_ue=$'\e[0m' \
-  LESS_TERMCAP_us=$'\e[01;35m' \
+	GREP_COLOR="1;33" \
+	LESS_TERMCAP_mb=$'\E[01;31m' \
+	LESS_TERMCAP_md=$'\E[01;31m' \
+	LESS_TERMCAP_me=$'\E[0m' \
+	LESS_TERMCAP_se=$'\E[0m' \
+	LESS_TERMCAP_so=$'\E[01;44;33m' \
+	LESS_TERMCAP_ue=$'\E[0m' \
+	LESS_TERMCAP_us=$'\E[01;32m'  \
   LESSSECURE='1' LESSHISTFILE='-' LESSCHARSET='utf-8' \
   LESS="--no-init --quit-if-one-screen --quit-on-intr --force --dumb --ignore-case --no-lessopen --RAW-CONTROL-CHARS --tilde --shift 8 --chop-long-lines"
 

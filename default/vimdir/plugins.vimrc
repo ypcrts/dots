@@ -77,7 +77,7 @@ Plug 'Chiel92/vim-autoformat'
 
 "{{{3 Syntax
 "{{{4 metapackages
-" Plug 'sheerun/vim-polyglot' " 6d6574617061636b616765207365637572697479207269736b206666730a
+ Plug 'sheerun/vim-polyglot'
 "{{{4 python ecosystems
 " TODO: FIXME FIXME FIXME DAD FIXME FIXME
 Plug            '~/Projects/ansible-vim', { 'branch': 'j2-commentstring' }
