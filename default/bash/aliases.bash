@@ -8,7 +8,6 @@ alias \
   p='cd ~/Projects' \
   cdtl='cd "$(git rev-parse --show-toplevel)"' \
   rmi='/bin/rm -i' \
-  la='ls -A' \
   tree='tree -C' \
   grep='grep --color=auto' \
   dr='docker' \
@@ -32,54 +31,57 @@ fi
 
 
 #{{{1 Language and LC
-lca () {
-  myusage () {
-      printf "USAGE:\tlca (c|us|gb|fr|de)\n\tI select UTF-8 LCs except with 'c'.\n\tUse me with export. My brother is lang."
-      return
-  }
-  if [ $# -ne 1 ]; then
-    myusage
-    return
-  fi
-  export LC_ALL
+lca_derive () {
   case "$1" in
-    c|C)         LC_ALL='C'           ;;
-    cu|cutf|utf) LC_ALL='C.UTF-8'     ;;
-    en|us|e)     LC_ALL='en_US.UTF-8' ;;
-    gb|uk)       LC_ALL='en_GB.UTF-8' ;;
-    fr)          LC_ALL='fr_FR.UTF-8' ;;
-    de)          LC_ALL='de_DE.UTF-8' ;;
-    *)           myusage              ;;
+    c|C)         echo 'C'           ;;
+    cu|cutf|utf) echo 'C.UTF-8'     ;;
+    en|us|e)     echo 'en_US.UTF-8' ;;
+    gb|uk)       echo 'en_GB.UTF-8' ;;
+    fr)          echo 'fr_FR.UTF-8' ;;
+    de)          echo 'de_DE.UTF-8' ;;
+    es)          echo 'es_ES.UTF-8' ;;
+    pt)          echo 'pt_BR.UTF-8' ;;
+    ru)          echo 'ru_RU.UTF-8' ;;
+    he)          echo 'he_IL.UTF-8' ;;
+    ar)          echo 'ar_LB.UTF-8' ;;
+    *)           echo 'help'        ;;
   esac
-  unset -f myusage
+}
+lca () {
+  local name="$(lca_derive "$1")"
+  case "$l"  in
+    help)
+      >&2 echo -e "USAGE:\tlca (c|us|gb|fr|de|ru|es|pt|ar)\n" \
+        "\tI select UTF-8 LCs except with 'c'.\n" \
+        '\tSee also `type lang`'
+      ;;
+    *) export LC_ALL="$name"
+  esac
 }
 lang () {
-  if [ $# -ne 1 ]; then
-    printf "USAGE:\tlang (en|de|fr|*)\n\tI select utf languages only.\n\tUse me with export. My sister is lca."
-    return
-  fi
-  export LANG
-  case "$1" in
-    de|DE) LANG='de_DE.UTF-8' ;;
-    en|EN) LANG='en_GB.UTF-8' ;;
-    es|ES) LANG='es_ES.UTF-8' ;;
-    fr|FR) LANG='fr_FR.UTF-8' ;;
-    *)     LANG="${1}.UTF-8"  ;;
+  local name="$(lca_derive "$1")"
+  case "$l"  in
+    help)
+      >&2 echo -e "USAGE:\tlang (c|us|gb|fr|de|ru|es|pt|ar)\n" \
+        "\tI select UTF-8 LANGs and LCs except with 'c'.\n" \
+        '\tSee also `type lca`'
+      ;;
+    *) export LC_ALL="$name" LANG="$name"
   esac
 }
 
 #{{{1 ssh-agent
 reagent () {
   local QUIET=''
-  [ "$1" = "-q" ] && QUIET=1
+  [[ "$1" = "-q" ]] && QUIET=1
 
-  if [ -n "$SSH_AUTH_SOCK" ] && ssh-add -l >/dev/null 2>&1; then
-    [ -z "$QUIET" ] && echo "Keyed agent active"
+  if [[ -n "$SSH_AUTH_SOCK" ]] && ssh-add -l >/dev/null 2>&1; then
+    [[ -z "$QUIET" ]] && echo "Keyed agent active"
     return 0
   fi
   local agents="$(find /tmp -type s -path '/tmp/ssh-*/agent.*' 2>/dev/null)"
-  if [ "$agents" = '' ]; then
-    [ -z "$QUIET" ] && echo "No agents found"
+  if [[ -z "$agents" ]]; then
+    [[ -z "$QUIET" ]] && echo "No agents found"
     return 1
   fi
   for agent in $agents; do
@@ -98,14 +100,11 @@ reagent () {
 }
 rekey () {
   local QUIET=''
-  [ "$1" = "-q" ] && QUIET=1
+  [[ "$1" = "-q" ]] && QUIET=1
 
   reagent -q
   echo "Rekeying $agent"
-  if ssh-add; then
-    return 0
-  fi
-  return 1
+  ssh-add
 }
 newagent() {
   eval `ssh-agent -s -t 15m`
@@ -119,14 +118,12 @@ keys() {
 }
 
 
-#{{{1 tmux, ssh, mosh
-sshux  () { ssh "$@" -t -- 'tmux a -d || tmux';                            }
+#{{{1 screen, tmux, ssh, mosh
+sshsc  () { ssh "$@" -t -- 'screen -d -RR';                          }
+sshux  () { ssh "$@" -t -- 'tmux a -d || tmux';                      }
 
-ssho   () { ssh -t "$@" -- "exec ~/bin/onemux";                            }
-mosho  () { TARGET="$1";shift;mosh "$@" -- "$TARGET" "~/bin/onemux"; }
-
-moshoo () { mosh -- "$1" "~/bin/onemux" "$2";                              }
-sshoo  () { ssh -t "$1" -- "~/bin/onemux" "$2";                            }
+ssho   () { ssh -t "$@" -- 'exec ~/bin/onemux';                      }
+mosho  () { TARGET="$1";shift;mosh "$@" -- "$TARGET" '~/bin/onemux'; }
 
 
 cleanout() {
@@ -135,7 +132,7 @@ cleanout() {
   if [ $# -eq 1  ]; then
     case "$1" in
       -f)
-        if command -V parallel >/dev/null 2>&1; then
+        if has parallel; then
           term="| parallel -L100 -m \"rm -vf {}\""
         else
           term=" -exec rm {} +"
@@ -155,17 +152,14 @@ loadenv () {
   local venv_name=''
   case "$1" in
     r*|reset)
-      if command -V nvm >/dev/null 2>&1; then
-        nvm unload
-      fi
-      if command -V deactivate >/dev/null 2>&1; then
-        deactivate
-      fi
+      has nvm        && nvm unload
+      has deactivate && deactivate
       ;;
     p*|py)
       if (($# >= 2)); then
         case "$2" in
           .|-l|--local)
+            >&2 echo '[loadenv] local python virtualenv'
             SOURCE_TRY ./bin/activate
             return $?
             ;;
@@ -195,7 +189,7 @@ loadenv () {
         SOURCE_FIRST \
           "$HOME/.nvm/nvm.sh" \
           '/usr/local/opt/nvm/nvm.sh'
-        [ $# -le 1 ] && return
+        (( $# <= 1 )) && return
         case "$2" in
           u*|use)
             nvm use
@@ -222,10 +216,12 @@ loadenv () {
 }
 checkenv () {
   local opt_delete=0
-  [[ $# -gt 0 ]] && case $1 in
+  (( $# > 0 )) && case $1 in
     -h|--help)
-      echo 'checkenv: inspects virtualenv and pipenv environment vars' \
-           '-d    deletes all found vars'
+      >&2 printf '%s\n\n\t%s\n' \
+        'checkenv: inspect virtualenv and pipenv environment vars' \
+        '`checkenv -d`  deletes all found vars'
+      return 0
       ;;
     -d|-f|--delete)
       opt_delete=1
