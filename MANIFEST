@@ -62,20 +62,10 @@ $ powershell
 ~/My Documents/WindowsPowerShell/profile.ps1: ./windows/profile.ps1
 
 #--------------------------------------------------------------------------------
-#
-# kitchen sink
-#
 
 $ xorg
 ~/bin/: ./xorg/bin/*
 ~/.urxvt/ext/font-size: ./xorg/urxvt-font-size
-~/.Xresources: ./xorg/Xresources
-~/.config/color/w0ng: ./xorg/xresources_color_w0ng
-
-#--------------------------------------------------------------------------------
-#
-# purist section
-#
 
 $ bspwm
 ~/bin/: ./bspwm/bin/*
@@ -86,9 +76,14 @@ $ bspwm
 ~/.config/sxhkd/sxhkdrc: ./bspwm/sxhkdrc
 ~/.config/lemonbar: ./bspwm/lemonbar
 ~/.screenlayout: ./bspwm/screenlayout
+~/.Xresources: ./xorg/xresources/bspwm.out
 
 $ awesome
 ~/.config/awesome/rc.lua: ./xorg/awesome.lua
+~/.Xresources: ./xorg/xresources/dom0.out
+
+# $ domU_xres
+# ~/.Xresources: ./xorg/xresources/domU.out
 
 #--------------------------------------------------------------------------------
 
@@ -114,7 +109,6 @@ $ gpg
 
 $ debian
 @include: default bspwm dev gpg xorg gtk
-~/bin/: ./thinkpad/bin/*
 
 $ macbook
 @include: default macos dev gpg
