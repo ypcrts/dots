@@ -2,7 +2,7 @@
 local gears = require("gears")
 local awful = require("awful")
 awful.rules = require("awful.rules")
-require("awful.autofocus")
+-- require("awful.autofocus")
 
 -- Widget and layout library
 local wibox = require("wibox")
@@ -45,7 +45,7 @@ end
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "xterm"
+terminal = "/usr/bin/urxvt"
 editor = os.getenv("EDITOR") or "/usr/bin/vi"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -363,13 +363,15 @@ awful.rules.rules = {
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function (c, startup)
     qubes.manage(c)
-    -- Enable sloppy focus
-    c:connect_signal("mouse::enter", function(c)
-        if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-            and awful.client.focus.filter(c) then
-            client.focus = c
-        end
-    end)
+    --[[
+       [ -- Enable sloppy focus
+       [ c:connect_signal("mouse::enter", function(c)
+       [     if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+       [         and awful.client.focus.filter(c) then
+       [         client.focus = c
+       [     end
+       [ end)
+       ]]
 
     if not startup then
         -- Set the windows at the slave,
