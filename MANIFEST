@@ -62,26 +62,34 @@ $ powershell
 ~/My Documents/WindowsPowerShell/profile.ps1: ./windows/profile.ps1
 
 #--------------------------------------------------------------------------------
+#
+# kitchen sink
+#
 
 $ xorg
 ~/bin/: ./xorg/bin/*
 ~/.urxvt/ext/font-size: ./xorg/urxvt-font-size
 ~/.Xresources: ./xorg/Xresources
 ~/.config/color/w0ng: ./xorg/xresources_color_w0ng
-~/.xinitrc: ./xorg/xinitrc
+
+#--------------------------------------------------------------------------------
+#
+# purist section
+#
+
+$ gtk
 ~/.config/gtk-3.0/settings.ini: ./xorg/gtkrc3
 ~/.gtkrc-2.0: ./xorg/gtkrc2
-~/.screenlayout: ./xorg/screenlayout
 
 $ bspwm
-@include: xorg
 ~/bin/: ./bspwm/bin/*
+~/.xinitrc: ./xorg/xinitrc
 ~/.config/bspwm/bspwmrc: ./bspwm/bspwmrc
 ~/.config/sxhkd/sxhkdrc: ./bspwm/sxhkdrc
 ~/.config/lemonbar: ./bspwm/lemonbar
+~/.screenlayout: ./xorg/screenlayout
 
 $ awesome
-@include: xorg
 ~/.config/awesome/rc.lua: ./xorg/awesome.lua
 
 #--------------------------------------------------------------------------------
@@ -106,8 +114,8 @@ $ gpg
 
 #--------------------------------------------------------------------------------
 
-$ thinkpad
-@include: default bspwm dev gpg
+$ debian
+@include: default bspwm dev gpg xorg gtk
 ~/bin/: ./thinkpad/bin/*
 
 $ macbook
@@ -115,3 +123,9 @@ $ macbook
 
 $ windows
 @include: vimfiles powershell git net
+
+$ dom0
+@include: default xorg awesome
+
+$ domU
+@include: default xorg
