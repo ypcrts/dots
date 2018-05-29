@@ -80,10 +80,16 @@ $ bspwm
 
 $ awesome
 ~/.config/awesome/rc.lua: ./xorg/awesome.lua
+
+$ dom0_xfcekb
+~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml: ./xorg/xfce4-keyboard-shortcuts.xml
+
+
+$ dom0_xres
 ~/.Xresources: ./xorg/xresources/dom0.out
 
-# $ domU_xres
-# ~/.Xresources: ./xorg/xresources/domU.out
+$ domU_xres
+~/.Xresources: ./xorg/xresources/domU.out
 
 #--------------------------------------------------------------------------------
 
@@ -117,7 +123,7 @@ $ windows
 @include: vimfiles powershell git net
 
 $ dom0
-@include: default xorg awesome
+@include: default xorg awesome dom0_xres dom0_xfcekb
 
 $ domU
-@include: default xorg
+@include: default xorg domU_xres
