@@ -2,6 +2,11 @@
 # This file targets bash 3, guarding 4.
 . ~/.profile
 
+# provide completion to non-login shells
+if [[ -f /etc/bash_completion ]]; then
+  . /etc/bash_completion
+fi
+
 #{{{1 functions
 #-------------------------------------------------------------------------------
 SOURCE_TRY () { [[ -f "$1" ]] && . "$1"; }
@@ -36,7 +41,7 @@ shopt_enabled=(
   cdspell
   gnu_errfmt
   no_empty_cmd_completion
-  
+
   # defaults
   expand_aliases
   extquote
@@ -99,7 +104,7 @@ SOURCE_TRY ~/.config/bash/buku-completion.bash
 
 [[ $- == *i* ]] && SOURCE_TRY ~/.fzf/shell/completion.bash 2>/dev/null
 SOURCE_TRY ~/.fzf/shell/key-bindings.bash 2>/dev/null
- 
+
 #{{{1 includes first
 #-------------------------------------------------------------------------------
 . ~/.config/bash/git.bash
