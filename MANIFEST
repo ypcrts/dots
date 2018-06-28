@@ -114,7 +114,7 @@ $ gpg
 #--------------------------------------------------------------------------------
 
 $ debian
-@include: default bspwm dev gpg xorg gtk
+@include: default bspwm dev gpg xorg
 
 $ macbook
 @include: default macos dev gpg
