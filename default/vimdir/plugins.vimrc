@@ -69,7 +69,7 @@ else
   " \ }
 endif
 
-Plug   'mattn/emmet-vim'
+" Plug   'mattn/emmet-vim'
 Plug 'Chiel92/vim-autoformat'
 " Plug 'python-rope/ropevim', { 'for': 'python' }
 " Plug 'ypcrts/vim-uncrustify', { 'for': ['c','cpp']  }
@@ -77,26 +77,28 @@ Plug 'Chiel92/vim-autoformat'
 
 "{{{3 Syntax
 "{{{4 metapackages
- Plug 'sheerun/vim-polyglot'
+" XXX: SOMEHOW html out of polyglot isn't working on nvim 0.3.0 in sid. 
+" Plug 'sheerun/vim-polyglot'
+Plug 'othree/html5.vim'
+Plug 'keith/swift.vim'
+Plug 'vim-scripts/AnsiEsc.vim'
 "{{{4 python ecosystems
-" TODO: FIXME FIXME FIXME DAD FIXME FIXME
-Plug            '~/Projects/ansible-vim', { 'branch': 'j2-commentstring' }
-Plug 'tweekmonster/django-plus.vim'
+" Plug 'tweekmonster/django-plus.vim'
 
 "{{{4 rust ecosystems
 Plug   'rust-lang/rust.vim',                { 'for': 'rust' }
 Plug  'racer-rust/vim-racer',               { 'for': 'rust' }
 Plug     'cespare/vim-toml',                { 'for': 'toml' }
 "{{{4 javascript ecosystems
-Plug    'pangloss/vim-javascript',          { 'for': 'javascript' }
+" Plug    'pangloss/vim-javascript',          { 'for': 'javascript' }
 " Plug     'bigfish/vim-js-context-coloring', { 'commit': '6c90329664f3b0a58b05e2a5207c94da0d83a51c', 'for': 'javascript', 'do': 'echo "consider npm install --upgrade"' }
 " this does not work for js files with syntax errors
 " Plug 'digitaltoad/vim-jade',                { 'for': ['jade'] }
 "{{{5 linux / systems
 " Plug 'git://fedorapeople.org/home/fedora/wwoods/public_git/vim-scripts.git' "systemd
 " Plug 'PotatoesMaster/i3-vim-syntax'
-Plug    'vim-scripts/bats.vim'
-Plug       'hashivim/vim-terraform'
+" Plug    'vim-scripts/bats.vim'
+" Plug       'hashivim/vim-terraform'
 
 "{{{4 esrever
 " Plug 'CaledoniaProject/VIM-IDC'
@@ -404,7 +406,6 @@ let g:NERDTrimTrailingWhitespace=1
 let g:NERDTreeIgnore = ['\~$', '\.pyc$']
 nnoremap <Leader>nt :NERDTree<CR>
 
-"{{{2 whut - trash? - replace with your own less trash, but still trash?
-"          - or stop whining and contribute?  [ypcrts // 20170914T2058Z]
+"{{{2 Chiel92/vim-autoformat 
 nmap <Leader>af :Autoformat<CR>
 vmap <Leader>af :Autoformat<CR>

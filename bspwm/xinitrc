@@ -14,8 +14,8 @@ unset f
 
 /usr/bin/xrdb -merge ~/.Xresources
 
-/usr/bin/setxkbmap -option caps:ctrl_modifier
-/usr/bin/setxkbmap -option compose:ralt
+# /usr/bin/setxkbmap -option terminate:ctrl_alt_bksp
+~/bin/fixkeys
 
 #repeat rate
 /usr/bin/xset r rate 300 20
@@ -32,18 +32,17 @@ export _JAVA_AWT_WM_NONREPARENTING=1 JAVA_OPTIONS='-Dawt.useSystemAAFontSettings
 export SXHKD_SHELL=dash
 
 # fontz
-xset +fp /usr/local/share/fonts
-xset fp rehash
-fc-cache -f
-
-if ! [ -f ~/.screenlayout/active.sh ]; then 
-    ln -rs ~/.screenlayout/thinkpad-1080p.sh ~/.screenlayout/active.sh
-fi
-. ~/.screenlayout/active.sh &
-~/bin/feh-bgrotate --once &
+#if [ -f /usr/local/share/fonts ]; then
+#    xset +fp /usr/local/share/fonts
+#    xset fp rehash
+#    fc-cache -f
+#fi
+#
+# . ~/.screenlayout/active.sh &
+# ~/bin/feh-bgrotate --once &
 /usr/bin/compton &
 #~/bin/redshift-run &
-~/bin/thinktouchpad off &
+#~/bin/thinktouchpad off &
 /usr/bin/xscreensaver -no-splash &
 dunst &
 sxhkd &

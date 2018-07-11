@@ -1,1 +1,1 @@
-thinkpad-1080p.sh
+delldesk.sh

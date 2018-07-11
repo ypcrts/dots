@@ -66,6 +66,7 @@ $ powershell
 $ xorg
 ~/bin/: ./xorg/bin/*
 ~/.urxvt/ext/font-size: ./xorg/urxvt-font-size
+~/.config/dunst/dunstrc: ./xorg/dunstrc
 
 $ bspwm
 ~/bin/: ./bspwm/bin/*

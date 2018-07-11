@@ -3,41 +3,42 @@
 # Super +  Control -> Special
 
 # {{{1 control/power/reload
-super + alt + control + XF86Explorer
+super + alt + control + 0 ; r
     ~/.config/bspwm/bspwmrc && \
     pkill -USR1 -x sxhkd  && \
     notify-send --urgency=normal --expire-time=500 'bspwmrc and sxhkdrc reloaded'
 
-super + alt + control + XF86LaunchA
+super + alt + control + 0 ; l
     pkill -x panel;  \
     notify-send --urgency=normal --expire-time=500 'panel reloaded'; \
     ~/.config/lemonbar/panel
 
-super + alt + control + shift + XF86LaunchA
+super + alt + control + 0 ; k
     pkill -x panel;  \
     notify-send --urgency=normal --expire-time=500 'panel killed'
+
+# screenshot current monitor and show
+super + alt + control + 0 ; s
+    scrot -e 'notify-send --urgency=normal --expire-time=200 "scrot fullscreen:" "$f"'
+
+# screenshot focused window and show
+super + alt + control + 0 ; f
+    scrot -u -e 'notify-send --urgency=normal --expire-time=200 "scrot window:" "$f"'
 
 super + alt + control + Delete
     /usr/bin/xscreensaver-command --lock
 
 # windows xp got me like
 super + l
-    /usr/bin/xscreensaver-command --lock
-
-# macOS High Sierra got me like
-ctrl + alt + super + q
-    /usr/bin/xscreensaver-command --lock
+    notify-send --urgency=critical --expire-time=500 'Locking...'; \
+    /usr/bin/xscreensaver-command --lock || /usr/bin/slock
 
 #    notify-send --urgency=critical --expire-time=500 'Locking...'; \
 #    ~/bin/thinklock --dpms
 
-super + alt + control + Delete
-    notify-send --urgency=critical --expire-time=500 'Locking...'; \
-    /usr/bin/xscreensaver-command --lock
-
 super + alt + control + BackSpace
     notify-send --urgency=critical --expire-time=500 'Sleeping...'; \
-    /usr/bin/xscreensaver-command --lock; \
+    /usr/bin/xscreensaver-command --lock && \
     systemctl suspend
 
 super + alt + control + XF86AudioMute
@@ -52,12 +53,12 @@ super + bracketleft
 
 # {{{1 Desktop
 
-super + grave
+super + alt + control + 0 ; d
     notify-send "Desktop $(bspc query --desktops --desktop focused)"
 
-#toggle between tiled and monocle
-super + alt + {t,y}
-    bspc desktop --layout {tiled,monocle}
+# #toggle between tiled and monocle
+# super + alt + {t,y}
+#     bspc desktop --layout {tiled,monocle}
 
 super + alt + {r, shift + r}
     bspc node --rotate {90,270}
@@ -84,10 +85,10 @@ super + {1-9}
 super + alt + {1-9}
     bspc node --to-desktop ^{1-9}
 
-super + control + shift + {1-9}
-    DESKTOP={1-9}; \
-    bspc desktop --swap ^$DESKTOP && \
-    notify-send "Swapped with Desktop $DESKTOP"
+# super + control + shift + {1-9}
+#     DESKTOP={1-9}; \
+#     bspc desktop --swap ^$DESKTOP && \
+#     notify-send "Swapped with Desktop $DESKTOP"
 
 super + {braceright,braceleft}
     GAP=$(( $(bspc config -d focused window_gap) {+,-} 2 )); \
@@ -127,12 +128,12 @@ super + alt + {z,f,d}
 super + alt + {_, shift +} s
     FLAG_TOGGLE={on,off}; \
     bspc node --flag sticky=$FLAG_TOGGLE; \
-    notify-send "$(~/bin/bspc-getfocusedclassname)" "sticky $FLAG_TOGGLE"
+    notify-send --expire-time=100 "$(~/bin/bspc-getfocusedclassname)" "sticky $FLAG_TOGGLE"
 
 super + alt + {_, shift +}a
     FLAG_TOGGLE={on,off}; \
-    bspc node --flag locked=$FLAG_TOGGLE --flag private=$FLAG_TOGGLE && \
-    notify-send "$(~/bin/bspc-getfocusedclassname)" "locked & private $FLAG_TOGGLE"
+    bspc node --flag locked=$FLAG_TOGGLE --flag private=$FLAG_TOGGLE; \
+    notify-send --expire-time=100 "$(~/bin/bspc-getfocusedclassname)" "locked &amp; private $FLAG_TOGGLE"
 
 #swap with shift
 super + shift + {h,j,k,l}
@@ -193,20 +194,16 @@ super + space
 super + Tab ; space
     rofi -show window
 
-# # Unused keybinds in dom0 are just a vulnerabfeature
-# XF86Tools
-#     wmctrl -xa "Firefox" || ( exec firefox || exec firefox-esr )
 #
-# XF86Search
-#     wmctrl -xa "Chromium" || exec chromium
-
-
 # {{{1 Fn Keys
 
 XF86AudioMute
     ~/bin/thinkvolume mute
 
 super + XF86AudioMute
+    wmctrl -xa "pavucontrol" || exec pavucontrol
+
+super + Escape
     wmctrl -xa "pavucontrol" || exec pavucontrol
 
 XF86AudioRaiseVolume
@@ -221,8 +218,9 @@ XF86AudioLowerVolume
 XF86AudioMicMute
     ~/bin/thinkvolume mutemic
 
-super + Home
+super + grave
     wmctrl -xa "wicd-client.py" || exec ~/bin/wifischeisse
+
 
 # mpc
 super + alt + control + Right

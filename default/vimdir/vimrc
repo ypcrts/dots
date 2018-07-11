@@ -390,6 +390,7 @@ nnoremap <Leader>v :Vexplore<CR>
 nnoremap <Leader>on :setlocal number!<CR>
 nnoremap <Leader>or :setlocal relativenumber!<CR>
 nnoremap <Leader>os :setlocal spell!<CR>
+nnoremap <Leader>op :setlocal paste!<CR>
 nnoremap <Leader>ow :setlocal wrap!<CR>
 nnoremap <Leader>ol :setlocal list!<CR>
 nnoremap <Leader>om :setlocal modifiable!<CR>

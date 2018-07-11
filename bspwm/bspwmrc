@@ -1,5 +1,14 @@
 #!/bin/bash
 
+SCREEN_WIDTH="$(xrandr | grep primary | sed -re 's/^.*\s([0-9]+)x[0-9]+.*$/\1/')"
+
+if [[ "$SCREEN_WIDTH" -lt 1921 ]]; then
+  bspc config border_width          2
+else
+  # assume hidpi screen that wastes energy that should be spent cryptomining
+  bspc config border_width          8
+fi
+
 bspc config border_width            2
 bspc config window_gap              8
 bspc config bottom_padding          0
@@ -10,13 +19,21 @@ bspc config borderless_monocle      false
 bspc config gapless_monocle         true
 bspc config focus_follows_pointer   false
 bspc config click_to_focus          true
-bspc config focused_border_color    '#013e77'
+
+bspc config remove_disabled_monitors   true
+bspc config remove_unplugged_monitors  true
+bpsc config merge_overlapping_monitors true
+bspc config honor_size_hints           true
+
+
+# bspc config focused_border_color    '#00e600'
+bspc config focused_border_color    '#ff0000'
 
 n="$(bspc rule --list | grep -c .)"
 for ((i = 0; i < n; ++i)); do bspc rule --remove head; done
 unset i n
 
-bspc monitor --reset-desktops 1 2 3
+bspc monitor --reset-desktops 1 2 3 4
 
 bspc rule --add gifview                   focus=true     state=floating center=true
 bspc rule --add kupfer.py                 focus=true     state=floating center=true
@@ -31,8 +48,7 @@ bspc rule --add transmission-gtk          focus=true     state=floating follow=t
 bspc rule --add Transmission-remote-gtk   focus=true     state=floating follow=true
 bspc rule --add vlc                       focus=true     state=floating
 bspc rule --add xsensors                  focus=true     state=floating sticky=true
-bspc rule --add Firefox                   state=tiled    focused=off
-bspc rule --add Firefox:Dialog            state=floating
+bspc rule --add feh                       state=floating
 bspc rule --add Dwb                       state=tiled    focused=off
 bspc rule --add Geary                     state=tiled    center=on
 bspc rule --add Quirky                    state=tiled
@@ -42,22 +58,32 @@ bspc rule --add gl                        state=floating
 bspc rule --add Gimp                      state=tiled
 bspc rule --add Nautilus                  state=floating
 bspc rule --add Acroread                  state=floating
-bspc rule --add Pinentry                  state=floating
+bspc rule --add Pinentry                  state=floating center=true
 bspc rule --add Wicd-client.py            state=floating center=true    sticky=true
-bspc rule --add jetbrains-idea-ce         state=tiled    desktop=^java  private=true
-bspc rule --add sun-awt-X11-XDialogPeer   state=floating
-bspc rule --add sun-awt-X11-XFramePeer    state=floating
+bspc rule --add jetbrains-idea-ce         state=tiled    private=true
 bspc rule --add TeamViewer.exe            state=floating
-bspc rule --add com.ypcrts.AppMainFX   state=floating center=true    sticky=true
+bspc rule --add com.ypcrts.AppMainFX      state=floating center=true    sticky=true
 bspc rule --add Processed                 state=floating center=true    sticky=true
 bspc rule --add Tk                        state=floating center=true    sticky=true
 bspc rule --add Pidgin                    state=floating center=true
 bspc rule --add Display                   state=floating
+bspc rule --add sun-awt-X11-XDialogPeer   state=floating
+bspc rule --add sun-awt-X11-XFramePeer    state=floating
 bspc rule --add *:sun-awt-X11-XDialogPeer state=floating
 bspc rule --add *:sun-awt-X11-XFramePeer  state=floating
 bspc rule --add Screenkey                 manage=off
+bspc rule --add Keybase                   desktop=^1 private=true locked=true
+bspc rule --add Arandr                    state=floating center=true
+bspc rule --add keepassxc                 state=floating center=true private=true
 
+
+bspc rule --add Firefox                   state=tiled    focused=off
+bspc rule --add Firefox:Dialog            state=floating
 # Firefox modal windows
 bspc rule --add Cookies                   focus=true     state=floating
 bspc rule --add Places                    focus=true     state=floating
 bspc rule --add Toplevel                  focus=true     state=floating
+
+#if command -V polybar >/dev/null 2>&1; then
+#  ./.config/polybar/launch.sh
+#fi
