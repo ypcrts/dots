@@ -51,7 +51,7 @@ __STRFARBE__ ()  {
   if command -V bc >/dev/null 2>&1; then
     echo "ibase=16;((${HEXY}+2)%5)+20" | bc
   else
-    python -uEc "import os;os.write(1,'{:d}'.format(int('${HEXY}',16)%0x5+0x20))"
+    python -uEc "print('{:d}'.format(int('${HEXY}',16)%0x6+0x20))"
   fi
 }
 __INTFARBE__ ()  {
@@ -59,7 +59,7 @@ __INTFARBE__ ()  {
   if command -V bc >/dev/null 2>&1; then
     echo "ibase=10;((${1}+1)%5)+32" | bc
   else
-    python -uEc "import os;os.write(1,'{}'.format(${1}%0x5+0x20))"
+    python -uEc "print('{}'.format(${1}%0x5+0x20))"
   fi
 }
 
