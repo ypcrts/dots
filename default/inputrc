@@ -27,3 +27,5 @@ set expand-tilde off
 
 "\e[B": history-search-forward
 "\e[A": history-search-backward
+"\e\t": menu-complete
+"\e[Z": menu-complete-backward
