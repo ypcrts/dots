@@ -2,6 +2,10 @@
 # This file targets bash 3, guarding 4.
 . ~/.profile
 
+# silly breakout for display managers
+# because in my bash_login I source this
+[[ $- == *i* ]] || return
+
 # provide completion to non-login shells
 if [[ -f /etc/bash_completion ]]; then
   . /etc/bash_completion

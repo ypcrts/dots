@@ -19,7 +19,7 @@ alias \
   llort='tr qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM a-zA-Z' \
   tzu="TZ='utc'" \
   jctl='journalctl' \
-  ctl='systemctl' \
+  uctl='systemctl --user' \
   sctl='sudo systemctl' \
   v='$VISUAL'
 
