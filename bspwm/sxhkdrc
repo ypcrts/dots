@@ -6,16 +6,16 @@
 super + alt + control + 0 ; r
     ~/.config/bspwm/bspwmrc && \
     pkill -USR1 -x sxhkd  && \
-    notify-send --urgency=normal --expire-time=500 'bspwmrc and sxhkdrc reloaded'
+    notify-send --urgency=normal --expire-time=1000 'bspwmrc and sxhkdrc reloaded'
 
 super + alt + control + 0 ; l
     pkill -x panel;  \
-    notify-send --urgency=normal --expire-time=500 'panel reloaded'; \
+    notify-send --urgency=normal --expire-time=1000 'panel reloaded'; \
     ~/.config/lemonbar/panel
 
 super + alt + control + 0 ; k
     pkill -x panel;  \
-    notify-send --urgency=normal --expire-time=500 'panel killed'
+    notify-send --urgency=normal --expire-time=1000 'panel killed'
 
 # screenshot current monitor and show
 super + alt + control + 0 ; s
@@ -30,14 +30,14 @@ super + alt + control + Delete
 
 # windows xp got me like
 super + l
-    notify-send --urgency=critical --expire-time=500 'Locking...'; \
+    notify-send --urgency=critical --expire-time=1000 'Locking...'; \
     /usr/bin/xscreensaver-command --lock || /usr/bin/slock
 
 #    notify-send --urgency=critical --expire-time=500 'Locking...'; \
 #    ~/bin/thinklock --dpms
 
 super + alt + control + BackSpace
-    notify-send --urgency=critical --expire-time=500 'Sleeping...'; \
+    notify-send --urgency=critical --expire-time=1000 'Sleeping...'; \
     /usr/bin/xscreensaver-command --lock && \
     systemctl suspend
 
