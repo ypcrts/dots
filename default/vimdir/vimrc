@@ -366,11 +366,9 @@ inoremap <C-k> <C-k>
 if exists("*strftime")
   " Local datestamp
   noremap <silent> <leader>zl m'A<C-R>=strftime("%d.%m.%Y")<CR><ESC>``
+  noremap <silent> <leader>zt m'A<C-R>=strftime("%Y-%m-%d %H:%M")<CR><ESC>``
 
   if has('win_32')
-    " To hell with it... local weak datestamps for Windows
-    " Unless for some unholy reason there's no strftime compiled in vim
-    " ... then the environment is garbage, so who cares about timestamps.
     map <silent> <leader>zs <leader>zl
     map <silent> <leader>zd <leader>zl
   else
