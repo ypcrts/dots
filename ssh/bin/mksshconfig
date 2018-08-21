@@ -36,16 +36,16 @@ __EOF
 	catstripped "$file" ${configd}/0-controlmaster-git
 	catstripped "$file" ${configd}/0-git.${git_ext}
 	catstripped "$file" `find $configd \( -type f -o -type l \) -a -regextype posix-extended -regex '.*/[0-9]{2}.*'`
-  vim "$file"
+  #vim "$file"
   set -x
   mkdir -p ~/.ssh/sockets
   chmod --changes 0600 $pfx/config{,.sig,.d/*}
   chmod --changes 0700 $pfx
   set +x
-  echo "Sign it?"
-  read respy
-  if  [ "$respy" = "y" ]; then
-    gpg2 --detach-sign "${file}"
-  fi
+  # echo "Sign it?"
+  # read respy
+  # if  [ "$respy" = "y" ]; then
+  #   gpg2 --detach-sign "${file}"
+  # fi
 }
 mksshconfig $@
