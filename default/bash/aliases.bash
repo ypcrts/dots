@@ -6,6 +6,7 @@ alias \
   h='history' \
   j='jobs -l' \
   p='cd ~/Projects' \
+  t='cd ~/Projects/tools' \
   cdtl='cd "$(git rev-parse --show-toplevel)"' \
   rmi='/bin/rm -i' \
   tree='tree -C' \
