@@ -1,0 +1,4 @@
+# VMware NAT fix
+# https://dreamdevourer.com/ssh-broken-pipe-when-running-in-vmware-workstation/
+Host *
+IPQoS lowdelay

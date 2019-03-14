@@ -23,6 +23,7 @@ Compression no
 HashKnownHosts yes
 
 TCPKeepAlive yes
+ServerAliveInterval 120
 
 # FACIST MODE: Only use config file-specified keys
 # IdentitiesOnly yes
