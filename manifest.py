@@ -302,8 +302,11 @@ if __name__ == '__main__':
         log.setLevel(logging.INFO)
 
     m = Manifest(force=args.force, path=args.manifest)
-    args.section = list(map(lambda sn: sn.rstrip('/'), args.section))
-    for sn in args.section:
-        assert sn in m, "section `{:s}` is not in the manifest".format(sn)
+    if not args.section:
+        args.section = ('default',)
+    else:
+        args.section = list(map(lambda sn: sn.rstrip('/'), args.section))
+        for sn in args.section:
+            assert sn in m, "section `{:s}` is not in the manifest".format(sn)
 
     getattr(Actions(m, args), args.action)()
