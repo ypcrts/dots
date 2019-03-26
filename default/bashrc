@@ -96,7 +96,6 @@ set -o vi noclobber
 #{{{1 history
 #-------------------------------------------------------------------------------
 export \
-  HISTFILE=/tmp/bash_history_$UID.lol \
   HISTSIZE=65536 \
   HISTFILESIZE=1048576 \
   HISTIGNORE='&:[ ]*:exit' \

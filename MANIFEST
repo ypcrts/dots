@@ -6,7 +6,6 @@ $ bin
 
 $ shell
 ~/.profile: ./default/profile
-~/.bash_history: /dev/null
 ~/.bash_profile: ./default/bash_profile
 ~/.bash_logout: ./default/bash_logout
 ~/.logout: @delete
@@ -111,6 +110,11 @@ $ gpg
 ~/.caff/gnupghome/gpg.conf: ./gpg/caff-gpg.conf
 ~/.gnupg/dirmngr.conf: ./gpg/dirmngr.conf
 ~/.gnupg/gpg.conf: ./gpg/gpg.conf
+
+#--------------------------------------------------------------------------------
+
+$ histfile
+~/.bash_history: /dev/null
 
 #--------------------------------------------------------------------------------
 
