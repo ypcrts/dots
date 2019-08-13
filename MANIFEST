@@ -60,6 +60,9 @@ $ macos
 $ powershell
 ~/My Documents/WindowsPowerShell/profile.ps1: ./windows/profile.ps1
 
+$ alacritty
+~/AppData/Roaming/alacritty/alacritty.yml: ./windows/alacritty.yml
+
 #--------------------------------------------------------------------------------
 
 $ xorg
@@ -125,7 +128,7 @@ $ macbook
 @include: default macos dev gpg
 
 $ windows
-@include: vimfiles powershell git net
+@include: vimfiles powershell git net alacritty
 
 $ dom0
 @include: default xorg awesome dom0_xres dom0_xfcekb
