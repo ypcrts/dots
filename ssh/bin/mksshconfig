@@ -2,23 +2,23 @@
 # `GIT443=1 mksshconfig` to use port 443 for cloud git
 
 catstripped () {
-	if [ $# -lt 2 ]; then
-		echo "fatal: assertion error, catstripped call invalid"
-		exit 1
-	fi
-	local CONFIG_OUT=$1
-	shift
+  if [ $# -lt 2 ]; then
+    echo "fatal: assertion error, catstripped call invalid"
+    exit 1
+  fi
+  local CONFIG_OUT=$1
+  shift
 
-	# remove comments and blank lines
-	cat $@ | sed -re '/(^\s*$)|(^\s*#)/d' >> "$CONFIG_OUT"
+  # remove comments and blank lines
+  cat $@ | sed -re '/(^\s*$)|(^\s*#)/d' >> "$CONFIG_OUT"
 }
 is_vmware () {
   lspci | grep VMware 2>/dev/null >&2
 }
 mksshconfig () {
   local pfx="$HOME/.ssh"
-	local CONFIG_OUT="$pfx/config"
-	local configd="$pfx/config.d"
+  local CONFIG_OUT="$pfx/config"
+  local configd="$pfx/config.d"
   local socketsd="$pfx/sockets"
 
   local git_ext='std'
@@ -27,21 +27,21 @@ mksshconfig () {
     git_ext='alt'
   fi
 
-	rm -vf ${CONFIG_OUT}{,.sig}
-	>>"${CONFIG_OUT}" cat <<-__EOF
-		################################################################################
-		# Auto Generated on `date -uIseconds` by `whoami`
-		################################################################################
+  rm -vf ${CONFIG_OUT}{,.sig}
+  >>"${CONFIG_OUT}" cat <<-__EOF
+    ################################################################################
+    # Auto Generated on `date -uIseconds` by `whoami`
+    ################################################################################
 __EOF
 
   if is_vmware; then
     catstripped "$CONFIG_OUT" $configd/0-vmware
   fi
 
-	catstripped "$CONFIG_OUT" ${configd}/0-controlmaster-git
-	catstripped "$CONFIG_OUT" ${configd}/0-git.${git_ext}
+  catstripped "$CONFIG_OUT" ${configd}/0-controlmaster-git
+  catstripped "$CONFIG_OUT" ${configd}/0-git.${git_ext}
 
-	catstripped "$CONFIG_OUT" `find $configd \( -type f -o -type l \) -a -regextype posix-extended -regex '.*/[0-9]{2}.*'`
+  catstripped "$CONFIG_OUT" `find $configd \( -type f -o -type l \) -a -regextype posix-extended -regex '.*/[0-9]{2}.*'`
 
 
   cat "$CONFIG_OUT"
