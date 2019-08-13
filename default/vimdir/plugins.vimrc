@@ -34,10 +34,10 @@ Plug 'junegunn/vim-easy-align'
 "   Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 " endif
 
-"{{{3 fuzzy finders
+"{{{3 retired fuzzy finders
+" You don't use these any more. You use fzf now.  [20190813T1934Z]
 " Plug 'jremmen/vim-ripgrep' " deficient for splits
-Plug 'mileszs/ack.vim'
-
+" Plug 'mileszs/ack.vim'     " just deficient
 
 "{{{3 linting
 if has('nvim') || v:version >= 800
@@ -354,24 +354,36 @@ nmap ga      <Plug>(EasyAlign)
 nmap gaga    vip<Esc>:'<,'>EasyAlign /[ /]/alrlig['Comment']stl1l0r0<CR>
 nmap gas     vip<Esc>:'<,'>EasyAlign */[ ]/l0r0<CR>
 
-"{{{2 fzf & ripgrep
+"{{{2 fzf (over rg and ag)
+"""""""""""""""""""""""""""""""""""""
+" https://github.com/junegunn/fzf.vim
+" :GFiles  -> git files
+" :GFiles? -> git status dirty files
+" :BLines  -> lines in current buffer
+"""""""""""""""""""""""""""""""""""""
+
 nmap <Leader>fg  :GFiles<CR>
 nmap <Leader>fs  :GFiles?<CR>
-nmap <Leader>ff  :Files<CR>
 nmap <Leader>fl  :Lines<CR>
-nmap <Leader>flb :BLines<CR>
-nmap <Leader>fb  :Buffers<CR>
+nmap <Leader>fb  :BLines<CR>
 nmap <Leader>ft  :Tags<CR>
+
 nmap <Leader>rg  :Rg!<cr>
+nmap <Leader>ag  :Ag!<cr>
+nmap <Leader>ff  :Files<CR>
+
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                 <bang>0)
 
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always '.<q-args>,
-  \    1,
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0
-  \   )
+  \   <bang>0)
 
 command! -bang -nargs=? -complete=dir Files
   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
