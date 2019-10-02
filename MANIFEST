@@ -27,6 +27,9 @@ $ vimfiles
 ~/_gvimrc: @delete
 ~/vimfiles/: ./default/vimdir/*
 
+$ neovim_windows
+~/AppData/Local/nvim/init.vim: ./default/vimdir/vimrc
+
 $ mux
 ~/.tmux.conf: ./default/tmux.conf
 ~/.screenrc: ./default/screenrc
@@ -128,7 +131,7 @@ $ macbook
 @include: default macos dev gpg
 
 $ windows
-@include: vimfiles powershell git net alacritty
+@include: vimfiles neovim_windows powershell git net alacritty
 
 $ dom0
 @include: default xorg awesome dom0_xres dom0_xfcekb

@@ -114,7 +114,7 @@ endif
 "   set viminfo="NONE"
 " endif
 
-if has("win32") || exists('g:safevi')
+if (has("win32") && !has('nvim')) || exists('g:safevi')
  colorscheme ir_black
 " elseif has('termguicolors') && &termguicolors
 "  set background=dark
