@@ -57,7 +57,7 @@ onemux () {
   # create session & window iff none
   if [[ "$(tmux ls | grep '${ONEMUX_SESSION_NAME}-' | wc -l)" -eq "0" ]]; then
     2>/dev/null >/dev/null tmux $TMUX_OPTS new-session -d -s $ONEMUX_SESSION_NAME
-    2>/dev/null >/dev/null tmux $TMUX_OPTS new-window -t ${ONEMUX_SESSION_NAME}:1
+    # 2>/dev/null >/dev/null tmux $TMUX_OPTS new-window -t ${ONEMUX_SESSION_NAME}:1
   fi
 
   # kill old sessions
