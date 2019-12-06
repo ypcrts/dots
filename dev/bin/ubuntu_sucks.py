@@ -24,7 +24,7 @@ import requests
 
 class DebianAPI(object):
     ENDPOINT = "https://sources.debian.net/api/src/{:s}/"
-    SUITES_OF_INTEREST = ('sid', 'squeeze', 'wheezy', 'jessie', 'stretch')
+    SUITES_OF_INTEREST = ('sid', 'squeeze', 'wheezy', 'jessie', 'stretch', 'buster')
     PKG_NAME_REGEX = re.compile(r"^[-_A-z0-9]+$")
 
     def __init__(self, pkg_):
