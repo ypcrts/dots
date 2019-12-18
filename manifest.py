@@ -151,9 +151,7 @@ class Manifest(dict):
         destdir = dirname(dest)
         destname = basename(dest)
 
-        if not isdir(destdir):
-            makedirs(destdir, 0o755)
-        elif lexists(dest):
+        if lexists(dest) or exists(dest):
             if not self.force:
                 log.info('skipped (exists): %s' % dest)
                 return
@@ -161,6 +159,10 @@ class Manifest(dict):
                 rmtree(dest)
             else:
                 remove(dest)
+
+        if not isdir(destdir):
+            makedirs(destdir, 0o755)
+
         chdir(destdir)
         if src in self.SRC_MACROS:
             if src == self.DELETE_MACRO:
