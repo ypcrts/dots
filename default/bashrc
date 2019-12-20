@@ -25,7 +25,7 @@ SOURCE_FIRST () {
 
 
 #{{{1 Disable flow control
-stty -ixon
+stty -ixoff -ixon
 
 #{{{1 shopt, set
 #-------------------------------------------------------------------------------
@@ -105,8 +105,13 @@ export \
 #-------------------------------------------------------------------------------
 SOURCE_TRY ~/.config/bash/buku-completion.bash
 
-[[ $- == *i* ]] && SOURCE_TRY ~/.fzf/shell/completion.bash 2>/dev/null
-SOURCE_TRY ~/.fzf/shell/key-bindings.bash 2>/dev/null
+SOURCE_FIRST 2>/dev/null \
+  ~/.fzf/shell/completion.bash \
+  /usr/share/bash-completion/completions/fzf \
+
+SOURCE_FIRST 2>/dev/null \
+  ~/.fzf/shell/key-bindings.bash \
+  /usr/share/doc/fzf/examples/key-bindings.bash \
 
 #{{{1 includes first
 #-------------------------------------------------------------------------------

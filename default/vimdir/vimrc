@@ -39,7 +39,7 @@ set noautoread
 filetype plugin indent on
 syntax on
 syntax sync minlines=256
-set synmaxcol=256
+set synmaxcol=4096
 "let &spellfile = g:vimdir . '/spell/en.utf-8.add' " defaults to rtp[0] -_-
 
 "{{{2 File encoding
