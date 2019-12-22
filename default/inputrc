@@ -6,9 +6,9 @@ set keymap vi
 set skip-completed-text on
 set echo-control-characters off
 
-# set input-meta off
-# set output-meta off
-# set convert-meta off
+set input-meta off
+set output-meta off
+set convert-meta off
 
 set bell-style audible
 
@@ -16,7 +16,7 @@ set expand-tilde off
 
 set completion-ignore-case on
 set completion-map-case on
-set completion-query-items 100
+set completion-query-items 512
 set completion-prefix-display-length 3
 
 set visible-stats on
