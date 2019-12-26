@@ -22,7 +22,8 @@ alias \
   jctl='journalctl' \
   uctl='systemctl --user' \
   sctl='sudo systemctl' \
-  v='$VISUAL'
+  v='$VISUAL' \
+  makepackagegreatagain='python3 setup.py sdist bdist_wheel && twine upload dist/*'
 
 if ls --group-directories-first 2>/dev/null >&2; then
   alias ls='ls --color=auto -hF --group-directories-first'

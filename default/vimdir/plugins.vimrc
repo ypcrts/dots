@@ -47,7 +47,7 @@ else
 endif
 
 Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
-Plug     'fisadev/vim-isort',       { 'for': 'python' }
+" Plug     'fisadev/vim-isort',       { 'for': 'python' } " no work windows
 Plug    'chrisbra/csv.vim',         { 'for':    'csv' }
 
 "{{{3 completion
