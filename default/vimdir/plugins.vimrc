@@ -10,7 +10,7 @@ endif
 call plug#begin(expand('<sfile>:p:h') . '/plugged')
 
 "{{{2 plugs
-Plug   'ypcrts/securemodelines', { 'commit': '33f695221cea4d965a47ab24a78fa2646c5e417e' }
+Plug   'ypcrts/securemodelines', { 'commit': 'fa69372a18cec61c664754848a7094fc4a866dcc' }
 " Plug 'jamessan/vim-gnupg'
 " Plug   'ypcrts/vim-gpg-sign'
 
