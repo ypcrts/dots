@@ -26,6 +26,7 @@ bash_prompt_setup () {
 
   local F="\[\e[0;${FARBE}m\]"
   local R='\[\e[0m\]'
+  local BOLD='\[\033[1m\]'
 
   local HOST_FARBE="$(__STRFARBE__ "$HOSTNAME")"
 
@@ -33,7 +34,8 @@ bash_prompt_setup () {
     local NUTZER_TEIL="${F}\\u\[\e[0;${HOST_FARBE}m\]@\\H${R} ${BEGRENZER} "
   fi
 
-  PS1="\n${NUTZER_TEIL}\[\033[\${RET_FARBE}m\]\\w${R} \$(___VIRTUALENV_PROMPT__ 2>/dev/null)\[\033[0;34m\]\$(__git_ps1 \"(%s)\" 2>/dev/null)${R}\n\[\033[\${RET_FARBE}m\]\\$ ${R}"
+  PS0="${R}"
+  PS1="\n${NUTZER_TEIL}\[\033[\${RET_FARBE}m\]\\w${R} \$(___VIRTUALENV_PROMPT__ 2>/dev/null)\[\033[0;34m\]\$(__git_ps1 \"(%s)\" 2>/dev/null)${R}\n\[\033[\${RET_FARBE}m\]\\$ ${R}${BOLD}"
   PS2="${F}\ "
   PS4="${F}• "
 }
