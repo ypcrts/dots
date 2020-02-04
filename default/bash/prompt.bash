@@ -30,8 +30,10 @@ bash_prompt_setup () {
 
   local HOST_FARBE="$(__STRFARBE__ "$HOSTNAME")"
 
-  if [[ -z "$SAFE_PROMPT" ]]; then
+  if [[ -z "$SAFE_PROMPT" && -z "$TMUX" ]]; then
     local NUTZER_TEIL="${F}\\u\[\e[0;${HOST_FARBE}m\]@\\H${R} ${BEGRENZER} "
+  else
+    local NUTZER_TEIL=''
   fi
 
   PS0="${R}"
@@ -83,7 +85,7 @@ ___EXITSTAT () {
   local RET=$?
   if ((RET)); then
     RET_FARBE='0;31'
-    echo -en "\n\033[1;31m("$RET")\033[0m "
+    printf "\n\033[1;31m(%s)\033[0m " "$RET"
   else
     RET_FARBE='0'
   fi
