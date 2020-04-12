@@ -1,0 +1,3 @@
+Host github.com github gh bb gl bitbucket.org bitbucket gitlab gitlab.com
+ControlMaster no
+ControlPath none

@@ -43,6 +43,10 @@ $ ssh
 ~/.config/git/ssh.gitconfig: ./ssh/ssh.gitconfig
 ~/.ssh/config.d/: ./ssh/config.d*
 
+$ windows_ssh
+@include: ssh
+~/.ssh/config.d/: ./windows/ssh_config/*
+
 $ net
 ~/.curlrc: ./default/curlrc
 ~/.digrc: ./default/digrc
@@ -131,7 +135,7 @@ $ macbook
 @include: default macos dev gpg
 
 $ windows
-@include: vimfiles neovim_windows powershell git net alacritty
+@include: vimfiles neovim_windows powershell git net alacritty windows_ssh
 
 $ dom0
 @include: default xorg awesome dom0_xres dom0_xfcekb
