@@ -199,11 +199,11 @@ class Manifest(dict):
                     included.update(src)
                     for sn in src:
                         assert sn != section_name,\
-                            "cannot include `{:}` inside itself'\
-                                '!".format(section_name)
+                            "cannot include `{:}` inside itself"\
+                                "!".format(section_name)
                         assert sn in self, \
-                            "cannot include `{:}` '\
-                                '- does not exist".format(section_name)
+                            "cannot include `{:}` "\
+                            "dependency `{:}` does not exist".format(section_name, sn)
                         for s in self.iter_section(sn, included):
                             yield s
                     continue
