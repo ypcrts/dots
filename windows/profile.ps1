@@ -3,7 +3,7 @@ Set-Alias vi vim
 Set-Alias vim nvim
 
 Function mksshconfig {
-  & docker run -it -v "~:/root" debian:stable sh /root/Documents/dots/ssh/bin/mksshconfig
+  & docker run -it -v "~:/root" debian:stable bash /root/Documents/dots/ssh/bin/mksshconfig
 }
 Function dockerbash {
   & docker run -it -v "~:/root" debian:stable bash
