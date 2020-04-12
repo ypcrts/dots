@@ -9,14 +9,20 @@ let s:tildevimdir = has('win32') ? '~/vimfiles' : '~/.vim'
 let g:vimdir = fnameescape(expand(s:tildevimdir))
 exe 'set' 'rtp=' . s:tildevimdir . '/,'. fnameescape($VIMRUNTIME)
 
+if has('nvim') && has('win32')
+  let g:python3_host_prog = system('powershell "command python | select-object -expandproperty source"')
+  let g:python3_host_prog = substitute(g:python3_host_prog, '[\r\n]\+', '', '')
+endif
+
 "{{{2 Plugins
 if ($USER == 'root' || $USER == 'admin')
     \ && empty($NOSAFEVI) || !empty($SAFEVI)
-  echo '[SAFEVI] NO PLUGINS LOADED: ' . (empty($SAFEVI) ? '' . $USER : '')
+  echomsg '[SAFEVI] NO PLUGINS LOADED: ' . (empty($SAFEVI) ? '' . $USER : '')
   let g:safevi = 1
 else
   if !empty($NOSAFEVI)
-    echomsg 'Danger: NOSAFEVI SET'
+    echomsg 'Danger: assertion error NOSAFEVI SET when expected'
+    exit
   endif
   exe 'source' g:vimdir . '/plugins.vimrc'
 endif
@@ -60,7 +66,7 @@ if &t_Co > 2 || has('gui_running')
   set hlsearch
 endif
 
-if has('termguicolors')
+if has('termguicolors') && !has('win32')
   if has('nvim') && (
         \   ( match(system('uname'), 'Darwin') == 0
         \     && match($TERM, '^\v(screen|rxvt)-256.*$') == 0

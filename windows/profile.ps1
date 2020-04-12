@@ -20,6 +20,7 @@ Function k {
     ssh-add
     ssh-add -l
   }
+  $env:GIT_SSH_COMMAND="$(command ssh | select-object -ExpandProperty Source -first 1 | convert-path)"
 }
 Function p {
   cd $env:USERPROFILE/Documents
