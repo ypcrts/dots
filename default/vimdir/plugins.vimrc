@@ -58,7 +58,9 @@ if has('nvim')
   Plug        'zchee/deoplete-jedi',   { 'for': 'python' }
   Plug 'tweekmonster/deoplete-clang2', { 'commit': '787dd4dc7eeb5d1bc2fd3cefcf7bd07e48f4a962' }
   " Plug     'carlitux/deoplete-ternjs', { 'for': 'javascript' }
-  Plug       'wellle/tmux-complete.vim'
+  if !has('win32') " my eyes just rolled back into my head
+    Plug       'wellle/tmux-complete.vim'
+  endif
 elseif v:version >= 703 && has('lua')
   Plug 'Shougo/neocomplete.vim'
 else

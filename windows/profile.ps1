@@ -1,6 +1,14 @@
 Set-Alias v vi
 Set-Alias vi vim
 Set-Alias vim nvim
+
+Function mksshconfig {
+  & docker run -it -v "~:/root" debian:stable sh /root/Documents/dots/ssh/bin/mksshconfig
+}
+Function dockerbash {
+  & docker run -it -v "~:/root" debian:stable bash
+}
+
 #Function edit-powershell-profile {
 #  vim $profile
 #}
@@ -20,7 +28,9 @@ Function k {
     ssh-add
     ssh-add -l
   }
-  $env:GIT_SSH_COMMAND="$(command ssh | select-object -ExpandProperty Source -first 1 | convert-path)"
+  # XXX: this should work, but it doesn't because bugs
+  # $env:GIT_SSH_COMMAND=[Management.Automation.WildcardPattern]::Escape("$(command ssh | select-object -ExpandProperty Source -first 1 | convert-path)")
+  git config --global core.sshCommand "'C:\Windows\System32\OpenSSH\ssh.exe'"
 }
 Function p {
   cd $env:USERPROFILE/Documents
