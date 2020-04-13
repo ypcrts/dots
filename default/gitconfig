@@ -169,3 +169,5 @@
   path = ~/.config/git/local.gitconfig
 [github]
   user = ypcrts
+[submodule]
+	recurse = true
