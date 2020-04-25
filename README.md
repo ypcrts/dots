@@ -51,8 +51,8 @@ This repo used to also provide an up-to-date configuration for bspwm and sxkhd
 that I loved dearly. This text blob is in loving memory of the days where
 I felt that keeping up to date with the bspwm developer's breaking changes was
 worth my time. It's not anymore. I'd rather use Microsoft Windows to host my
-terminal emulators (Windows Terminal is pretty good) so I can do things in
-docker and over ssh.  RIP bspwm & the Linux desktop.
+terminal emulators (<s>Windows Terminal is pretty good</s> Alacritty is cute)
+so I can do things in docker and over ssh.  RIP bspwm & the Linux desktop.
 
 ## Management Script: `manifest.py`
 ```
