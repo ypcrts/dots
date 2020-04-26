@@ -391,6 +391,8 @@ nmap <silent> <Leader>zz A<C-R>=' ['.expand("$USER").' // '<CR><ESC><leader>zs<E
 "{{{2 Leader
 nnoremap <Leader>v :Vexplore<CR>
 
+nnoremap <silent> <Leader>ip "=substitute(system("ifip tun0"),'[\r\n]','','g')<C-M>p
+
 nnoremap <Leader>on :setlocal number!<CR>
 nnoremap <Leader>or :setlocal relativenumber!<CR>
 nnoremap <Leader>os :setlocal spell!<CR>
