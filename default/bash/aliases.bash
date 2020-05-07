@@ -7,6 +7,7 @@ alias \
   j='jobs -l' \
   p='cd ~/Projects' \
   t='cd ~/Projects/tools' \
+  tmxlb='tmux loadb -' \
   cdtl='cd "$(git rev-parse --show-toplevel)"' \
   rmi='/bin/rm -i' \
   tree='tree -C' \
