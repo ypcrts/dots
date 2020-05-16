@@ -20,7 +20,8 @@ alias \
   troll='tr a-zA-Z qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM' \
   llort='tr qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM a-zA-Z' \
   tzu="TZ='utc'" \
-  jctl='journalctl' \
+  jou='journalctl' \
+  sjou='sudo journalctl' \
   uctl='systemctl --user' \
   sctl='sudo systemctl' \
   v='$VISUAL' \
