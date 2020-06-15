@@ -36,7 +36,8 @@ bash_prompt_setup () {
     local NUTZER_TEIL=''
   fi
 
-  PS0="${R}"
+  # PS0 doesn't want to be in the prompt [ ] brackets
+  PS0='\033[0m'
   PS1="\n${NUTZER_TEIL}\[\033[\${RET_FARBE}m\]\\w${R} \$(___VIRTUALENV_PROMPT__ 2>/dev/null)\[\033[0;34m\]\$(__git_ps1 \"(%s)\" 2>/dev/null)${R}\n\[\033[\${RET_FARBE}m\]\\$ ${R}${BOLD}"
   PS2="${F}\ "
   PS4="${F}• "
