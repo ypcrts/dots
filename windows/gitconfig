@@ -1,0 +1,3 @@
+; vi: ft=gitconfig tw=0 ts=2 sw=2 sts=2 fdm=expr et:
+[core]
+  sshCommand = 'C:\\Windows\\System32\\OpenSSH\\ssh.exe'

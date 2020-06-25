@@ -46,6 +46,7 @@ $ ssh
 $ windows_ssh
 @include: ssh
 ~/.ssh/config.d/: ./windows/ssh_config/*
+~/.config/git/windows.gitconfig: ./windows/gitconfig
 
 $ net
 ~/.curlrc: ./default/curlrc

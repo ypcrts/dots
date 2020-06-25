@@ -10,7 +10,9 @@ let g:vimdir = fnameescape(expand(s:tildevimdir))
 exe 'set' 'rtp=' . s:tildevimdir . '/,'. fnameescape($VIMRUNTIME)
 
 if has('nvim') && has('win32')
-  let g:python3_host_prog = system('powershell "command python | select-object -expandproperty source"')
+  " XXX: python may be python2, because yes life still requires py2 post EOL
+  " XXX: `python3` will be the Windows Store shortcut, so try py.exe
+  let g:python3_host_prog = system('powershell "command py | select-object -expandproperty source"')
   let g:python3_host_prog = substitute(g:python3_host_prog, '[\r\n]\+', '', '')
 endif
 

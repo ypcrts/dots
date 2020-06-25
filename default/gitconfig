@@ -75,32 +75,32 @@
 [color]
   ui                = auto
 [color "diff"]
-	plain = normal
-	meta = bold
-	frag = cyan bold
-	old = red bold
-	new = green bold
-	commit = yellow bold
+  plain = normal
+  meta = bold
+  frag = cyan bold
+  old = red bold
+  new = green bold
+  commit = yellow bold
   whitespace        = red reverse
 [color "branch"]
-	current = green bold
-	local = normal
-	remote = red bold
-	plain = normal
+  current = green bold
+  local = normal
+  remote = red bold
+  plain = normal
 [color "status"]
-	header = normal
-	added = red bold
-	updated = green bold
-	changed = yellow bold
-	untracked = magenta bold
-	nobranch = red
+  header = normal
+  added = red bold
+  updated = green bold
+  changed = yellow bold
+  untracked = magenta bold
+  nobranch = red
 [color "grep"]
-	match = yellow bold
+  match = yellow bold
 [color "interactive"]
-	prompt = normal
-	header = black bold
-	help = magenta bold
-	error = red bold
+  prompt = normal
+  header = black bold
+  help = magenta bold
+  error = red bold
 [clean]
   requireForce      = true
 [core]
@@ -156,8 +156,8 @@
   tool              = maybenvimdiff2
 
 [mergetool]
-	keepBackup = false
-	prompt = false
+  keepBackup = false
+  prompt = false
 
 [mergetool "maybenvimdiff2"]
   cmd = $EDITOR -d $LOCAL $MERGED $REMOTE
@@ -166,8 +166,9 @@
   triangular        = false
 [include]
   path = ~/.config/git/ssh.gitconfig
+  path = ~/.config/git/windows.gitconfig
   path = ~/.config/git/local.gitconfig
 [github]
   user = ypcrts
 [submodule]
-	recurse = true
+  recurse = true
