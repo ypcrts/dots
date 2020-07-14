@@ -12,9 +12,14 @@ catstripped () {
   shift
 
   # remove comments and blank lines
-  cat $@ | sed -re '/(^\s*$)|(^\s*#)/d' >> "$CONFIG_OUT"
+  if sed -r 2>/dev/null; then
+    cat $@ | sed -re '/(^\s*$)|(^\s*#)/d' >> "$CONFIG_OUT"
+  else
+    cat $@  >> "$CONFIG_OUT"
+  fi
 }
 is_vmware () {
+  command -V lspci 2>/dev/null || return 1
   lspci | grep VMware 2>/dev/null >&2
 }
 mksshconfig () {
@@ -32,7 +37,7 @@ mksshconfig () {
   rm -vf ${CONFIG_OUT}{,.sig}
   >>"${CONFIG_OUT}" cat <<-__EOF
 ################################################################################
-# Auto Generated on `date -uIseconds` by `whoami`
+# Auto Generated on `date -u` by `whoami`
 ################################################################################
 __EOF
 
@@ -42,14 +47,14 @@ __EOF
 
   catstripped "$CONFIG_OUT" ${configd}/0-git.${git_ext}
 
-  catstripped "$CONFIG_OUT" `find $configd \( -type f -o -type l \) -a -regextype posix-extended -regex '.*/[0-9]{2}.*'`
+  catstripped "$CONFIG_OUT" `find "$configd" | grep -v './0-'`
 
 
   cat "$CONFIG_OUT"
   set -x
   mkdir -p ~/.ssh/sockets
-  chmod --changes 0600 $pfx/config{,.sig,.d/*}
-  chmod --changes 0700 $pfx
+  chmod 0600 $pfx/config{,.sig,.d/*}
+  chmod 0700 $pfx
   set +x
 
   # echo "Sign it?"
