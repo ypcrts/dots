@@ -107,11 +107,11 @@ SOURCE_TRY ~/.config/bash/buku-completion.bash
 
 SOURCE_FIRST 2>/dev/null \
   ~/.fzf/shell/completion.bash \
-  /usr/share/bash-completion/completions/fzf \
+  /usr/share/bash-completion/completions/fzf
 
 SOURCE_FIRST 2>/dev/null \
   ~/.fzf/shell/key-bindings.bash \
-  /usr/share/doc/fzf/examples/key-bindings.bash \
+  /usr/share/doc/fzf/examples/key-bindings.bash
 
 #{{{1 includes first
 #-------------------------------------------------------------------------------

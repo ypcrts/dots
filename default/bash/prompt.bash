@@ -49,7 +49,7 @@ __STRFARBE__ ()  {
   for humbug in md5sum md5 "openssl dgst -md5"; do
     # `openssl dgst` may have prefix like `(stdin)= abec112098`
     if command -V $humbug >/dev/null 2>&1; then
-      HEXY="$(echo -n "$1" | $humbug | sed 's:^.*\([0-9a-f]\{32\}\).*$:\U\1:')"
+      HEXY="$(echo -n "$1" | "$humbug" | sed 's:^.*\([0-9a-f]\{32\}\).*$:\1:' | tr '[:lower:]' '[:upper:]')"
       break
     fi
   done
