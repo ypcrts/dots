@@ -3,11 +3,6 @@
   clean             = git-media-clean %f
   smudge            = git-media-smudge %f
 
-[user]
-  name              = ypcrts
-  email             = 32625281+ypcrts@users.noreply.github.com
-  signingkey        =
-
 [alias]
   a                 = add
   af                = add --force
@@ -165,10 +160,10 @@
 [hub]
   triangular        = false
 [include]
+  path = ~/.config/git/ypcrts.gitconfig
   path = ~/.config/git/ssh.gitconfig
   path = ~/.config/git/windows.gitconfig
   path = ~/.config/git/local.gitconfig
-[github]
-  user = ypcrts
+
 [submodule]
   recurse = true

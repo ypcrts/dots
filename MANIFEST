@@ -71,6 +71,9 @@ $ powershell
 $ alacritty
 ~/AppData/Roaming/alacritty/alacritty.yml: ./windows/alacritty.yml
 
+$ ypcrts
+~/.config/git/ypcrts.gitconfig: ./ypcrts.gitconfig
+
 #--------------------------------------------------------------------------------
 
 $ xorg
