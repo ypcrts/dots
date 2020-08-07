@@ -21,4 +21,5 @@ camerausedby() {
   echo -e "Recent camera uses:\n$usedby"
 }
 
-
+# my eyes just rolled back into my head, rip
+export BASH_SILENCE_DEPRECATION_WARNING=1
