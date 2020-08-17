@@ -161,6 +161,7 @@ let g:javascript_plugin_jsdoc = 1
 "{{{2 completion plugin
 if has_key(g:plugs, 'deoplete.nvim')
   let g:deoplete#enable_at_startup = 1
+  call deoplete#custom#option('auto_complete_delay', 500)
 
 elseif has_key(g:plugs, 'neocomplete.vim') "{{{4
 
