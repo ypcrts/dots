@@ -27,6 +27,7 @@ Plug     'chrisbra/NrrwRgn'
 
 " I only have one fetish and it's junegunn's code.
 Plug        '~/.fzf'
+Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-peekaboo'
 Plug 'junegunn/vim-easy-align'
@@ -41,7 +42,7 @@ Plug 'junegunn/vim-easy-align'
 
 "{{{3 linting
 if has('nvim') || v:version >= 800
-  Plug 'w0rp/ale'
+  Plug 'dense-analysis/ale'
 else
   Plug 'scrooloose/syntastic'
 endif
@@ -80,7 +81,7 @@ Plug 'Chiel92/vim-autoformat'
 "{{{3 Syntax
 "{{{4 metapackages
 " XXX: SOMEHOW html out of polyglot isn't working on nvim 0.3.0 in sid. 
-" Plug 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot'
 Plug 'othree/html5.vim'
 Plug 'keith/swift.vim'
 Plug 'vim-scripts/AnsiEsc.vim'
@@ -264,7 +265,7 @@ elseif has_key(g:plugs, 'youcompleteme') "{{{4
   "}}}4
 endif
 
-"{{{2 linter
+"{{{2 linter, fixer
 if has_key(g:plugs, 'ale')
   let g:ale_lint_on_text_changed = 'always'
   let g:ale_lint_on_enter = 0
@@ -275,8 +276,11 @@ if has_key(g:plugs, 'ale')
   let g:ale_echo_msg_format = '[%linter%] %severity%: %s'
   let g:ale_list_window_size = 6
   let g:ale_completion_enabled = 0
-  let g:ale_linters = { 'python': ['flake8'],
-        \ 'c' : ['gcc-7']
+  let g:ale_linters = {
+        \ 'python': ['flake8'],
+        \ 'c' : ['gcc-7'],
+        \ 'json': ['prettier'],
+        \ 'javascript': ['eslint']
         \ } " merged dict; no pylint in ale please
 
 elseif has_key(g:plugs, 'syntastic')
@@ -373,6 +377,7 @@ nmap <Leader>ft  :Tags<CR>
 
 nmap <Leader>rg  :Rg!<cr>
 nmap <Leader>ag  :Ag!<cr>
+nmap <Leader>gg  :Gg!<cr>
 nmap <Leader>ff  :Files<CR>
 
 command! -bang -nargs=* Ag
@@ -383,8 +388,15 @@ command! -bang -nargs=* Ag
 
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.<q-args>, 1,
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
+command! -bang -nargs=* GitGrep
+  \ call fzf#vim#grep(
+  \   'git grep --line-number  --color -- '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0], 'preview-window': 'up:60%'})
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
 
