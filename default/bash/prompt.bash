@@ -77,7 +77,7 @@ ___VIRTUALENV_PROMPT__ () {
     echo -en "\033[0;32m${VIRTUAL_ENV##*/}\033[0m "
   fi
   if [ -n "$NVM_BIN" ]; then
-    echo -en "\033[0;35mn`nvm current | sed 's/v\(.\).*/\1/' 2>/dev/null`\033[0m "
+    echo -en "\033[0;35mn`nvm current | sed -n -e 's/v\([0-9]*\).*/\1/p' 2>/dev/null `\033[0m "
   fi
   # TODO: Add rubygems (g), rvm (r)
 }
