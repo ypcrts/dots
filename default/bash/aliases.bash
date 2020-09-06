@@ -192,6 +192,7 @@ loadenv () {
       nvm current >/dev/null 2>&1 || \
         SOURCE_FIRST \
           "$HOME/.nvm/nvm.sh" \
+          "$HOME/.config/nvm/nvm.sh" \
           '/usr/local/opt/nvm/nvm.sh'
         (( $# <= 1 )) && return
         case "$2" in
