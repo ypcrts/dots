@@ -54,7 +54,7 @@ lca_derive () {
 lca () {
   local name="$(lca_derive "$1")"
   case "$l"  in
-    help)
+    help|-h|--help)
       >&2 echo -e "USAGE:\tlca (c|us|gb|fr|de|ru|es|pt|ar)\n" \
         "\tI select UTF-8 LCs except with 'c'.\n" \
         '\tSee also `type lang`'
@@ -65,7 +65,7 @@ lca () {
 lang () {
   local name="$(lca_derive "$1")"
   case "$l"  in
-    help)
+    help|-h|--help)
       >&2 echo -e "USAGE:\tlang (c|us|gb|fr|de|ru|es|pt|ar)\n" \
         "\tI select UTF-8 LANGs and LCs except with 'c'.\n" \
         '\tSee also `type lca`'
@@ -75,23 +75,43 @@ lang () {
 }
 
 #{{{1 ssh-agent
+checkagent () {
+  local QUIET=''
+  [[ "$1" = "-q" ]] && QUIET=1
+
+  if [[ -z "$SSH_AUTH_SOCK" ]]; then
+    return 6
+  fi
+
+  ssh-add -l -q >/dev/null 2>&1
+
+  case $? in
+    0)
+      [[ -z "$QUIET" ]] && echo "Current agent is alive and keyed"
+      return 0
+      ;;
+    1)
+      [[ -z "$QUIET" ]] && echo "Current agent is alive and empty"
+      return 1
+      ;;
+    2|*)
+      return 2
+      ;;
+  esac
+}
 reagent () {
   local QUIET=''
   [[ "$1" = "-q" ]] && QUIET=1
 
-  if [[ -n "$SSH_AUTH_SOCK" ]] && ssh-add -l >/dev/null 2>&1; then
-    [[ -z "$QUIET" ]] && echo "Keyed agent active"
-    return 0
-  fi
   local agents="$(find /tmp -type s -path '/tmp/ssh-*/agent.*' 2>/dev/null)"
   if [[ -z "$agents" ]]; then
-    [[ -z "$QUIET" ]] && echo "No agents found"
-    return 1
+    [ -z "$QUIET" ] && echo "No agents found"
+    return 172
   fi
   for agent in $agents; do
     export SSH_AUTH_SOCK="$agent"
 
-    if ssh-add -l >/dev/null 2>&1; then
+    if ssh-add -l -q >/dev/null 2>&1; then
       [ -z "$QUIET" ] && echo "Found keyed agent: $agent"
       ssh-add -l
       return 0
@@ -100,25 +120,16 @@ reagent () {
   done
 
   [ -z "$QUIET" ] && echo "No agents are keyed"
-  return 1
-}
-rekey () {
-  local QUIET=''
-  [[ "$1" = "-q" ]] && QUIET=1
-
-  reagent -q
-  echo "Rekeying $agent"
-  ssh-add
+  return 4
 }
 newagent() {
+  echo "Starting new ssh-agent and loading into shell"
   eval `ssh-agent -s -t 15m`
-  ssh-add
-  ssh-add -l
 }
 keys() {
-  reagent && return 0
-  rekey && return 0
-  newagent
+  checkagent && return 0
+  (( $? == 1 )) && ssh-add
+  (( $? == 2 )) && reagent
 }
 
 
