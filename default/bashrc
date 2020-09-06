@@ -2,14 +2,12 @@
 # This file targets bash 3, guarding 4.
 . ~/.profile
 
-# silly breakout for display managers
+# breakout for display managers
 # because in my bash_login I source this
 [[ $- == *i* ]] || return
 
-# provide completion to non-login shells
-if [[ -f /etc/bash_completion ]]; then
-  . /etc/bash_completion
-fi
+#{{{1 Disable flow control
+stty -ixoff -ixon
 
 #{{{1 functions
 #-------------------------------------------------------------------------------
@@ -23,9 +21,10 @@ SOURCE_FIRST () {
   return 1
 }
 
-
-#{{{1 Disable flow control
-stty -ixoff -ixon
+#{{{1 all i want is someone who completes me
+#-------------------------------------------------------------------------------
+SOURCE_TRY /etc/bash_completion
+SOURCE_TRY /usr/local/etc/profile.d/bash_completion.sh
 
 #{{{1 shopt, set
 #-------------------------------------------------------------------------------
@@ -107,11 +106,13 @@ SOURCE_TRY ~/.config/bash/buku-completion.bash
 
 SOURCE_FIRST 2>/dev/null \
   ~/.fzf/shell/completion.bash \
-  /usr/share/bash-completion/completions/fzf
+  /usr/share/bash-completion/completions/fzf \
+  /usr/local/opt/fzf/shell/completion.bash
 
 SOURCE_FIRST 2>/dev/null \
   ~/.fzf/shell/key-bindings.bash \
-  /usr/share/doc/fzf/examples/key-bindings.bash
+  /usr/share/doc/fzf/examples/key-bindings.bash \
+  /usr/local/opt/fzf/shell/key-bindings.bash
 
 #{{{1 includes first
 #-------------------------------------------------------------------------------
