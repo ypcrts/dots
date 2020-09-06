@@ -4,68 +4,69 @@
   smudge            = git-media-smudge %f
 
 [alias]
-  a                 = add
-  af                = add --force
-  ai                = add --interactive
-  ap                = add --patch
-  au                = add --update
-  amend             = commit --amend --no-edit
+  a             = add
+  af            = add --force
+  ai            = add --interactive
+  ap            = add --patch
+  au            = add --update
+  amend         = commit --amend --no-edit
 
-  b                 = branch
-  bra               = branch -vva
+  b             = branch
+  bra           = branch -vva
 
-  r                 = remote
-  discard           = checkout -- .
+  r             = remote
+  discard       = checkout -- .
 
-  ci                = commit
-  cn                = commit -n
-  cm                = "!sh -c 'git commit --message=\"$*\"' -"
-  cnm               = "!sh -c 'git commit -n --message=\"$*\"' -"
+  ci            = commit
+  cn            = commit -n
+  cm            = "!sh -c 'git commit --message=\"$*\"' -"
+  cnm           = "!sh -c 'git commit -n --message=\"$*\"' -"
 
-  co                = checkout
+  co            = checkout
 
-  d                 = diff -C -w --ignore-blank-lines ; -w===--ignore=all-space; -C===--find-copies
-  dm                = "!sh -c 'git d origin/master $*' -"
-  dw                = diff -C -w --color-words=. ; word diff with no ws
-  dad               = diff -C --ws-error-highlight=all ; dad shows ws errors ;'all' includes context
-  dih               = "!sh -c 'git d HEAD $*' -"
-  dis               = "!sh -c 'git d --staged $*' -"
-  diffs             = diff -C -w --summary --stat
+  d             = diff -C -w --ignore-blank-lines ; -w===--ignore=all-space; -C===--find-copies
+  dm            = "!sh -c 'git d origin/master $*' -"
+  dw            = diff -C -w --color-words=. ; word diff with no ws
+  dad           = diff -C --ws-error-highlight=all ; dad shows ws errors ;'all' includes context
+  dih           = "!sh -c 'git d HEAD $*' -"
+  dis           = "!sh -c 'git d --staged $*' -"
+  diffs         = diff -C -w --summary --stat
 
-  s                 = status --short --branch -- .
-  si                = status --short --branch --ignored -- .
-  st                = status --short --branch
-  stv               = status --verbose
+  s             = status --short --branch -- .
+  si            = status --short --branch --ignored -- .
+  st            = status --short --branch
+  stv           = status --verbose
 
-  tags              = tag -l
+  tags          = tag -l
 
-  l                 = log -n 10
-  logs              = log --show-signature
-  lol               = log --graph --date-order --pretty=lol
-  people            = shortlog -s -n --email
+  l             = log -n 10
+  logs          = log --show-signature
+  lol           = log --graph --date-order --pretty=lol
+  people        = shortlog -s -n --email
 
-  sm                = submodule
-  wt                = worktree
-  mt                = mergetool --no-prompt
-  rl                = reflog --decorate
+  sm            = submodule
+  wt            = worktree
+  mt            = mergetool --no-prompt
+  rl            = reflog --decorate
 
-  rp                = rev-parse
-  rps               = rev-parse --short
-  rptl              = rev-parse --show-toplevel
+  rp            = rev-parse
+  rps           = rev-parse --short
+  rptl          = rev-parse --show-toplevel
 
-  ls                = ls-files
-  ignored           = ls-files --others -i --exclude-standard
+  ls            = ls-files
+  ignored       = ls-files --others -i --exclude-standard
 
-  insta             = instaweb
+  insta         = instaweb
 
-  x                 = annex
-  github            = repo github
+  x             = annex
+  github        = repo github
 
-  whois             = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author = \"$1\"' -"
-  rewrite-date      = "!set -xue;DATUM=\"$(date -R -d \"$1\")\"; shift; GIT_AUTHOR_DATE=\"$DATUM\" GIT_COMMITTER_DATE=\"$DATUM\" git commit --amend --date \"$DATUM\""
-  rewrite-datez      = "!set -xue;DATUM=\"$(date -u -R -d \"$1\")\"; shift; GIT_AUTHOR_DATE=\"$DATUM\" GIT_COMMITTER_DATE=\"$DATUM\" git commit --amend --date \"$DATUM\""
+  whois         = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author = \"$1\"' -"
+  rewrite-date  = "!set -xue;DATUM=\"$(date -R -d \"$1\")\"; shift; GIT_AUTHOR_DATE=\"$DATUM\" GIT_COMMITTER_DATE=\"$DATUM\" git commit --amend --date \"$DATUM\""
+  rewrite-datez = "!set -xue;DATUM=\"$(date -u -R -d \"$1\")\"; shift; GIT_AUTHOR_DATE=\"$DATUM\" GIT_COMMITTER_DATE=\"$DATUM\" git commit --amend --date \"$DATUM\""
 
-  wta = "!doit() { set -eu; BRANCH=\"$1\"; [ $# -eq 2 ] && ODIR=\"$2\" || ODIR=\"$(printf %s \"$BRANCH\" | sed -e 's/pc-[[:digit:]]\\{4,5\\}//i' | tr -d '\\-_/1234567890' | tr '[:upper:]' '[:lower:]')\"; git worktree add ../$ODIR $BRANCH; }; doit"
+  wta           = "!doit() { set -eu; BRANCH=\"$1\"; [ $# -eq 2 ] && ODIR=\"$2\" || ODIR=\"$(printf %s \"$BRANCH\" | sed -e 's/pc-[[:digit:]]\\{4,5\\}//i' | tr -d '\\-_/1234567890' | tr '[:upper:]' '[:lower:]')\"; git worktree add ../$ODIR $BRANCH; }; doit"
+  dag           = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)%an <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
 
 [color]
   ui                = auto
@@ -125,14 +126,11 @@
   pretty = tiny
 
 [pretty]
-  ; hey jerk, if you type the first letters it works
-  tiny     = %C(auto,green)%h %C(auto,blue)%<(8,trunc)%an %C(auto,reset)%<(60,trunc)%s %C(auto,red)%d%C(auto,reset)
-  findtiny = %C(auto,green)%h %C(auto,red)%d %C(auto,blue)%<(8,trunc)%an %C(auto,reset)%<(60,trunc)%s %C(auto,reset)
-
-  lol      = %C(auto,red)%h%C(auto,reset)%C(auto,yellow)%d%C(auto,reset) %C(auto,blue)%an%C(auto,reset) - %s %C(auto,green)(%cr)%C(auto,reset)
-
-  dated    = %C(auto,green)%h %C(auto,blue)%<(8,trunc)%an %C(auto,reset)%<(60,trunc)%s %cd%C(auto,reset) %C(auto,red)%D%C(auto,reset)
-  longdated     = %C(auto,green)%h %C(auto,blue)%<(15,trunc)%an %C(auto,reset)%<(70,trunc)%s %<(20)%cd%C(auto,red)%D %C(auto,reset)
+  tiny      = %C(auto,green)%h %C(auto,blue)%<(8,trunc)%an %C(auto,reset)%<(60,trunc)%s %C(auto,red)%d%C(auto,reset)
+  findtiny  = %C(auto,green)%h %C(auto,red)%d %C(auto,blue)%<(8,trunc)%an %C(auto,reset)%<(60,trunc)%s %C(auto,reset)
+  lol       = %C(auto,red)%h%C(auto,reset)%C(auto,yellow)%d%C(auto,reset) %C(auto,blue)%an%C(auto,reset) - %s %C(auto,green)(%cr)%C(auto,reset)
+  dated     = %C(auto,green)%h %C(auto,blue)%<(8,trunc)%an %C(auto,reset)%<(60,trunc)%s %cd%C(auto,reset) %C(auto,red)%D%C(auto,reset)
+  longdated = %C(auto,green)%h %C(auto,blue)%<(15,trunc)%an %C(auto,reset)%<(70,trunc)%s %<(20)%cd%C(auto,red)%D %C(auto,reset)
 
 [rebase]
   stat              = true
