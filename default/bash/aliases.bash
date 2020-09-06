@@ -127,9 +127,18 @@ newagent() {
   eval `ssh-agent -s -t 15m`
 }
 keys() {
-  checkagent && return 0
-  (( $? == 1 )) && ssh-add
-  (( $? == 2 )) && reagent
+  checkagent
+  case $? in
+    0)
+      return 0
+      ;;
+    1)
+      ssh-add
+      ;;
+    2)
+      rtagent
+      ;;
+  esac
 }
 
 
