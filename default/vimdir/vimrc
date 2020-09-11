@@ -371,25 +371,14 @@ inoremap <C-k> <C-k>
 
 "}}}
 "{{{2 Timestamps, datestamps
-
-if exists("*strftime")
-  " Local datestamp
-  noremap <silent> <leader>zl m'A<C-R>=strftime("%d.%m.%Y")<CR><ESC>``
-  noremap <silent> <leader>zt m'A<C-R>=strftime("%Y-%m-%d %H:%M")<CR><ESC>``
-
-  if has('win_32')
-    map <silent> <leader>zs <leader>zl
-    map <silent> <leader>zd <leader>zl
-  else
-    " Real timestamps, yes. Praise GNU... and Darwin?
-    noremap <silent> <Leader>zs m'A<C-R>=system('date -u \+\%Y\%m\%dT\%H\%MZ')<CR><ESC>``
-    noremap <silent> <Leader>zd m'A<C-R>=system('date -u \+\%Y-\%m-\%d')<CR><ESC>``
-  endif
-endif
+noremap <silent> <leader>zld m'a<C-R>=datez#Local()<CR><ESC>
+noremap <silent> <leader>zlt m'a<C-R>=datez#LocalTime()<CR><ESC>
+noremap <silent> <Leader>zt m'a<C-R>=datez#UniversalTime()<CR><ESC>
+noremap <silent> <Leader>zd m'a<C-R>=datez#Universal()<CR><ESC>
 
 " Timestamped signatures
-nmap <silent> <leader>zg A<C-R>=' [ypcrts // '<CR><ESC><leader>zs<ESC>A<C-R>=']'<CR><ESC>
-nmap <silent> <Leader>zz A<C-R>=' ['.expand("$USER").' // '<CR><ESC><leader>zs<ESC>A<C-R>=']'<CR><ESC>
+nmap <silent> <leader>zg a<C-R>=' [ypcrts // ' . datez#UniversalTime() . ']'<CR><ESC>
+nmap <silent> <Leader>zz a<C-R>=' ['.expand("$USER").' // ' . datez#UniversalTime(). ']'<CR><ESC>
 
 "{{{2 Leader
 nnoremap <Leader>v :Vexplore<CR>
