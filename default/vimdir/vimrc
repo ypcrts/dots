@@ -435,7 +435,7 @@ vnoremap <leader>8 :!python   -m autopep8 -a -a -a -<CR>
 
 nmap     <silent>  <leader>cp :Pydocstring<CR>
 
-noremap <silent> <Leader><Leader> :nohls<cr><c-l>
+noremap  <silent> <Leader><Leader> :nohls<cr><c-l>
 
 nnoremap <Leader>ml  :call modelinestub#do()<CR>
 nnoremap <Leader>dts :call formatz#DeleteTrailingSpaces()<CR>

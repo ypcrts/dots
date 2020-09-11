@@ -10,9 +10,9 @@ endif
 call plug#begin(expand('<sfile>:p:h') . '/plugged')
 
 "{{{2 plugs
-Plug   'ypcrts/securemodelines', { 'commit': 'fa69372a18cec61c664754848a7094fc4a866dcc' }
-" Plug 'jamessan/vim-gnupg'
-" Plug   'ypcrts/vim-gpg-sign'
+Plug 'ypcrts/securemodelines', { 'commit': 'fa69370a18cec61c664754848a7094fc4a866dcc' }
+"Plug 'jamessan/vim-gnupg'
+"Plug 'ypcrts/vim-gpg-sign'
 
 Plug 'editorconfig/editorconfig-vim'
 Plug      'Konfekt/FastFold'
@@ -22,12 +22,12 @@ Plug    'nishigori/increment-activator'
 Plug        'tpope/vim-surround'
 Plug        'tpope/vim-repeat'
 Plug   'scrooloose/nerdcommenter'
-Plug   'scrooloose/nerdtree'
+"Plug 'scrooloose/nerdtree'   " stop it
 Plug     'chrisbra/NrrwRgn'
 
-" I only have one fetish and it's junegunn's code.
+" junegunn is everythign
 Plug        '~/.fzf'
-Plug '/usr/local/opt/fzf'
+Plug         '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-peekaboo'
 Plug 'junegunn/vim-easy-align'
@@ -345,6 +345,7 @@ let g:increment_activator_filetype_candidates =
       \   ],
       \ ],
       \ }
+
 nmap <Leader>aa <Plug>(increment-activator-increment)
 nmap <Leader>ax <Plug>(increment-activator-decrement)
 nmap <c-a>      <Plug>(increment-activator-increment)
@@ -358,8 +359,13 @@ vnoremap <leader>nr :NR<CR>
 "{{{2 EasyAlign
 vmap <Enter> <Plug>(EasyAlign)
 nmap ga      <Plug>(EasyAlign)
-nmap gaga    vip<Esc>:'<,'>EasyAlign /[ /]/alrlig['Comment']stl1l0r0<CR>
-nmap gas     vip<Esc>:'<,'>EasyAlign */[ ]/l0r0<CR>
+
+" space
+nmap gas     vip<ESC>:'<,'>EasyAlign */[ ]/l0r0<CR>
+
+" vim plug def aligns >_>
+vmap gaga    :'<,'>EasyAlign /[ /]/alrlig['Comment']l0r0<<CR>
+nmap gaga    vip<Leader>gaga<ESC>
 
 "{{{2 fzf (over rg and ag)
 """""""""""""""""""""""""""""""""""""
@@ -430,8 +436,9 @@ let g:NERDCustomDelimiters = {
 let g:NERDTrimTrailingWhitespace=1
 
 "{{{2 NERDTree
-let g:NERDTreeIgnore = ['\~$', '\.pyc$']
-nnoremap <Leader>nt :NERDTree<CR>
+" let g:NERDTreeIgnore = ['\~$', '\.pyc$']
+" nnoremap <Leader>nt :NERDTree<CR>
+command! NERDTree echoerr "use :Vexplore"
 
 "{{{2 Chiel92/vim-autoformat 
 nmap <Leader>af :Autoformat<CR>
