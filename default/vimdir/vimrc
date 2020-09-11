@@ -165,7 +165,8 @@ set history=1000
 set backspace=2           " =2: full backspacing capabilities (indent,eol,start)
 set nojoinspaces          " never joing lines with two spaces
 
-set mouse=nvch            " set mouse=nv " enable mouse in normal, visual
+set mouse=                " nvim can still wheel school like this
+" set mouse=nvch            " set mouse=nv " enable mouse in normal, visual
 set mousehide             " Hide the mouse when typing text
 set nostartofline         " Avoid moving cursor to BOL when jumping around
 
