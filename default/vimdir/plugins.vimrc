@@ -276,12 +276,21 @@ if has_key(g:plugs, 'ale')
   let g:ale_echo_msg_format = '[%linter%] %severity%: %s'
   let g:ale_list_window_size = 6
   let g:ale_completion_enabled = 0
+  let g:ale_linter_aliases = {
+        \ 'javascript': ['javascript','typescript','json']
+        \ }
   let g:ale_linters = {
         \ 'python': ['flake8'],
         \ 'c' : ['gcc-7'],
         \ 'json': ['prettier'],
-        \ 'javascript': ['eslint']
+        \ 'javascript': ['eslint'],
+        \ 'typescript': ['tsserver','eslint']
         \ } " merged dict; no pylint in ale please
+  let g:ale_fixers = {
+        \ 'javascript': ['prettier', 'eslint'],
+        \ 'typescript':  ['prettier', 'eslint'],
+        \ }
+
 
 elseif has_key(g:plugs, 'syntastic')
 
