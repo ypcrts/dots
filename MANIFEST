@@ -1,5 +1,8 @@
 # vi: ft=make et
 
+$ default
+@include: shell vim mux git net bin ssh
+
 $ bin
 ~/bin/: ./default/bin/*
 ~/bin/manifest.py: ./manifest.py
@@ -27,9 +30,6 @@ $ vimfiles
 ~/_gvimrc: @delete
 ~/vimfiles/: ./default/vimdir/*
 
-$ neovim_windows
-~/AppData/Local/nvim/init.vim: ./default/vimdir/vimrc
-
 $ mux
 ~/.tmux.conf: ./default/tmux.conf
 ~/.screenrc: ./default/screenrc
@@ -43,20 +43,27 @@ $ ssh
 ~/.config/git/ssh.gitconfig: ./ssh/ssh.gitconfig
 ~/.ssh/config.d/: ./ssh/config.d*
 
-$ windows_ssh
-@include: ssh
-~/.ssh/config.d/: ./windows/ssh_config/*
-~/.config/git/windows.gitconfig: ./windows/gitconfig
-
 $ net
 ~/.curlrc: ./default/curlrc
 ~/.digrc: ./default/digrc
 ~/.w3m/: ./default/w3m/*
 ~/.muttrc: ./default/muttrc
 
-$ default
-@include: shell vim mux git net bin ssh
-# everything above this line is part of default
+#--------------------------------------------------------------------------------
+
+$ windows
+@include: vimfiles git net powershell_windows ssh_windows
+~/AppData/Local/nvim/init.vim: ./default/vimdir/vimrc
+~/AppData/Roaming/alacritty/alacritty.yml: ./alacritty.yml
+~/AppData/Local/nvim/init.vim: ./default/vimdir/vimrc
+
+$ powershell_windows
+~/My Documents/WindowsPowerShell/profile.ps1: ./windows/profile.ps1
+
+$ ssh_windows
+@include: ssh
+~/.ssh/config.d/: ./windows/ssh_config/*
+~/.config/git/windows.gitconfig: ./windows/gitconfig
 
 #--------------------------------------------------------------------------------
 
@@ -64,12 +71,10 @@ $ macos
 @include: default
 ~/bin/: ./macos/bin/*
 ~/.config/bash/os-aliases.bash: ./macos/aliases.bash
+~/.config/alacritty/alacritty.yml: ./alacritty.yml
+~/.bash_sessions_disable: /dev/null
 
-$ powershell
-~/My Documents/WindowsPowerShell/profile.ps1: ./windows/profile.ps1
-
-$ alacritty
-~/AppData/Roaming/alacritty/alacritty.yml: ./windows/alacritty.yml
+#--------------------------------------------------------------------------------
 
 $ ypcrts
 ~/.config/git/ypcrts.gitconfig: ./ypcrts.gitconfig
@@ -97,7 +102,6 @@ $ awesome
 
 $ dom0_xfcekb
 ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml: ./xorg/xfce4-keyboard-shortcuts.xml
-
 
 $ dom0_xres
 ~/.Xresources: ./xorg/xresources/dom0.out
@@ -137,9 +141,6 @@ $ debian
 
 $ macbook
 @include: default macos dev gpg
-
-$ windows
-@include: vimfiles neovim_windows powershell git net alacritty windows_ssh
 
 $ dom0
 @include: default xorg awesome dom0_xres dom0_xfcekb
