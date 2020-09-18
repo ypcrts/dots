@@ -1,10 +1,41 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -B
 # `GIT443=1 mksshconfig` to use port 443 for cloud git
 
+ssh_has_include_feature () {
+  # 7.3p1 target
+  command -V ssh 2>&1 >/dev/null || return 1
+
+  local versionstr="$(ssh -V 2>&1 | grep OpenSSH)" || return 1
+
+  local major="$(printf "$versionstr" | sed -ne 's:^.*OpenSSH_\([0-9]\{1,\}\).*$:\1:p' )"
+  (( $major > 7 )) && return 0
+  (( $major < 7 )) && return 1
+
+  local minor="$(printf "$versionstr" | sed -ne 's:^.*OpenSSH_[0-9]*\.\([0-9]\{1,\}\).*$:\1:p' )"
+  (( $minor > 3 )) && return 0
+  (( $minor < 3 )) && return 1
+
+  local patch="$(printf "$versionstr" | sed -ne 's:^.*OpenSSH_[0-9]*\.[0-9]*p\([0-9]\{1,\}\).*$:\1:p' )"
+  (( $patch >= 1 )) && return 0
+  return 1
+}
+include () {
+  if (( $# < 2 )); then
+    echo "fatal: assertion error, include call invalid"
+    exit 1
+  fi
+
+  local CONFIG_OUT=$1
+  shift
+
+  for file in $@; do
+    echo "Include $file"  >> "$CONFIG_OUT"
+  done
+}
 catstripped () {
-  if [ $# -lt 2 ]; then
+  if (( $# < 2 )); then
     echo "fatal: assertion error, catstripped call invalid"
     exit 1
   fi
@@ -13,7 +44,7 @@ catstripped () {
 
   # remove comments and blank lines
   if sed -r 2>/dev/null; then
-    cat $@ | sed -re '/(^\s*$)|(^\s*#)/d' >> "$CONFIG_OUT"
+    cat $@ | sed -e '/^\s*#$/d' -e '/^\s*$/p' >> "$CONFIG_OUT"
   else
     cat $@  >> "$CONFIG_OUT"
   fi
@@ -35,6 +66,12 @@ mksshconfig () {
   fi
 
   rm -vf ${CONFIG_OUT}{,.sig}
+
+  local cmd='catstripped'
+  if ssh_has_include_feature; then
+    cmd='include'
+  fi
+
   >>"${CONFIG_OUT}" cat <<-__EOF
 ################################################################################
 # Auto Generated on `date -u` by `whoami`
@@ -42,13 +79,12 @@ mksshconfig () {
 __EOF
 
   if is_vmware; then
-    catstripped "$CONFIG_OUT" $configd/0-vmware
+    include "$CONFIG_OUT" $configd/0-vmware
   fi
 
-  catstripped "$CONFIG_OUT" ${configd}/0-git.${git_ext}
+  include "$CONFIG_OUT" ${configd}/0-git.${git_ext}
 
-  catstripped "$CONFIG_OUT" `find "$configd" | grep -v './0-'`
-
+  include "$CONFIG_OUT" "`find "$configd" \! -type d | grep -v './0-'`"
 
   cat "$CONFIG_OUT"
   set -x
