@@ -25,7 +25,8 @@ alias \
   uctl='systemctl --user' \
   sctl='sudo systemctl' \
   v='$VISUAL' \
-  makepackagegreatagain='python3 setup.py sdist bdist_wheel && twine upload dist/*'
+  makepackagegreatagain='python3 setup.py sdist bdist_wheel && twine upload dist/*' \
+  ypcrtsgitconfig='cat ~/.config/git/ypcrts.gitconfig >> .git/config'
 
 if ls --group-directories-first 2>/dev/null >&2; then
   alias ls='ls --color=auto -hF --group-directories-first'
