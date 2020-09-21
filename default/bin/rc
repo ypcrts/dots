@@ -26,6 +26,7 @@ read -r -d '' -a FOUNDFILES < \
         -o -name "conf" \
         -o -name "config" \
         -o -name "*.cfg" \
+        -o -name "*.yml" \
       \) -print0 \
     2>/dev/null) \
   && edit_and_quit
