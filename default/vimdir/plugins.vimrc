@@ -9,8 +9,8 @@ endif
 
 call plug#begin(expand('<sfile>:p:h') . '/plugged')
 
-"{{{2 plugs
-Plug 'ypcrts/securemodelines', { 'commit': 'fa69370a18cec61c664754848a7094fc4a866dcc' }
+"{{{1 Plug defs
+Plug 'ypcrts/securemodelines', { 'commit': 'fa69372a18cec61c664754848a7094fc4a866dcc' }
 "Plug 'jamessan/vim-gnupg'
 "Plug 'ypcrts/vim-gpg-sign'
 
@@ -25,22 +25,29 @@ Plug   'scrooloose/nerdcommenter'
 "Plug 'scrooloose/nerdtree'   " stop it
 Plug     'chrisbra/NrrwRgn'
 
+
 " junegunn is everythign
+" XXX: local fzf dir, come on write a thing pls
 Plug        '~/.fzf'
 Plug         '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-peekaboo'
 Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/goyo.vim' " distraction free writing
+Plug 'junegunn/limelight.vim' " outside context
+Plug 'junegunn/seoul256.vim'
+Plug 'junegunn/gv.vim'
+Plug 'junegunn/vim-journal', { 'commit': '6ab162208dfc8fab479249e4d6a4901be2dabbe8' }
 " if has('nvim') || v:version >= 800
 "   Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 " endif
 
-"{{{3 retired fuzzy finders
+"{{{3 FZF alternatives - retired fuzzy finders
 " You don't use these any more. You use fzf now.  [20190813T1934Z]
 " Plug 'jremmen/vim-ripgrep' " deficient for splits
 " Plug 'mileszs/ack.vim'     " just deficient
 
-"{{{3 linting
+"{{{3 Linting
 if has('nvim') || v:version >= 800
   Plug 'dense-analysis/ale'
 else
@@ -51,7 +58,7 @@ Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
 " Plug     'fisadev/vim-isort',       { 'for': 'python' } " no work windows
 Plug    'chrisbra/csv.vim',         { 'for':    'csv' }
 
-"{{{3 completion
+"{{{3 Completion
 if has('nvim')
   " deoplete does not work on vim8, stop hoping, cry
   Plug       'Shougo/deoplete.nvim',   { 'do': ':UpdateRemotePlugins' }
@@ -72,19 +79,33 @@ else
   " \ }
 endif
 
-" Plug   'mattn/emmet-vim'
-Plug 'Chiel92/vim-autoformat'
 " Plug 'python-rope/ropevim', { 'for': 'python' }
+
+" Plug   'mattn/emmet-vim'
+
+"{{{ Fixing
+" normally use :ALEFix, but still
+Plug 'Chiel92/vim-autoformat'
 " Plug 'ypcrts/vim-uncrustify', { 'for': ['c','cpp']  }
 
-
 "{{{3 Syntax
-"{{{4 metapackages
-" XXX: SOMEHOW html out of polyglot isn't working on nvim 0.3.0 in sid. 
-Plug 'sheerun/vim-polyglot'
+"{{{4 polyglot and overrides
+" polyglot disables plugin folder and only uses ftplugin, much breakage
+"    rationale: optimize runtimes
+"    fix: polyglot docs say to manually add them
+
+let g:polyglot_disabled = ['markdown', 'autoindent']
+Plug 'sheerun/vim-polyglot' " polyglot broken on nvim 0.3.0/sid
 Plug 'othree/html5.vim'
 Plug 'keith/swift.vim'
 Plug 'vim-scripts/AnsiEsc.vim'
+
+" Plug 'godlygeek/tabular' " needed by markdown
+" Plug 'plasticboy/vim-markdown'
+
+"{{{4 misc echosystems with esteroic, useless syntax
+Plug 'ipkiss42/xwiki.vim', { 'for': 'xwiki', 'commit': '8551414062245924c870bd4049c166bab155f9f5' }
+
 "{{{4 python ecosystems
 " Plug 'tweekmonster/django-plus.vim'
 
@@ -114,32 +135,36 @@ Plug        'tmhedberg/SimpylFold',   { 'for': 'python', 'commit': 'aa0371d9d708
 Plug         'airblade/vim-gitgutter'
 Plug            'tpope/vim-fugitive'
 
-"{{{4 Gist-vim
-" TODO: cr die webapi-vim neuigkeiten, scheiße
-Plug 'mattn/gist-vim',   { 'commit': 'f0d63579eab7548cf12f979dc52ef5a370ecbe63' }
-Plug 'mattn/webapi-vim', { 'commit': 'e3fa93f29a3a0754204002775e140d8a9acfd7fd' }
-" Plug 'baverman/vial-http', { 'commit': 'NULL' }
+"{{{4 network i/o Gist-vim
+" Plug 'mattn/gist-vim',   { 'commit': 'f0d63579eab7548cf12f979dc52ef5a370ecbe63' }
+" Plug 'mattn/webapi-vim', { 'commit': 'e3fa93f29a3a0754204002775e140d8a9acfd7fd' }
+" Plug 'baverman/vial-http', { 'commit': 'NULL' } " cool rest client for vim
+" XXX: TODO: blackmagic: cr ghost
+Plug       'raghur/vim-ghost', has('nvim') ? {} : { 'on': [], 'for': [] }
 
 "{{{3 Colourschemes
+Plug 'xolox/vim-colorscheme-switcher', { 'commit': '4d9807a5a8948c18b5f3f278685269565c8e2508' }
+Plug 'xolox/vim-misc', { 'commit': '3e6b8fb6f03f13434543ce1f5d24f6a5d3f34f0b' }
 Plug        'w0ng/vim-hybrid'
 Plug    'nanotech/jellybeans.vim'
 Plug        'guns/jellyx.vim'
 Plug     'fisadev/fisa-vim-colorscheme'
 Plug 'whatyouhide/vim-gotham'             ",      { 'commit': 'f46412d4f9768c332ae22676f3ef4cc130457ba0' }
 Plug     'djjcast/mirodark',              { 'commit': '306c5f96dd0ecaa64eac603b990a22300dc798f7' }
-Plug      'lu-ren/SerialExperimentsLain', { 'commit': 'aabb800d6a27cde243604a94a9a14334286a87b2' }
+" Plug      'lu-ren/SerialExperimentsLain', { 'commit': 'aabb800d6a27cde243604a94a9a14334286a87b2' }
 Plug      'zcodes/vim-colors-basic',      { 'commit': 'bdf14db578ad283bffa019ab2236f4d378eef34b' }
 Plug  'lifepillar/vim-solarized8'         ",    { 'commit': 'dc6c1dfa6f5c068ba338b8a2e4f88f4b6de4433a' }
-
-if !has('nvim') " nvim no work? 16-bit
-  Plug 'laserswald/chameleon.vim',   { 'commit': 'e7c9991fa19961dd2bcf89e92f09be1da89b8c77' }
-endif
+Plug 'nightsense/snow'
+" if !has('nvim') " nvim no work? 16-bit
+"   Plug 'laserswald/chameleon.vim',   { 'commit': 'e7c9991fa19961dd2bcf89e92f09be1da89b8c77' }
+" endif
 " Plug 'nightsense/vim-crunchbang'
+
 " Plug 'flazz/vim-colorschemes'
 
 call plug#end()
 "}}}1
-"{{{1 trash
+"{{{1 reset plugins that suck trash  trash  trash  trash  trash  trash  trash
 "{{{2 can i haz no default fucking maps pleaz
 " This has it's own section now because when I see these lines unfolded I get
 " grumpy, and the inconsistency between the meanings of the 1s and 0s is
@@ -157,6 +182,8 @@ let g:gitgutter_enabled = 1
 let g:js_context_colors_enabled = 0
 let g:js_context_colors_highlight_function_names = 0
 let g:javascript_plugin_jsdoc = 1
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
 
 "{{{1 configuration
 "{{{2 completion plugin
@@ -372,7 +399,7 @@ nmap ga      <Plug>(EasyAlign)
 " space
 nmap gas     vip<ESC>:'<,'>EasyAlign */[ ]/l0r0<CR>
 
-" vim plug def aligns >_>
+" vimpluginaligning easyalign vim plug def aligns >_>
 vmap gaga    :'<,'>EasyAlign /[ /]/alrlig['Comment']l0r0<<CR>
 nmap gaga    vip<Leader>gaga<ESC>
 
@@ -419,8 +446,8 @@ command! -bang -nargs=? -complete=dir Files
   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
 "{{{2 gitgutter
-nmap [h         <Plug>GitGutterPrevHunk
-nmap ]h         <Plug>GitGutterNextHunk
+nmap [h         <Plug>(GitGutterPrevHunk)
+nmap ]h         <Plug>(GitGutterNextHunk)
 nmap <Leader>hs <Plug>GitGutterStageHunk
 nmap <Leader>hu <Plug>GitGutterUndoHunk
 nmap <Leader>hp <Plug>GitGutterPreviewHunk
@@ -449,6 +476,12 @@ let g:NERDTrimTrailingWhitespace=1
 " nnoremap <Leader>nt :NERDTree<CR>
 command! NERDTree echoerr "use :Vexplore"
 
-"{{{2 Chiel92/vim-autoformat 
-nmap <Leader>af :Autoformat<CR>
-vmap <Leader>af :Autoformat<CR>
+"{{{2 ALE or Chiel92/vim-autoformat
+if has_key(g:plugs, 'ale')
+  nmap <Leader>fix :ALEFix<CR>
+  vmap <Leader>fix :ALEFix<CR>
+else
+  nmap <Leader>af :Autoformat<CR>
+  vmap <Leader>af :Autoformat<CR>
+endif
+

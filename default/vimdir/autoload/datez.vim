@@ -2,17 +2,30 @@ function! s:Strip(val)
     return substitute(a:val, '[\r\n]*$', '', '')
 endfunction
 
+function! datez#EarlyMorningColorschemeNeeded()
+    if ! exists("*strftime")
+        return 0
+    endif
+    let s:local_hour = strftime("%I")
+    if s:local_hour < 6
+        return 0
+    elseif s:local_hour < 10
+        return 1
+    endif
+    return 0
+endfunction
+
 if exists("*strftime")
     function! datez#Local()
         return strftime("%d.%m.%Y")
     endfunction
 
     function! datez#LocalTime()
-        return strftime("%Y.%m.%d %H:%M %z")
+        return strftime("%Y.%m.%dT%H:%M %z")
     endfunction
 
     function! datez#LocalTimeNato()
-        return strftime("%Y.%m.%d %H:%M") . " " . s:TimeZoneToCode()
+        return strftime("%Y.%m.%dT%H:%M") . " " . s:TimeZoneToCode()
     endfunction
 
     function! s:TimeZoneToCode()

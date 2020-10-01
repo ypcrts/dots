@@ -70,10 +70,9 @@ endif
 
 if has('termguicolors') && !has('win32')
   if has('nvim') && (
-        \   ( match(system('uname'), 'Darwin') == 0
-        \     && match($TERM, '^\v(screen|rxvt)-256.*$') == 0
-        \   )
+        \    match($TERM, '^\v(screen|rxvt)-256.*$') == 0
         \   || !empty($ITERM_SESSION_ID)
+        \   || !empty($ALACRITTY_LOG)
         \ )
     " This nonsense can only be set if terminal has 24 bit colour support.
     " neovim does not intuit such a thing. programming is math not magic.
@@ -122,12 +121,22 @@ endif
 "   set viminfo="NONE"
 " endif
 
-if (has("win32") && !has('nvim')) || exists('g:safevi')
+if (has("win32") && !has('nvim') && v:version < 700 ) || exists('g:safevi')
  colorscheme ir_black
 " elseif has('termguicolors') && &termguicolors
-"  set background=dark
+"   set background=dark
 "   let g:solarized_termtrans = 1
 "   color solarized8_dark_high
+elseif datez#EarlyMorningColorschemeNeeded()
+  colorscheme basic-light
+elseif has('termguicolors') && &termguicolors
+  colorscheme hybrid
+  " if ! has('gvim')
+    " augroup TransparentBackground
+      " au ColorScheme * hi Normal guibg=NONE ctermbg=NONE
+    " augroup END
+  " endif
+  colorscheme hybrid
 else
   colorscheme basic-dark
   if ! has('gvim')
@@ -165,7 +174,8 @@ set history=1000
 set backspace=2           " =2: full backspacing capabilities (indent,eol,start)
 set nojoinspaces          " never joing lines with two spaces
 
-set mouse=                " nvim can still wheel school like this
+set mouse=a
+"set mouse=                " nvim can still wheel school like this
 " set mouse=nvch            " set mouse=nv " enable mouse in normal, visual
 set mousehide             " Hide the mouse when typing text
 set nostartofline         " Avoid moving cursor to BOL when jumping around
@@ -228,7 +238,7 @@ set splitbelow
 set t_ti= t_te=
 
 "{{{2 Cursor Column
-set nocursorline
+set cursorline
 set nocursorcolumn
 " augroup activecursor
   " autocmd!
@@ -295,12 +305,14 @@ set nogdefault " Disabled - See http://j.mp/1mZvnrt  (no `g` on `:s`)
 
 "{{{1 Filetype Autocommands
 if has("autocmd")
+  " TODO: put this in ftplugin (aaha, as if, im so lazy)
   au FileType helpfile setlocal nonumber
   au FileType mail,tex setlocal textwidth=72
   au FileType cpp,c,java,sh,pl,php,asp setlocal autoindent cindent
   au FileType c,cpp,java setlocal foldmethod=syntax foldnestmax=5
   au FileType es6,javascript setlocal foldmethod=syntax
   au FileType crontab set nobackup nowritebackup
+  au FileType markdown set sts=4 ts=4 sw=4 noet tw=80
   au BufNewFile,BufRead  modprobe.conf setlocal syntax=modconf
   au BufNewFile,BufRead .tern-project set ft=json
   au BufNewFile,BufRead .eslintrc set ft=json
@@ -377,23 +389,26 @@ noremap <silent> <Leader>zt m'a<C-R>=datez#UniversalTime()<CR><ESC>
 noremap <silent> <Leader>zd m'a<C-R>=datez#Universal()<CR><ESC>
 
 " Timestamped signatures
-nmap <silent> <leader>zg a<C-R>=' [ypcrts // ' . datez#UniversalTime() . ']'<CR><ESC>
-nmap <silent> <Leader>zz a<C-R>=' ['.expand("$USER").' // ' . datez#UniversalTime(). ']'<CR><ESC>
+nmap <silent> <leader>zg i<C-R>='[ypcrts // ' . datez#UniversalTime() . ']'<CR><ESC>
+nmap <silent> <Leader>zz i<C-R>='['.expand("$USER").' // ' . datez#UniversalTime(). ']'<CR><ESC>
 
 "{{{2 Leader
 nnoremap <Leader>v :Vexplore<CR>
 
+" TODO: put this in tmux instead/also
+" XXX: if ur gonna keep it here it should use input mode
 nnoremap <silent> <Leader>ip "=substitute(system("ifip tun0"),'[\r\n]','','g')<C-M>p
 
-nnoremap <Leader>on :setlocal number!<CR>
-nnoremap <Leader>or :setlocal relativenumber!<CR>
-nnoremap <Leader>os :setlocal spell!<CR>
-nnoremap <Leader>op :setlocal paste!<CR>
-nnoremap <Leader>ow :setlocal wrap!<CR>
-nnoremap <Leader>ol :setlocal list!<CR>
-nnoremap <Leader>om :setlocal modifiable!<CR>
+nnoremap <Leader>on  :setlocal number!<CR>
+nnoremap <Leader>or  :setlocal relativenumber!<CR>
+nnoremap <Leader>os  :setlocal spell!<CR>
+nnoremap <Leader>op  :setlocal paste!<CR>
+nnoremap <Leader>ow  :setlocal wrap!<CR>
+nnoremap <Leader>ol  :setlocal list!<CR>
+nnoremap <Leader>om  :setlocal modifiable!<CR>
 nnoremap <Leader>occ :setlocal cursorcolumn!<CR>
 nnoremap <Leader>ocl :setlocal cursorline!<CR>
+nnoremap <Leader>ocb :call daclipz#ToggleClipboardUnnamedPlus()<CR>
 
 nnoremap <Leader>rc :tabnew $MYVIMRC<CR>
 nnoremap <Leader>rp :execute ":tabnew"  g:vimdir . "/plugins.vimrc"<CR>
