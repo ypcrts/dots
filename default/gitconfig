@@ -33,9 +33,8 @@
   diffs         = diff -C -w --summary --stat
 
   s             = status --short --branch -- .
-  si            = status --short --branch --ignored -- .
-  st            = status --short --branch
-  stv           = status --verbose
+  st            = status --short --branch --ignored
+  stv           = -p status --verbose
 
   tags          = tag -l
 
