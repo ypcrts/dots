@@ -25,6 +25,9 @@ alias \
   uctl='systemctl --user' \
   sctl='sudo systemctl' \
   v='$VISUAL' \
+  vi='$VISUAL' \
+  vim='$VISUAL' \
+  safevi='SAFEVI=1 $VISUAL' \
   makepackagegreatagain='python3 setup.py sdist bdist_wheel && twine upload dist/*' \
   ypcrtsgitconfig='cat ~/.config/git/ypcrts.gitconfig >> .git/config'
 
