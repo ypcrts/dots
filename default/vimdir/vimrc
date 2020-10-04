@@ -1,6 +1,7 @@
 " vi: sw=2:sts=2:ts=2:et:fdm=marker:fdl=0:nomodeline:
 "{{{1 Meta
 set nocompatible
+set shortmess=aIT
 " set shortmess=aoOstTAI " shorten all messages except written
 set report=0           " Always report the number of lines changed by a cmd
 
@@ -13,6 +14,7 @@ let s:is_vim800 = v:version >= 800
 
 let s:tildevimdir = s:is_windows ? '~/vimfiles' : '~/.vim'
 let s:vimdir = fnameescape(expand(s:tildevimdir))
+let s:localvimrc = s:vimdir . "/.local.vim"
 exe 'set' 'rtp=' . s:tildevimdir . '/,'. fnameescape($VIMRUNTIME)
 
 if s:is_nvim && s:is_windows
@@ -35,7 +37,6 @@ else
   exe 'source' s:vimdir . '/plugins.vimrc'
 endif
 
-
 "{{{1 Standard Base Configuration (syntax, utf8, ft, clipboard, 256 )
 "
 "{{{2 Clear Autocommands
@@ -47,7 +48,8 @@ set writebackup
 set noswapfile
 set noautowrite
 set autowriteall
-set noautoread
+set autoread
+set nohidden    "nohidden abandons unattached buffers
 
 "{{{2 Syntax highlighting, filetype plugin, indent
 filetype plugin indent on
@@ -104,12 +106,13 @@ endif
 
 "{{{1 undo & cache
 set undolevels=2048
+set undoreload=20000
 let s:cachedir='/tmp/vim-cache' . $USER
 if has('win32')
   let s:cachedir=s:vimdir . '/cache'
 endif
 " XXX: persistent undo
-let s:undocachedir=s:vimdir . '/undo'
+let s:undocachedir=s:cachedir . '/undo'
 "let s:undocachedir=s:cachedir . '/undo'
 if !isdirectory(s:undocachedir)
   call mkdir(s:undocachedir, 'p', 0700)
@@ -166,9 +169,11 @@ set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 
-set showcmd      " show typing in normal mode
-set showbreak=…\ \ \ " show x in front of wrapped lines (trailing escaped space `\ `)
-set textwidth=0  " disable hard wrap at col 79
+set showcmd            " show typing in normal mode
+set showbreak='+'
+set breakindent
+set breakindentopt=sbr
+set textwidth=0        " disable hard wrap at col 79
 
 set formatoptions=qn1jtc
 
@@ -185,9 +190,9 @@ set nojoinspaces          " never joing lines with two spaces
 
 set mouse=a
 "set mouse=                " nvim can still wheel school like this
-" set mouse=nvch            " set mouse=nv " enable mouse in normal, visual
-set mousehide             " Hide the mouse when typing text
-set startofline           " move cursor to first non blank of a line
+" set mouse=nvch          
+"set mousehide             " [default:on]Hide the mouse when typing text
+set nostartofline           " [default:on] move cursor to first non blank of a line
 
 set whichwrap=b,s,h,l,<,> " <BS> <Space> h l <Left> <Right> can change lines
 set virtualedit+=block    " Let cursor move past the last char in <C-v> mode
@@ -195,17 +200,21 @@ set virtualedit+=block    " Let cursor move past the last char in <C-v> mode
 
 set matchpairs=(:),{:},[:],<:>
 set noshowmatch           " Don't Briefly jump to a paren once it's balanced
-set matchtime=2           " (for only .2 seconds).
+" set matchtime=2           " (for only .2 seconds).
 
-set complete=.,w,b,u,t
-set completeopt=longest,menuone ",preview
+" set complete=.,w,b,u,t
+set complete=i
+set completeopt=menuone,preview
+set nrformats=alpha,octal,hex
 
 if has("autocmd")
-  " Resize splits with window
-  au VimResized * :wincmd =
+  augroup vimrc
+    " Resize splits with window
+    au VimResized * :wincmd =
 
-  " Restore cursor position
-  au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
+    " Restore cursor position
+    au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
+  augroup END
 
   augroup reload_vimrc
     au!
@@ -245,6 +254,18 @@ set splitbelow
 " Prevent Vim from clobbering the scrollback buffer. See
 " http://www.shallowsky.com/linux/noaltscreen.html
 set t_ti= t_te=
+
+function! s:Status()
+  let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
+  let ro  = "%{&readonly ? '[RO] ' : ''}"
+  let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
+  let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
+  let sep = ' %= '
+  let pos = ' %-12(%l : %c%V%) '
+  let pct = ' %P'
+  return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
+endfunction
+let &statusline = s:Status()
 
 "{{{2 Cursor Column
 set cursorline
@@ -331,10 +352,15 @@ endif
 "{{{2 Basic functionality extension
 vnoremap > >gv
 vnoremap < <gv
-nnoremap gls :ls<CR>
 nnoremap gb :bn<CR>
 nnoremap gB :bp<CR>
+nnoremap ]b :bn<CR>
+nnoremap [b :bp<CR>
+nnoremap ]t :tabn<CR>
+nnoremap [t :tabp<CR>
 nnoremap Y y$
+nnoremap Q @q
+noremap  <silent> <Leader><Leader> :nohls<cr><c-l>
 
 if has('nvim')
   " Hey neovim authors, this isn't emacs.
@@ -351,9 +377,6 @@ nnoremap <silent> g#    g#zz
 nnoremap <silent> gd    gdzz
 nnoremap <silent> n     nzz
 nnoremap <silent> N     Nzz
-
-" Q formats paragraphs, instead of entering ex mode
-noremap Q gq
 nnoremap <silent> gqJ :call Exe#ExeWithOpts('norm! gqj', { 'tw' : 2147483647 })<CR>
 
 " K should behave like J, rip
@@ -382,10 +405,6 @@ nmap <silent> <C-h> :call tmux#switch('h')<cr>
 nmap <silent> <C-j> :call tmux#switch('j')<cr>
 nmap <silent> <C-k> :call tmux#switch('k')<cr>
 nmap <silent> <C-l> :call tmux#switch('l')<cr>
-
-nmap <C-\>  :call tmux#previous()<cr>
-" nnoremap <C-w>\\ call tmux#previous()<cr>
-
 
 " insert mode <C-k> inserts digraphs etc
 inoremap <C-k> <C-k>
@@ -419,9 +438,9 @@ nnoremap <Leader>occ :setlocal cursorcolumn!<CR>
 nnoremap <Leader>ocl :setlocal cursorline!<CR>
 nnoremap <Leader>ocb :call daclipz#ToggleClipboardUnnamedPlus()<CR>
 
-nnoremap <Leader>rc :tabnew $MYVIMRC<CR>
-nnoremap <Leader>rp :execute ":tabnew"  s:vimdir . "/plugins.vimrc"<CR>
-nnoremap <Leader>rl :execute ":tabnew"  s:vimdir . "/local.vimrc"<CR>
+nnoremap <Leader>rc :execute ":tabnew"  rcz#VimFileRealpath("/vimrc")<CR>
+nnoremap <Leader>rp :execute ":tabnew"  rcz#VimFileRealpath("/plugins.vimrc")<CR>
+nnoremap <Leader>rl :execute ":tabnew"  s:localvimrc<CR>
 
 nnoremap ]q :cnext<CR>
 nnoremap [q :cprevious<CR>
@@ -447,18 +466,14 @@ nnoremap dgl :diffget LOCAL<CR>
 nnoremap <leader>8 :%!python  -m autopep8 -a -a -a -<CR>
 vnoremap <leader>8 :!python   -m autopep8 -a -a -a -<CR>
 
-nmap     <silent>  <leader>cp :Pydocstring<CR>
-
-noremap  <silent> <Leader><Leader> :nohls<cr><c-l>
 
 nnoremap <Leader>ml  :call modelinestub#do()<CR>
 nnoremap <Leader>dts :call formatz#DeleteTrailingSpaces()<CR>
-
+nnoremap <silent> <F8> :call colorz#Rotate()<cr>
+command! Todo call rcz#Todo()
 " }}}1
 
 "{{{1  Local config overrides
-let s:localvimrc = s:vimdir . "/local.vim"
 if filereadable(s:localvimrc)
   exe 'source' s:localvimrc
 endif
-unlet s:localvimrc

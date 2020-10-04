@@ -2,21 +2,22 @@ function! rcz#VimFilesDir()
     let l:dir = fnamemodify($MYVIMRC, ":h")
     return l:dir
 endfunction
+
 function! rcz#DotfilesVimDir()
     let l:dir = fnamemodify(resolve($MYVIMRC), ":h")
     return l:dir
 endfunction
 
-
 function! rcz#VimFileRealpath(filename)
   let l:dir = rcz#DotfilesVimDir()
-  let l:path = l:dir  . a:filename
+  let l:path = l:dir  . "/" . a:filename
   if filereadable(l:path)
     return l:path
   endif
   echoerr a:filename . ' not found in ' . l:dir
   return ''
 endfunction
+
 function! rcz#Todo() abort
 
   let entries = []

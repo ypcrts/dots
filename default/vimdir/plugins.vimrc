@@ -7,7 +7,7 @@ if !(has('python') || has('python3') || has('nvim'))
   finish
 endif
 
-call plug#begin(expand('<sfile>:p:h') . '/plugged')
+call plug#begin(rcz#VimFilesDir() . '/plugged')
 
 "{{{1 Plug defs
 Plug 'ypcrts/securemodelines', { 'commit': 'fa69372a18cec61c664754848a7094fc4a866dcc' }
@@ -17,91 +17,101 @@ Plug 'ypcrts/securemodelines', { 'commit': 'fa69372a18cec61c664754848a7094fc4a86
 Plug 'editorconfig/editorconfig-vim'
 Plug      'Konfekt/FastFold'
 Plug        'tpope/vim-eunuch'
-Plug      'itchyny/lightline.vim'
 Plug    'nishigori/increment-activator'
 Plug        'tpope/vim-surround'
 Plug        'tpope/vim-repeat'
-Plug   'scrooloose/nerdcommenter'
-"Plug 'scrooloose/nerdtree'   " stop it
-Plug     'chrisbra/NrrwRgn'
+Plug        'tpope/vim-endwise'
+Plug        'tpope/vim-commentary'
+Plug     'chrisbra/NrrwRgn', { 'on': ['NR', 'NarrowRegion'] }
 
 
 " junegunn is everythign
 " XXX: local fzf dir, come on write a thing pls
-Plug        '~/.fzf'
-Plug         '/usr/local/opt/fzf'
+" Plug        '~/.fzf'
+" Plug         '/usr/local/opt/fzf'
+Plug 'junegunn/fzf',           { 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-peekaboo'
 Plug 'junegunn/vim-easy-align'
-Plug 'junegunn/goyo.vim' " distraction free writing
-Plug 'junegunn/limelight.vim' " outside context
-Plug 'junegunn/seoul256.vim'
-Plug 'junegunn/gv.vim'
-Plug 'junegunn/vim-journal', { 'commit': '6ab162208dfc8fab479249e4d6a4901be2dabbe8' }
-" if has('nvim') || v:version >= 800
-"   Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
-" endif
+Plug 'junegunn/goyo.vim',      { 'on': 'Goyo' } " distraction free writing
+Plug 'junegunn/limelight.vim', { 'on': ['Goyo','Limelight'] }
+Plug 'junegunn/gv.vim',        { 'on': 'GV' }
+Plug 'junegunn/vim-journal',   { 'commit': '6ab162208dfc8fab479249e4d6a4901be2dabbe8' }
 
 "{{{3 FZF alternatives - retired fuzzy finders
 " You don't use these any more. You use fzf now.  [20190813T1934Z]
 " Plug 'jremmen/vim-ripgrep' " deficient for splits
 " Plug 'mileszs/ack.vim'     " just deficient
 
-"{{{3 Linting
+"{{{3 Git/VCS
+Plug            'tpope/vim-fugitive'
+Plug 'rhysd/git-messenger.vim'
+Plug       'raghur/vim-ghost', has('nvim') ? { 'on': 'GhostStart' } : { 'on': [], 'for': [] }
+
+"{{{3 Reading code
+Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
+  autocmd! User indentLine doautocmd indentLine Syntax
+  let g:indentLine_color_term = 239
+  let g:indentLine_color_gui = '#616161'
+
+Plug 'mzlogin/vim-markdown-toc'
+
+"{{{3 Coc vs. alt_complete
+if v:version >= 800 && has('nvim') && ! (has('win32') || has('win64'))
+  " Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+  " Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
+  Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+else 
+  Plug 'airblade/gitgutter'
+  Plug 'Chiel92/vim-autoformat'
+  Plug 'ypcrts/vim-uncrustify', { 'for': ['c','cpp']  }
+
+  if has('nvim') && ! (has('win32') || has('win64'))
+    Plug       'Shougo/deoplete.nvim',   { 'do': ':UpdateRemotePlugins' }
+    Plug       'Shougo/neoinclude.vim'
+    "Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
+    " Plug        'zchee/deoplete-jedi',   { 'for': 'python' }
+    " Plug 'tweekmonster/deoplete-clang2', { 'commit': '787dd4dc7eeb5d1bc2fd3cefcf7bd07e48f4a962' }
+    " Plug     'carlitux/deoplete-ternjs', { 'for': 'javascript' }
+    Plug       'wellle/tmux-complete.vim', has('win32') ? { 'on': [], 'for': [] } : {}
+  elseif v:version >= 703 && has('lua')
+    Plug 'Shougo/neocomplete.vim'
+  else
+    " XXX: completion without lua?
+    Plug 'valloric/youcompleteme', {
+    \ 'do': 'echoerr \"You need to go compile YCM\"',
+    \ 'for': ['javascript']
+    \ }
+  endif
+endif
+
+
+"{{{3 Linting: ale v. syntastic
 if has('nvim') || v:version >= 800
   Plug 'dense-analysis/ale'
 else
   Plug 'scrooloose/syntastic'
 endif
 
-Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
-" Plug     'fisadev/vim-isort',       { 'for': 'python' } " no work windows
+" Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
+"Plug     'fisadev/vim-isort', has('win32') ? { 'on': [], 'for': [] } : { 'for': 'python' } " no work windows
 Plug    'chrisbra/csv.vim',         { 'for':    'csv' }
-
-"{{{3 Completion
-if has('nvim')
-  " deoplete does not work on vim8, stop hoping, cry
-  Plug       'Shougo/deoplete.nvim',   { 'do': ':UpdateRemotePlugins' }
-  Plug       'Shougo/neoinclude.vim'
-  Plug        'zchee/deoplete-jedi',   { 'for': 'python' }
-  Plug 'tweekmonster/deoplete-clang2', { 'commit': '787dd4dc7eeb5d1bc2fd3cefcf7bd07e48f4a962' }
-  " Plug     'carlitux/deoplete-ternjs', { 'for': 'javascript' }
-  if !has('win32') " my eyes just rolled back into my head
-    Plug       'wellle/tmux-complete.vim'
-  endif
-elseif v:version >= 703 && has('lua')
-  Plug 'Shougo/neocomplete.vim'
-else
-  " TODO: completion without lua?
-  " Plug 'valloric/youcompleteme', {
-  " \ 'do': 'echoerr \"You need to go compile YCM\"',
-  " \ 'for': ['javascript']
-  " \ }
-endif
-
-" Plug 'python-rope/ropevim', { 'for': 'python' }
-
-" Plug   'mattn/emmet-vim'
-
-"{{{ Fixing
-" normally use :ALEFix, but still
-Plug 'Chiel92/vim-autoformat'
-" Plug 'ypcrts/vim-uncrustify', { 'for': ['c','cpp']  }
+"{{{2 network i/o (risk)
+" Plug 'baverman/vial-http', { 'commit': 'NULL' } " cool rest client for vim
+" XXX: TODO: blackmagic: cr ghost
+Plug       'raghur/vim-ghost', has('nvim') ? { 'on': 'GhostStart' } : { 'on': [], 'for': [] }
 
 "{{{3 Syntax
-"{{{4 polyglot and overrides
-" polyglot disables plugin folder and only uses ftplugin, much breakage
+"{{{4 Syntax - polyglot and overrides
+" note: polyglot disables plugin folder and only uses ftplugin, much breakage
 "    rationale: optimize runtimes
 "    fix: polyglot docs say to manually add them
-
-let g:polyglot_disabled = ['markdown', 'autoindent']
-Plug 'sheerun/vim-polyglot' " polyglot broken on nvim 0.3.0/sid
-Plug 'othree/html5.vim'
-Plug 'keith/swift.vim'
-Plug 'vim-scripts/AnsiEsc.vim'
-
-" Plug 'godlygeek/tabular' " needed by markdown
-" Plug 'plasticboy/vim-markdown'
+" polyglot broken on nvim 0.3.0/sid
+" let g:polyglot_disabled = ['markdown', 'autoindent']
+" Plug 'sheerun/vim-polyglot'
+"{{{4 Markdown
+Plug  'godlygeek/tabular' " needed by markdown
+Plug 'plasticboy/vim-markdown'
 
 "{{{4 misc echosystems with esteroic, useless syntax
 Plug 'ipkiss42/xwiki.vim', { 'for': 'xwiki', 'commit': '8551414062245924c870bd4049c166bab155f9f5' }
@@ -110,193 +120,120 @@ Plug 'ipkiss42/xwiki.vim', { 'for': 'xwiki', 'commit': '8551414062245924c870bd40
 " Plug 'tweekmonster/django-plus.vim'
 
 "{{{4 rust ecosystems
-Plug   'rust-lang/rust.vim',                { 'for': 'rust' }
-Plug  'racer-rust/vim-racer',               { 'for': 'rust' }
-Plug     'cespare/vim-toml',                { 'for': 'toml' }
-"{{{4 javascript ecosystems
+Plug  'rust-lang/rust.vim',  { 'for': 'rust' }
+Plug 'racer-rust/vim-racer', { 'for': 'rust' }
+Plug    'cespare/vim-toml',  { 'for': 'toml' }
+"{{{4 frontend or javascript ecosystems
+Plug     'othree/html5.vim', { 'for': ['css','html'] }
 " Plug    'pangloss/vim-javascript',          { 'for': 'javascript' }
 " Plug     'bigfish/vim-js-context-coloring', { 'commit': '6c90329664f3b0a58b05e2a5207c94da0d83a51c', 'for': 'javascript', 'do': 'echo "consider npm install --upgrade"' }
 " this does not work for js files with syntax errors
 " Plug 'digitaltoad/vim-jade',                { 'for': ['jade'] }
-"{{{5 linux / systems
+"{{{4 linux / systems
 " Plug 'git://fedorapeople.org/home/fedora/wwoods/public_git/vim-scripts.git' "systemd
 " Plug 'PotatoesMaster/i3-vim-syntax'
 " Plug    'vim-scripts/bats.vim'
 " Plug       'hashivim/vim-terraform'
 
 "{{{4 esrever
+Plug      'vim-scripts/AnsiEsc.vim'
+Plug            'keith/swift.vim',        { 'for':    'swift'                                     }
 " Plug 'CaledoniaProject/VIM-IDC'
 " Plug           'alderz/smali-vim'
-Plug           'Shougo/vinarise.vim'
+" Plug           'Shougo/vinarise.vim',  {'commit': '9285d3f0dc012c6bbe29210dc4f4628bb4ca5000' }  "hexeditor, abandoned
 "{{{3 Folding
-Plug           'ypcrts/vim-ini-fold', { 'commit': 'b61a9ab242a316d2ba755c36c96888416162f1f4', 'for': ['gitignore','gitconfig','ini'] }
-Plug        'tmhedberg/SimpylFold',   { 'for': 'python', 'commit': 'aa0371d9d708388f3ba385ccc67a7504586a20d9' }
-"{{{3 Git/VCS
-Plug         'airblade/vim-gitgutter'
-Plug            'tpope/vim-fugitive'
-
-"{{{4 network i/o Gist-vim
-" Plug 'mattn/gist-vim',   { 'commit': 'f0d63579eab7548cf12f979dc52ef5a370ecbe63' }
-" Plug 'mattn/webapi-vim', { 'commit': 'e3fa93f29a3a0754204002775e140d8a9acfd7fd' }
-" Plug 'baverman/vial-http', { 'commit': 'NULL' } " cool rest client for vim
-" XXX: TODO: blackmagic: cr ghost
-Plug       'raghur/vim-ghost', has('nvim') ? {} : { 'on': [], 'for': [] }
-
+Plug           'ypcrts/vim-ini-fold',     { 'commit': 'b61a9ab242a316d2ba755c36c96888416162f1f4', 'for':    ['gitignore','gitconfig','ini']            }
+Plug        'tmhedberg/SimpylFold',       { 'for':    'python',                                   'commit': 'aa0371d9d708388f3ba385ccc67a7504586a20d9' }
 "{{{3 Colourschemes
-Plug 'xolox/vim-colorscheme-switcher', { 'commit': '4d9807a5a8948c18b5f3f278685269565c8e2508' }
-Plug 'xolox/vim-misc', { 'commit': '3e6b8fb6f03f13434543ce1f5d24f6a5d3f34f0b' }
-Plug        'w0ng/vim-hybrid'
-Plug    'nanotech/jellybeans.vim'
-Plug        'guns/jellyx.vim'
-Plug     'fisadev/fisa-vim-colorscheme'
-Plug 'whatyouhide/vim-gotham'             ",      { 'commit': 'f46412d4f9768c332ae22676f3ef4cc130457ba0' }
-Plug     'djjcast/mirodark',              { 'commit': '306c5f96dd0ecaa64eac603b990a22300dc798f7' }
+Plug         'junegunn/seoul256.vim'
+Plug           'tomasr/molokai'
+Plug     'chriskempson/vim-tomorrow-theme'
+Plug          'morhetz/gruvbox'
+Plug           'yuttie/hydrangea-vim'
+Plug 'tyrannicaltoucan/vim-deep-space'
+Plug  'AlessandroYorba/Despacio'
+Plug          'cocopon/iceberg.vim'
+Plug       'nightsense/snow'
+Plug       'nightsense/stellarized'
+Plug  'arcticicestudio/nord-vim'
+Plug       'nightsense/cosmic_latte'
+Plug             'w0ng/vim-hybrid'
+Plug         'nanotech/jellybeans.vim'
+Plug             'guns/jellyx.vim'
+Plug          'fisadev/fisa-vim-colorscheme'
+Plug      'whatyouhide/vim-gotham'        ",      { 'commit': 'f46412d4f9768c332ae22676f3ef4cc130457ba0' }
+Plug          'djjcast/mirodark',         { 'commit': '306c5f96dd0ecaa64eac603b990a22300dc798f7'  }
 " Plug      'lu-ren/SerialExperimentsLain', { 'commit': 'aabb800d6a27cde243604a94a9a14334286a87b2' }
-Plug      'zcodes/vim-colors-basic',      { 'commit': 'bdf14db578ad283bffa019ab2236f4d378eef34b' }
-Plug  'lifepillar/vim-solarized8'         ",    { 'commit': 'dc6c1dfa6f5c068ba338b8a2e4f88f4b6de4433a' }
-Plug 'nightsense/snow'
+Plug           'zcodes/vim-colors-basic', { 'commit': 'bdf14db578ad283bffa019ab2236f4d378eef34b'  }
+Plug       'lifepillar/vim-solarized8'    ",    { 'commit': 'dc6c1dfa6f5c068ba338b8a2e4f88f4b6de4433a' }
+Plug       'nightsense/snow'
 " if !has('nvim') " nvim no work? 16-bit
 "   Plug 'laserswald/chameleon.vim',   { 'commit': 'e7c9991fa19961dd2bcf89e92f09be1da89b8c77' }
 " endif
 " Plug 'nightsense/vim-crunchbang'
-
 " Plug 'flazz/vim-colorschemes'
+"{{{2 End of plugin definitions------------------------------------------------------------------- 
+"
+call        plug#end()
 
-call plug#end()
 "}}}1
-"{{{1 reset plugins that suck trash  trash  trash  trash  trash  trash  trash
-"{{{2 can i haz no default fucking maps pleaz
+"{{{1 Reset to sane plugin defaults
+"{{{2 can i haz no default maps pleaz
 " This has it's own section now because when I see these lines unfolded I get
 " grumpy, and the inconsistency between the meanings of the 1s and 0s is
 " really next level. Vim 9 needs a plugin default mapping api, so you can turn
 " them all off, forever.
-let g:gitgutter_map_keys = 0
-let g:pydocstring_enable_mapping = 0
-let g:nrrw_rgn_nomap_nr = 1
-let g:nrrw_rgn_nomap_Nr = 1
-let g:increment_activator_no_default_key_mappings = 1
-let g:js_context_colors_usemaps = 0
+let  g:gitgutter_map_keys                          = 0
+let  g:pydocstring_enable_mapping                  = 0
+let  g:nrrw_rgn_nomap_nr                           = 1
+let  g:nrrw_rgn_nomap_Nr                           = 1
+let  g:increment_activator_no_default_key_mappings = 1
+let  g:js_context_colors_usemaps                   = 0
 
 "{{{2 can i haz enable plugin
-let g:gitgutter_enabled = 1
-let g:js_context_colors_enabled = 0
-let g:js_context_colors_highlight_function_names = 0
-let g:javascript_plugin_jsdoc = 1
-autocmd! User GoyoEnter Limelight
-autocmd! User GoyoLeave Limelight!
+let      g:gitgutter_enabled                          =         1
+let      g:js_context_colors_enabled                  =         0
+let      g:js_context_colors_highlight_function_names =         0
+let      g:javascript_plugin_jsdoc                    =         1
+autocmd! User                                         GoyoEnter Limelight
+autocmd! User                                         GoyoLeave Limelight!
 
-"{{{1 configuration
-"{{{2 completion plugin
-if has_key(g:plugs, 'deoplete.nvim')
-  let g:deoplete#enable_at_startup = 1
-  call deoplete#custom#option('auto_complete_delay', 500)
-
-elseif has_key(g:plugs, 'neocomplete.vim') "{{{4
-
-  " defaults pasted here
-
-  "Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-  " Disable AutoComplPop.
-  let g:acp_enableAtStartup = 0
-  " Use neocomplete.
-  let g:neocomplete#enable_at_startup = 1
-  " Use smartcase.
-  let g:neocomplete#enable_smart_case = 1
-  " Set minimum syntax keyword length.
-  let g:neocomplete#sources#syntax#min_keyword_length = 3
-
-  " Define dictionary.
-  let g:neocomplete#sources#dictionary#dictionaries = {
-        \ 'default' : '',
-        \ 'vimshell' : $HOME.'/.vimshell_hist',
-        \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
-
-  " Define keyword.
-  if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-  endif
-  let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-  " Plugin key-mappings.
-  " inoremap <expr><C-g>     neocomplete#undo_completion()
-  " inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-  " Recommended key-mappings.
-  " <CR>: close popup and save indent.
-  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-  function! s:my_cr_function()
-    return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-    " For no inserting <CR> key.
-    "return pumvisible() ? "\<C-y>" : "\<CR>"
+"{{{1 Configure plugins
+"{{{2 Coc vs. alt_complete - complete config
+if has_key(g:plugs, 'coc')
+  function! s:show_documentation()
+    if (index(['vim', 'help'], &filetype) >= 0)
+      execute 'h' expand('<cword>')
+    else
+      call CocAction('doHover')
+    endif
   endfunction
-  " <TAB>: completion.
-  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-  " <C-h>, <BS>: close popup and delete backword char.
-  inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-  inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-  " Close popup by <Space>.
-  "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-
-  " AutoComplPop like behavior.
-  "let g:neocomplete#enable_auto_select = 1
-
-  " Shell like behavior(not recommended).
-  "set completeopt+=longest
-  "let g:neocomplete#enable_auto_select = 1
-  "let g:neocomplete#disable_auto_complete = 1
-  "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
-
-  " Enable omni completion.
-  autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType python        setlocal omnifunc=pythoncomplete#Complete
-  autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
-
-  " Enable heavy omni completion.
-  if !exists('g:neocomplete#sources#omni#input_patterns')
-    let g:neocomplete#sources#omni#input_patterns = {}
-  endif
-  "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-  "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-  "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-  " For perlomni.vim setting.
-  " https://github.com/c9s/perlomni.vim
-  let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-  "}}}4
-elseif has_key(g:plugs, 'youcompleteme') "{{{4
-  let g:ycm_key_invoke_complete = '' "<C-Space> === <NUL>
-  let g:ycm_key_detailed_diagnostics = '<leader>yd'
-  let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<C-n>']
-  let g:ycm_autoclose_preview_window_after_completion = 1
-  let g:ycm_autoclose_preview_window_after_insertion  = 1
-  let g:ycm_semantic_triggers =  {
-        \   'c' : ['->', '.'],
-        \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
-        \             're!\[.*\]\s'],
-        \   'ocaml' : ['.', '#'],
-        \   'cpp,objcpp' : ['->', '.', '::'],
-        \   'perl' : ['->'],
-        \   'php' : ['->', '::'],
-        \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
-        \   'python' : ['.', 'from ', 'import '],
-        \   'ruby' : ['.', '::'],
-        \   'lua' : ['.', ':'],
-        \   'erlang' : [':'],
-        \ }
-  nnoremap <leader>yj :YcmCompleter GoTo<CR>
-  nnoremap <leader>yr :YcmCompleter GoToReferences<CR>
-  nnoremap <leader>yh :YcmCompleter GetDoc<CR>
-  "}}}4
+  nnoremap <silent> K :call <SID>show_documentation()<CR>
+  let g:coc_global_extensions = ['coc-git', 'coc-solargraph',
+    \ 'coc-r-lsp', 'coc-python', 'coc-html', 'coc-json', 'coc-css', 'coc-html',
+    \ 'coc-prettier', 'coc-eslint', 'coc-tsserver', 'coc-emoji', 'coc-java']
+  command! -nargs=0 Prettier :CocCommand prettier.formatFile
+  let g:go_doc_keywordprg_enabled = 0
+  augroup coc-config
+    autocmd!
+    autocmd VimEnter * nmap <silent> <leader>gd <Plug>(coc-definition)
+    autocmd VimEnter * nmap <silent> <leader>gi <Plug>(coc-implementation)
+    autocmd VimEnter * nmap <silent> <leader>su <Plug>(coc-references)
+  augroup END
+  nmap <leader>rn <Plug>(coc-rename)
+  xmap <leader>af <Plug>(coc-format-selected)
+  nmap <leader>af <Plug>(coc-format-selected)
+  nnoremap <silent><nowait> <Leader>cc :CocList commands<cr>
+  nnoremap <silent><nowait> <Leader>co :CocList outline<cr>
+  nnoremap <silent><nowait> <Leader>cd :CocList diagnostics<cr>
+else
+  :exe 'source' rcz#VimFileRealpath("alt_complete.vimrc")
 endif
-
-"{{{2 linter, fixer
+"{{{2 ale v. synastic - linter config
 if has_key(g:plugs, 'ale')
   let g:ale_lint_on_text_changed = 'always'
   let g:ale_lint_on_enter = 0
-  let g:ale_lint_delay = 5000
+  let g:ale_lint_delay = 1000
   let g:ale_sign_error = 'E'
   let g:ale_sign_warning = 'W'
   let g:ale_echo_cursor = 1
@@ -318,47 +255,22 @@ if has_key(g:plugs, 'ale')
         \ 'typescript':  ['prettier', 'eslint'],
         \ }
 
-
-elseif has_key(g:plugs, 'syntastic')
-
+  map <Leader>af :ALEFix<CR>
+  nmap ]a <Plug(ale_next_wrap)
+  nmap [a <Plug(ale__wrap)
+else
+  map <Leader>af :Autoformat<CR>
+  " without ale, we use syntastic
   let g:syntastic_javascript_checkers = [ 'eslint' ]
   let g:syntastic_python_checkers = [ 'flake8', 'pylint' ]
 
   nmap <leader>sy :SyntastictoggleMode<cr>
   nmap <leader>sl :SyntasticsetlocList<cr>:lw<cr>
-
 endif
 
 if has_key(g:plugs, 'vim-js-context-coloring')
   nmap <leader>sj :JSContextColorToggle<cr>
 endif
-
-"{{{2 lightline
-let g:lightline = { 'colorscheme': 'jellybeans' }
-let g:lightline.mode_map = {
-      \ 'n':      '',
-      \ 'i':      'INSERT',
-      \ 'R':      'REPLACE',
-      \ 'v':      'VISUAL',
-      \ 'V':      'V-LINE',
-      \ 'c':      'COMMAND',
-      \ "\<C-v>": 'V-BLOCK',
-      \ 's':      'SELECT',
-      \ 'S':      'S-LINE',
-      \ "\<C-s>": 'S-BLOCK',
-      \ '?':      '      ' }
-let g:lightline.tabline = {
-      \ 'left':  [ [ 'tabs' ] ],
-      \ 'right': [ ] }
-let g:lightline.active = {
-      \ 'left':  [ [ 'mode', 'paste' ],
-      \          [ 'readonly', 'relativepath', 'modified' ] ],
-      \ 'right': [ [ 'lineinfo' ],
-      \          [ 'fileformat', 'fileencoding', 'filetype' ] ] }
-let g:lightline.inactive = {
-      \ 'left':  [ [ 'relativepath' ] ],
-      \ 'right': [ [ 'lineinfo' ],
-      \ ] }
 
 "{{{2 increment-activator
 let g:increment_activator_filetype_candidates =
@@ -386,6 +298,10 @@ nmap <Leader>aa <Plug>(increment-activator-increment)
 nmap <Leader>ax <Plug>(increment-activator-decrement)
 nmap <c-a>      <Plug>(increment-activator-increment)
 nmap <c-x>      <Plug>(increment-activator-decrement)
+if $TERM =~ 'screen'
+  nnoremap <C-a> <nop>
+  nnoremap <Leader>aa <C-a>
+endif
 
 
 "{{{2 NrrwRgn
@@ -393,8 +309,8 @@ nnoremap <leader>nr :NR<CR>
 vnoremap <leader>nr :NR<CR>
 
 "{{{2 EasyAlign
-vmap <Enter> <Plug>(EasyAlign)
-nmap ga      <Plug>(EasyAlign)
+xmap <Enter>    <Plug>(LiveEasyAlign)
+nmap ga         <Plug>(EasyAlign)
 
 " space
 nmap gas     vip<ESC>:'<,'>EasyAlign */[ ]/l0r0<CR>
@@ -410,17 +326,47 @@ nmap gaga    vip<Leader>gaga<ESC>
 " :GFiles? -> git status dirty files
 " :BLines  -> lines in current buffer
 """""""""""""""""""""""""""""""""""""
+let $FZF_DEFAULT_OPTS .= ' --inline-info'
 
-nmap <Leader>fg  :GFiles<CR>
-nmap <Leader>fs  :GFiles?<CR>
-nmap <Leader>fl  :Lines<CR>
-nmap <Leader>fb  :BLines<CR>
-nmap <Leader>ft  :Tags<CR>
+if exists('$TMUX')
+"  let g:fzf_layout = { 'tmux': '-p 60%,40%' }  " req tmux > 3.2 
+   let g:fzf_layout = { 'tmux': "-d 50%" }
+else
+  "let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+  let g:fzf_layout = { 'down': '~40%' }
+endif
+let g:fzf_prefer_tmux = 1
+let g:fzf_buffers_jump = 1
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Terminal buffer options for fzf
+autocmd! FileType fzf
+autocmd  FileType fzf set noshowmode noruler nonu
+
+nmap <Leader>fg :GFiles<CR>
+nmap <Leader>fs :GFiles?<CR>
+nmap <Leader>fl :Lines<CR>
+nmap <Leader>fb :BLines<CR>
+nmap <Leader>ft :Tags<CR>
 
 nmap <Leader>rg  :Rg!<cr>
 nmap <Leader>ag  :Ag!<cr>
 nmap <Leader>gg  :Gg!<cr>
 nmap <Leader>ff  :Files<CR>
+
 
 command! -bang -nargs=* Ag
   \ call fzf#vim#ag(<q-args>,
@@ -445,43 +391,35 @@ command! -bang -nargs=* GitGrep
 command! -bang -nargs=? -complete=dir Files
   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
-"{{{2 gitgutter
-nmap [h         <Plug>(GitGutterPrevHunk)
-nmap ]h         <Plug>(GitGutterNextHunk)
-nmap <Leader>hs <Plug>GitGutterStageHunk
-nmap <Leader>hu <Plug>GitGutterUndoHunk
-nmap <Leader>hp <Plug>GitGutterPreviewHunk
+"{{{2 coc-git
+nmap [g <Plug>(coc-git-prevchunk)
+nmap ]g <Plug>(coc-git-nextchunk)
+nmap gi <Plug>(coc-git-chunkinfo)
+nmap gs :CocCommand git.chunkStage<cr>
+omap ig <Plug>(coc-git-chunk-inner)
+xmap ig <Plug>(coc-git-chunk-inner)
+omap ig <Plug>(coc-git-chunk-outer)
+xmap ig <Plug>(coc-git-chunk-outer)
+nmap <Leader>ogg :CocCommand git.toggleGutters<cr>
 
-nmap <Leader>ogg :GitGutterToggle<CR>
-nmap <Leader>hh  :GitGutterLineHighlightsToggle<CR>
+"{{{2 gitgutter   [:h gitgutter.txt]
+if has_key(g:plugs, 'coc')
+  nmap <Leader>ogg :GitGutterToggle<CR>
+  nmap [g         <Plug>(GitGutterPrevHunk)
+  nmap ]g         <Plug>(GitGutterNextHunk)
+  nmap gs <Plug>(GitGutterStageHunk)
+  " nmap gu <Plug>(GitGutterUndoHunk)
+  nmap gi <Plug>(GitGutterPreviewHunk)
+  nmap ghh :GitGutterLineHighlightsToggle<CR>:set nu<CR>:GitGutterLineNrHighlightsToggle<CR>
+ endif
 
-nmap <Leader>ggb :let g:gitgutter_diff_base =
-nmap <Leader>ggh :let g:gitgutter_diff_base = 'HEAD'<CR>
-nmap <Leader>ggm :let g:gitgutter_diff_base = 'origin/master'<CR>
-nmap <Leader>ggs :let g:gitgutter_diff_base = 'origin/staging'<CR>
-
-"{{{2 NERDCommenter
-let g:NERDSpaceDelims=1
-let g:NERDRemoveExtraSpaces=1
-let g:NERDCompactSexyComs=0
-" vim 8 / neovim HEAD runtime: when ft==python, cms:=#\ %s
-"   -- when g:NERDSpaceDelims==1, then NERDComment results in double space
-let g:NERDCustomDelimiters = {
-      \ 'python': { 'left': '#', 'right': '' }
-      \ }
-let g:NERDTrimTrailingWhitespace=1
+"{{{2 Commentary
+map    gc           <Plug>Commentary
+nmap   gcc          <Plug>CommentaryLine
+" map    <Leader>cc   <Plug>Commentary
+" nmap   <Leader>cc   <Plug>CommentaryLine
 
 "{{{2 NERDTree
 " let g:NERDTreeIgnore = ['\~$', '\.pyc$']
 " nnoremap <Leader>nt :NERDTree<CR>
-command! NERDTree echoerr "use :Vexplore"
-
-"{{{2 ALE or Chiel92/vim-autoformat
-if has_key(g:plugs, 'ale')
-  nmap <Leader>fix :ALEFix<CR>
-  vmap <Leader>fix :ALEFix<CR>
-else
-  nmap <Leader>af :Autoformat<CR>
-  vmap <Leader>af :Autoformat<CR>
-endif
-
+command! NERDTree echomsg "use :Vexplore or :Files"
