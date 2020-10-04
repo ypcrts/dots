@@ -108,7 +108,9 @@ let s:cachedir='/tmp/vim-cache' . $USER
 if has('win32')
   let s:cachedir=s:vimdir . '/cache'
 endif
+" XXX: persistent undo
 let s:undocachedir=s:vimdir . '/undo'
+"let s:undocachedir=s:cachedir . '/undo'
 if !isdirectory(s:undocachedir)
   call mkdir(s:undocachedir, 'p', 0700)
 endif
@@ -185,11 +187,11 @@ set mouse=a
 "set mouse=                " nvim can still wheel school like this
 " set mouse=nvch            " set mouse=nv " enable mouse in normal, visual
 set mousehide             " Hide the mouse when typing text
-set nostartofline         " Avoid moving cursor to BOL when jumping around
+set startofline           " move cursor to first non blank of a line
 
 set whichwrap=b,s,h,l,<,> " <BS> <Space> h l <Left> <Right> can change lines
 set virtualedit+=block    " Let cursor move past the last char in <C-v> mode
-"set scrolloff=3           " Keep 3 context lines above and below the cursor
+"set scrolloff=3          " Keep 3 context lines above and below the cursor
 
 set matchpairs=(:),{:},[:],<:>
 set noshowmatch           " Don't Briefly jump to a paren once it's balanced
