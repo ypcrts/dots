@@ -1,15 +1,15 @@
 " vi: ft=vim sts=2 ts=2 sw=2 et
-"{{{1 bootstrap
-
-"{{{2 i need pythons
+"{{{1 Bootstrap
+"{{{2 - require py
 if !(has('python') || has('python3') || has('nvim'))
   echoerr 'no pythonsss'
   finish
 endif
 
+"{{{1 Plug defs
 call plug#begin(rcz#VimFilesDir() . '/plugged')
 
-"{{{1 Plug defs
+"{{{2 Plug defs
 Plug 'ypcrts/securemodelines', { 'commit': 'fa69372a18cec61c664754848a7094fc4a866dcc' }
 "Plug 'jamessan/vim-gnupg'
 "Plug 'ypcrts/vim-gpg-sign'
@@ -125,6 +125,7 @@ Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 Plug    'cespare/vim-toml',  { 'for': 'toml' }
 "{{{4 frontend or javascript ecosystems
 Plug     'othree/html5.vim', { 'for': ['css','html'] }
+Plug 'kevinoid/vim-jsonc', { 'for': 'jsonc' }
 " Plug    'pangloss/vim-javascript',          { 'for': 'javascript' }
 " Plug     'bigfish/vim-js-context-coloring', { 'commit': '6c90329664f3b0a58b05e2a5207c94da0d83a51c', 'for': 'javascript', 'do': 'echo "consider npm install --upgrade"' }
 " this does not work for js files with syntax errors
@@ -137,13 +138,13 @@ Plug     'othree/html5.vim', { 'for': ['css','html'] }
 
 "{{{4 esrever
 Plug      'vim-scripts/AnsiEsc.vim'
-Plug            'keith/swift.vim',        { 'for':    'swift'                                     }
+Plug            'keith/swift.vim',        { 'for':    'swift'                                    }
 " Plug 'CaledoniaProject/VIM-IDC'
 " Plug           'alderz/smali-vim'
 " Plug           'Shougo/vinarise.vim',  {'commit': '9285d3f0dc012c6bbe29210dc4f4628bb4ca5000' }  "hexeditor, abandoned
 "{{{3 Folding
-Plug           'ypcrts/vim-ini-fold',     { 'commit': 'b61a9ab242a316d2ba755c36c96888416162f1f4', 'for':    ['gitignore','gitconfig','ini']            }
-Plug        'tmhedberg/SimpylFold',       { 'for':    'python',                                   'commit': 'aa0371d9d708388f3ba385ccc67a7504586a20d9' }
+Plug           'ypcrts/vim-ini-fold',     { 'for':    ['gitignore','gitconfig','ini'],           'commit': 'b61a9ab242a316d2ba755c36c96888416162f1f4' }
+Plug        'tmhedberg/SimpylFold',       { 'for':    'python',                                  'commit': 'aa0371d9d708388f3ba385ccc67a7504586a20d9' }
 "{{{3 Colourschemes
 Plug         'junegunn/seoul256.vim'
 Plug           'tomasr/molokai'
@@ -161,11 +162,11 @@ Plug             'w0ng/vim-hybrid'
 Plug         'nanotech/jellybeans.vim'
 Plug             'guns/jellyx.vim'
 Plug          'fisadev/fisa-vim-colorscheme'
-Plug      'whatyouhide/vim-gotham'        ",      { 'commit': 'f46412d4f9768c332ae22676f3ef4cc130457ba0' }
-Plug          'djjcast/mirodark',         { 'commit': '306c5f96dd0ecaa64eac603b990a22300dc798f7'  }
-" Plug      'lu-ren/SerialExperimentsLain', { 'commit': 'aabb800d6a27cde243604a94a9a14334286a87b2' }
-Plug           'zcodes/vim-colors-basic', { 'commit': 'bdf14db578ad283bffa019ab2236f4d378eef34b'  }
-Plug       'lifepillar/vim-solarized8'    ",    { 'commit': 'dc6c1dfa6f5c068ba338b8a2e4f88f4b6de4433a' }
+Plug      'whatyouhide/vim-gotham'        ",   { 'commit': 'f46412d4f9768c332ae22676f3ef4cc130457ba0' }
+Plug          'djjcast/mirodark',              { 'commit': '306c5f96dd0ecaa64eac603b990a22300dc798f7' }
+" Plug         'lu-ren/SerialExperimentsLain', { 'commit': 'aabb800d6a27cde243604a94a9a14334286a87b2' }
+Plug           'zcodes/vim-colors-basic',      { 'commit': 'bdf14db578ad283bffa019ab2236f4d378eef34b' }
+Plug       'lifepillar/vim-solarized8'    ",   { 'commit': 'dc6c1dfa6f5c068ba338b8a2e4f88f4b6de4433a' }
 Plug       'nightsense/snow'
 " if !has('nvim') " nvim no work? 16-bit
 "   Plug 'laserswald/chameleon.vim',   { 'commit': 'e7c9991fa19961dd2bcf89e92f09be1da89b8c77' }
@@ -200,7 +201,7 @@ autocmd! User                                         GoyoLeave Limelight!
 
 "{{{1 Configure plugins
 "{{{2 Coc vs. alt_complete - complete config
-if has_key(g:plugs, 'coc')
+if has_key(g:plugs, 'coc.nvim')
   function! s:show_documentation()
     if (index(['vim', 'help'], &filetype) >= 0)
       execute 'h' expand('<cword>')
@@ -209,9 +210,14 @@ if has_key(g:plugs, 'coc')
     endif
   endfunction
   nnoremap <silent> K :call <SID>show_documentation()<CR>
-  let g:coc_global_extensions = ['coc-git', 'coc-solargraph',
-    \ 'coc-r-lsp', 'coc-python', 'coc-html', 'coc-json', 'coc-css', 'coc-html',
-    \ 'coc-prettier', 'coc-eslint', 'coc-tsserver', 'coc-emoji', 'coc-java']
+
+  let g:coc_global_extensions = [
+        \ 'coc-git'
+        \ , 'coc-python', 'coc-html', 'coc-json', 'coc-css'
+        \ , 'coc-prettier', 'coc-eslint', 'coc-tsserver', 'coc-emoji'
+        \ ]
+        ", 'coc-java'
+        ", 'coc-r-lsp', 'coc-solargraph'
   command! -nargs=0 Prettier :CocCommand prettier.formatFile
   let g:go_doc_keywordprg_enabled = 0
   augroup coc-config
@@ -223,9 +229,11 @@ if has_key(g:plugs, 'coc')
   nmap <leader>rn <Plug>(coc-rename)
   xmap <leader>af <Plug>(coc-format-selected)
   nmap <leader>af <Plug>(coc-format-selected)
-  nnoremap <silent><nowait> <Leader>cc :CocList commands<cr>
-  nnoremap <silent><nowait> <Leader>co :CocList outline<cr>
+  nnoremap <silent><nowait> <Leader>co :CocList commands<cr>
   nnoremap <silent><nowait> <Leader>cd :CocList diagnostics<cr>
+  inoremap <silent><expr>   <C-space> coc#refresh()
+  inoremap <silent><expr>   <C-cr> coc#refresh()
+  inoremap <silent><expr>   <D-cr> coc#refresh()
 else
   :exe 'source' rcz#VimFileRealpath("alt_complete.vimrc")
 endif
@@ -330,68 +338,64 @@ let $FZF_DEFAULT_OPTS .= ' --inline-info'
 
 if exists('$TMUX')
 "  let g:fzf_layout = { 'tmux': '-p 60%,40%' }  " req tmux > 3.2 
-   let g:fzf_layout = { 'tmux': "-d 50%" }
+   let g:fzf_layout = { 'tmux': "-d 30%" }
 else
   "let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
   let g:fzf_layout = { 'down': '~40%' }
 endif
 let g:fzf_prefer_tmux = 1
 let g:fzf_buffers_jump = 1
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+let g:fzf_colors ={
+      \ 'fg':      ['fg', 'Normal'],
+      \ 'bg':      ['bg', 'Normal'],
+      \ 'hl':      ['fg', 'Comment'],
+      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+      \ 'hl+':     ['fg', 'Statement'],
+      \ 'info':    ['fg', 'PreProc'],
+      \ 'border':  ['fg', 'Ignore'],
+      \ 'prompt':  ['fg', 'Conditional'],
+      \ 'pointer': ['fg', 'Exception'],
+      \ 'marker':  ['fg', 'Keyword'],
+      \ 'spinner': ['fg', 'Label'],
+      \ 'header':  ['fg', 'Comment']
+      \ }
 
 " Terminal buffer options for fzf
 autocmd! FileType fzf
 autocmd  FileType fzf set noshowmode noruler nonu
-
+nmap , :Commands<CR>
 nmap <Leader>fg :GFiles<CR>
 nmap <Leader>fs :GFiles?<CR>
 nmap <Leader>fl :Lines<CR>
 nmap <Leader>fb :BLines<CR>
 nmap <Leader>ft :Tags<CR>
 
-nmap <Leader>rg  :Rg!<cr>
-nmap <Leader>ag  :Ag!<cr>
-nmap <Leader>gg  :Gg!<cr>
+nmap <Leader>ag  :Ag<cr>
+nmap <Leader>rg  :Rg<cr>
+nmap <Leader>gg  :GitGrep<cr>
 nmap <Leader>ff  :Files<CR>
+nmap <Leader>fp  :Files ~/Projects<CR>
 
+imap <C-x><C-f> <plug>(fzf-complete-path)
+imap <C-x><C-z> <plug>(fzf-complete-line)
 
-command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(<q-args>,
-  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \                 <bang>0)
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview(),<bang>0)
 
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case '.<q-args>, 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
+command! -bang -nargs=* Rg call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(), <bang>0)
 
-command! -bang -nargs=* GitGrep
-  \ call fzf#vim#grep(
-  \   'git grep --line-number  --color -- '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0], 'preview-window': 'up:60%'})
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+command! -bang -nargs=* GitGrep call fzf#vim#grep(
+  \   'git grep --line-number  --color -- '.shellescape(<q-args>), 0,
+  \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0], 'preview-window': 'up:60%'}),
   \   <bang>0)
 
 command! -bang -nargs=? -complete=dir Files
   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
 "{{{2 coc-git
+if has_key(g:plugs, 'coc.nvim')
 nmap [g <Plug>(coc-git-prevchunk)
 nmap ]g <Plug>(coc-git-nextchunk)
 nmap gi <Plug>(coc-git-chunkinfo)
@@ -403,7 +407,7 @@ xmap ig <Plug>(coc-git-chunk-outer)
 nmap <Leader>ogg :CocCommand git.toggleGutters<cr>
 
 "{{{2 gitgutter   [:h gitgutter.txt]
-if has_key(g:plugs, 'coc')
+elseif has_key(g:plugs, 'gitbutter')
   nmap <Leader>ogg :GitGutterToggle<CR>
   nmap [g         <Plug>(GitGutterPrevHunk)
   nmap ]g         <Plug>(GitGutterNextHunk)
@@ -411,13 +415,13 @@ if has_key(g:plugs, 'coc')
   " nmap gu <Plug>(GitGutterUndoHunk)
   nmap gi <Plug>(GitGutterPreviewHunk)
   nmap ghh :GitGutterLineHighlightsToggle<CR>:set nu<CR>:GitGutterLineNrHighlightsToggle<CR>
- endif
+endif
 
 "{{{2 Commentary
 map    gc           <Plug>Commentary
 nmap   gcc          <Plug>CommentaryLine
-" map    <Leader>cc   <Plug>Commentary
-" nmap   <Leader>cc   <Plug>CommentaryLine
+map    <Leader>cc   <Plug>Commentary
+nmap   <Leader>cc   <Plug>CommentaryLine
 
 "{{{2 NERDTree
 " let g:NERDTreeIgnore = ['\~$', '\.pyc$']

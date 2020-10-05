@@ -203,11 +203,6 @@ set matchpairs=(:),{:},[:],<:>
 set noshowmatch           " Don't Briefly jump to a paren once it's balanced
 " set matchtime=2           " (for only .2 seconds).
 
-" set complete=.,w,b,u,t
-set complete=i
-set completeopt=menuone,preview
-set nrformats=alpha,octal,hex
-
 if has("autocmd")
   augroup vimrc
     " Resize splits with window
@@ -217,10 +212,10 @@ if has("autocmd")
     au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
   augroup END
 
-  augroup reload_vimrc
-    au!
-    autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
-  augroup END
+  " augroup reload_vimrc
+  "   au!
+  "   autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
+  " augroup END
 endif
 
 set tags=./tags,tags,.tags
@@ -278,6 +273,14 @@ set nocursorcolumn
   " autocmd winenter * set cursorcolumn   | set cursorline
   " autocmd winleave * set nocursorcolumn | set nocursorline
 " augroup end
+
+"{{{2 Incrementing
+set nrformats=alpha,octal,hex
+
+"{{{2 Completion
+set complete=.,w,b,u,t
+set complete-=i
+set completeopt=longest,menu,preview
 
 "{{{2 Wildmenu
 if has('wildmenu')
@@ -474,7 +477,6 @@ nnoremap <Leader>dts :call formatz#DeleteTrailingSpaces()<CR>
 nnoremap <silent> <F8> :call colorz#Rotate()<cr>
 command! Todo call rcz#Todo()
 " }}}1
-
 "{{{1  Local config overrides
 if filereadable(s:localvimrc)
   exe 'source' s:localvimrc
