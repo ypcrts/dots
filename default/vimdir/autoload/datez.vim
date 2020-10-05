@@ -6,13 +6,13 @@ function! datez#EarlyMorningColorschemeNeeded()
     if ! exists("*strftime")
         return 0
     endif
-    let s:local_hour = strftime("%K")
+    let s:local_hour = strftime("%k")
     if s:local_hour < 6
         return 0
-    elseif s:local_hour < 10
-        return 1
+    elseif s:local_hour > 10
+        return 0
     endif
-    return 0
+    return 1
 endfunction
 
 if exists("*strftime")
