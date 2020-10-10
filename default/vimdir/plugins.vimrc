@@ -7,7 +7,7 @@ if !(has('python') || has('python3') || has('nvim'))
 endif
 
 "{{{1 Plug defs
-call plug#begin(rcz#VimFilesDir() . '/plugged')
+call plug#begin(rcz#PlugVimDir())
 
 "{{{2 Plug defs
 Plug 'ypcrts/securemodelines', { 'commit': 'fa69372a18cec61c664754848a7094fc4a866dcc' }
@@ -27,13 +27,15 @@ Plug     'chrisbra/NrrwRgn', { 'on': ['NR', 'NarrowRegion'] }
 
 " junegunn is everythign
 " XXX: local fzf dir, come on write a thing pls
-" Plug        '~/.fzf'
-" Plug         '/usr/local/opt/fzf'
-Plug 'junegunn/fzf',           { 'do': './install --all'  }
+call rcz#PlugPathFirstOf('~/.fzf', '/usr/local/opt/fzf')
 Plug 'junegunn/fzf.vim'
+" if ! has_key(g:plugs, 'fzf')
+"   echoerr 'y u no fzf? - ur vimz are sad'
+"   " Plug 'junegunn/fzf', { 'do': './install --bin'  }
+" endif
 Plug 'junegunn/vim-peekaboo'
 Plug 'junegunn/vim-easy-align'
-Plug 'junegunn/goyo.vim',      { 'on': 'Goyo' } " distraction free writing
+Plug 'junegunn/goyo.vim',      { 'on': 'Goyo' } " distraction-free mode
 Plug 'junegunn/limelight.vim', { 'on': ['Goyo','Limelight'] }
 Plug 'junegunn/gv.vim',        { 'on': 'GV' }
 Plug 'junegunn/vim-journal',   { 'commit': '6ab162208dfc8fab479249e4d6a4901be2dabbe8' }

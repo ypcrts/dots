@@ -8,6 +8,10 @@ function! rcz#DotfilesVimDir()
     return l:dir
 endfunction
 
+function! rcz#PlugVimDir()
+  return rcz#VimFilesDir() . '/plugged'
+endfunction
+
 function! rcz#VimFileRealpath(filename)
   let l:dir = rcz#DotfilesVimDir()
   let l:path = l:dir  . "/" . a:filename
@@ -18,10 +22,9 @@ function! rcz#VimFileRealpath(filename)
   return ''
 endfunction
 
-function! rcz#Todo() abort
-
+function! rcz#Todo()
   let entries = []
-	let args = '-e TODO -e FIXME -e XXX -e BUG -e ERROR -e BLACKMAGIC'
+  let args = '-e TODO -e FIXME -e XXX -e BUG -e ERROR -e BLACKMAGIC'
   for cmd in ['git grep -niI ' . args . ' 2> /dev/null',
             \ 'grep -rniI ' . args . ' * 2> /dev/null']
     let lines = split(system(cmd), '\n')
@@ -40,3 +43,21 @@ function! rcz#Todo() abort
 endfunction
 
  
+function! rcz#PlugPathFirstOf(...)
+  let l:ret = 0
+  for p in a:000
+    let l:ret = rcz#PlugPathIfExists(p)
+    if l:ret
+      return l:ret
+    endif
+  endfor
+endfunction
+
+function! rcz#PlugPathIfExists(path)
+  let fullpath = expand(a:path)
+  if isdirectory(fullpath)
+    " return plug#load(fullpath)
+    return plug#(a:path)
+  endif
+  return 0
+endfunction
