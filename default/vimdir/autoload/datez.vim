@@ -25,7 +25,7 @@ if exists("*strftime")
     endfunction
 
     function! datez#LocalTimeNato()
-        return strftime("%Y.%m.%dT%H:%M") . " " . s:TimeZoneToCode()
+        return strftime("%Y.%m.%dT%H:%M") . s:TimeZoneToCode()
     endfunction
 
     function! s:TimeZoneToCode()
