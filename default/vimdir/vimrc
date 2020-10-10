@@ -1,8 +1,7 @@
-" vi: sw=2:sts=2:ts=2:et:fdm=marker:fdl=0:nomodeline:
+" vi: sw=2:sts=2:ts=2:et:fdm=marker:nomodeline:
 "{{{1 Meta
 set nocompatible
 set shortmess=aIT
-" set shortmess=aoOstTAI " shorten all messages except written
 set report=0           " Always report the number of lines changed by a cmd
 
 let mapleader = "\<Space>"
@@ -12,10 +11,9 @@ let s:is_darwin = has('mac')
 let s:is_nvim = has('nvim')
 let s:is_vim800 = v:version >= 800
 
-let s:tildevimdir = s:is_windows ? '~/vimfiles' : '~/.vim'
-let s:vimdir = fnameescape(expand(s:tildevimdir))
-let s:localvimrc = s:vimdir . "/.local.vim"
-exe 'set' 'rtp=' . s:tildevimdir . '/,'. fnameescape($VIMRUNTIME)
+let s:vimfilesdir = s:is_windows ? '~/vimfiles' : '~/.vim'
+let s:vimdir = fnamemodify($MYVIMRC, ":h")
+exe "set rtp=" . fnameescape($VIMRUNTIME) . ',' . s:vimfilesdir
 
 if s:is_nvim && s:is_windows
   " XXX: python may be python2, because yes life still requires py2 post EOL
@@ -34,14 +32,14 @@ else
     echoerr '[SAFEVI] disabled as ' . $USER
     exit
   endif
-  exe 'source' s:vimdir . '/plugins.vimrc'
+  execute("source" . rcz#VimFileRealpath('plugins.vimrc'))
 endif
 
 "{{{1 Standard Base Configuration (syntax, utf8, ft, clipboard, 256 )
-"
+
 "{{{2 Clear Autocommands
 autocmd!
-"
+
 "{{{2 Danger: Magic File I/O
 set nobackup
 set writebackup
@@ -56,7 +54,7 @@ filetype plugin indent on
 syntax on
 syntax sync minlines=256
 set synmaxcol=4096
-let &spellfile = s:vimdir . '/spell/en.utf-8.add' " defaults to rtp[0] -_-
+let &spellfile = s:vimfilesdir . '/spell/en.utf-8.add' " defaults to rtp[0] -_-
 
 "{{{2 File encoding
 if has('multi_byte')
@@ -109,7 +107,7 @@ set undolevels=2048
 set undoreload=20000
 let s:cachedir='/tmp/vim-cache' . $USER
 if has('win32')
-  let s:cachedir=s:vimdir . '/cache'
+  let s:cachedir=s:vimrcdir . '/cache'
 endif
 " XXX: persistent undo
 let s:undocachedir=s:cachedir . '/undo'
@@ -275,7 +273,7 @@ set nocursorcolumn
 " augroup end
 
 "{{{2 Incrementing
-set nrformats=alpha,octal,hex
+set nrformats=octal,hex
 
 "{{{2 Completion
 set complete=.,w,b,u,t
@@ -382,7 +380,6 @@ nnoremap <silent> g#    g#zz
 nnoremap <silent> gd    gdzz
 nnoremap <silent> n     nzz
 nnoremap <silent> N     Nzz
-nnoremap <silent> gqJ :call Exe#ExeWithOpts('norm! gqj', { 'tw' : 2147483647 })<CR>
 
 " K should behave like J, rip
 nnoremap K :echomsg "stop using this, it hurts you when you're not home"<CR>
@@ -416,12 +413,12 @@ inoremap <C-k> <C-k>
 
 "}}}
 "{{{2 Timestamps, datestamps
-noremap <silent> <leader>zh m'a<C-R>=datez#LocalTimeNato()<CR><ESC>o<ESC>80i=<ESC>
+noremap <silent> <leader>zh  m'a<C-R>=datez#LocalTimeNato()<CR><ESC>o<ESC>80i=<ESC>
 noremap <silent> <leader>zld m'a<C-R>=datez#Local()<CR><ESC>
 noremap <silent> <leader>zlt m'a<C-R>=datez#LocalTime()<CR><ESC>
-noremap <silent> <Leader>zn m'a<C-R>=datez#LocalTimeNato()<CR><ESC>
-noremap <silent> <Leader>zt m'a<C-R>=datez#UniversalTime()<CR><ESC>
-noremap <silent> <Leader>zd m'a<C-R>=datez#Universal()<CR><ESC>
+noremap <silent> <Leader>zn  m'a<C-R>=datez#LocalTimeNato()<CR><ESC>
+noremap <silent> <Leader>zt  m'a<C-R>=datez#UniversalTime()<CR><ESC>
+noremap <silent> <Leader>zd  m'a<C-R>=datez#Universal()<CR><ESC>
 
 " Timestamped signatures
 nmap <silent> <leader>zg i<C-R>='[ypcrts // ' . datez#UniversalTime() . ']'<CR><ESC>
@@ -437,7 +434,7 @@ nnoremap <silent> <Leader>ip "=substitute(system("ifip tun0"),'[\r\n]','','g')<C
 nnoremap <Leader>on  :setlocal number!<CR>
 nnoremap <Leader>or  :setlocal relativenumber!<CR>
 nnoremap <Leader>os  :setlocal spell!<CR>
-nnoremap <Leader>op  :setlocal paste!<CR>
+nnoremap <Leader>op  :setlocal paste!<CR>:setlocal paste?<CR>
 nnoremap <Leader>ow  :setlocal wrap!<CR>
 nnoremap <Leader>ol  :setlocal list!<CR>
 nnoremap <Leader>om  :setlocal modifiable!<CR>
@@ -445,9 +442,9 @@ nnoremap <Leader>occ :setlocal cursorcolumn!<CR>
 nnoremap <Leader>ocl :setlocal cursorline!<CR>
 nnoremap <Leader>ocb :call daclipz#ToggleClipboardUnnamedPlus()<CR>
 
-nnoremap <Leader>rc :execute ":tabnew"  rcz#VimFileRealpath("vimrc")<CR>
+nnoremap <Leader>rc :execute ":tabnew" rcz#VimFileRealpath("vimrc")<CR>
 nnoremap <Leader>rp :execute ":tabnew"  rcz#VimFileRealpath("plugins.vimrc")<CR>
-nnoremap <Leader>rl :execute ":tabnew"  s:localvimrc<CR>
+nnoremap <Leader>rl :execute ":tabnew"  rcz#VimfilesDir() . 'local.vimrc'<CR>
 
 nnoremap ]q :cnext<CR>
 nnoremap [q :cprevious<CR>
@@ -459,9 +456,9 @@ nnoremap [l :lprevious<CR>
 nnoremap ]L :lnfile<CR>
 nnoremap [L :lpfile<CR>
 
-" visual <Leader>d to black hole register
-nmap <silent> <Leader>dd "_dd
-vmap <silent> <Leader>d  "_d
+" black hole register
+nmap <Leader>b "_
+xmap <Leader>b "_
 
 nnoremap <leader>dgr :diffget REMOTE<CR>
 nnoremap <leader>dgb :diffget BASE<CR>
@@ -473,13 +470,16 @@ nnoremap dgl :diffget LOCAL<CR>
 nnoremap <leader>8 :%!python  -m autopep8 -a -a -a -<CR>
 vnoremap <leader>8 :!python   -m autopep8 -a -a -a -<CR>
 
-
 nnoremap <Leader>ml  :call modelinestub#do()<CR>
 nnoremap <Leader>dts :call formatz#DeleteTrailingSpaces()<CR>
+
 nnoremap <silent> <F8> :call colorz#Rotate()<cr>
+
 command! Todo call rcz#Todo()
+
 " }}}1
 "{{{1  Local config overrides
+let s:localvimrc = s:vimfilesdir . '/local.vimrc'
 if filereadable(s:localvimrc)
-  exe 'source' s:localvimrc
+  execute('source' . s:localvimrc)
 endif

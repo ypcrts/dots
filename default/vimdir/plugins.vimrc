@@ -6,8 +6,11 @@ if !(has('python') || has('python3') || has('nvim'))
   finish
 endif
 
+
+let s:is_windows = has('win32') || has('win64')
+
 "{{{1 Plug defs
-call plug#begin(rcz#PlugVimDir())
+call plug#begin(rcz#VimrcDir() . '/plugged') 
 
 "{{{2 Plug defs
 Plug 'ypcrts/securemodelines', { 'commit': 'fa69372a18cec61c664754848a7094fc4a866dcc' }
@@ -25,14 +28,15 @@ Plug        'tpope/vim-commentary'
 Plug     'chrisbra/NrrwRgn', { 'on': ['NR', 'NarrowRegion'] }
 
 
-" junegunn is everythign
-" XXX: local fzf dir, come on write a thing pls
+" junegunn is everything
 call rcz#PlugPathFirstOf('~/.fzf', '/usr/local/opt/fzf')
-Plug 'junegunn/fzf.vim'
-" if ! has_key(g:plugs, 'fzf')
-"   echoerr 'y u no fzf? - ur vimz are sad'
-"   " Plug 'junegunn/fzf', { 'do': './install --bin'  }
-" endif
+if has_key(g:plugs, '.fzf') || has_key(g:plugs, 'fzf')
+  Plug 'junegunn/fzf.vim'
+else
+   echoerr 'y u no fzf? - ur vimz are sad'
+   " Plug 'junegunn/fzf', { 'do': './install --bin'  }
+ endif
+
 Plug 'junegunn/vim-peekaboo'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/goyo.vim',      { 'on': 'Goyo' } " distraction-free mode
@@ -46,9 +50,9 @@ Plug 'junegunn/vim-journal',   { 'commit': '6ab162208dfc8fab479249e4d6a4901be2da
 " Plug 'mileszs/ack.vim'     " just deficient
 
 "{{{3 Git/VCS
-Plug            'tpope/vim-fugitive'
-Plug 'rhysd/git-messenger.vim'
-Plug       'raghur/vim-ghost', has('nvim') ? { 'on': 'GhostStart' } : { 'on': [], 'for': [] }
+Plug  'tpope/vim-fugitive'
+Plug  'rhysd/git-messenger.vim'
+Plug 'raghur/vim-ghost', has('nvim') ? { 'on': 'GhostStart' } : { 'on': [], 'for': [] }
 
 "{{{3 Reading code
 Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
@@ -56,10 +60,10 @@ Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
   let g:indentLine_color_term = 239
   let g:indentLine_color_gui = '#616161'
 
-Plug 'mzlogin/vim-markdown-toc'
+Plug 'mzlogin/vim-markdown-toc', { 'for': ['markdown'] }
 
 "{{{3 Coc vs. alt_complete
-if v:version >= 800 && has('nvim') && ! (has('win32') || has('win64'))
+if v:version >= 800 && has('nvim') && ! s:is_windows
   " Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
   " Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
   Plug 'neoclide/coc.nvim', { 'branch': 'release' }
@@ -68,14 +72,14 @@ else
   Plug 'Chiel92/vim-autoformat'
   Plug 'ypcrts/vim-uncrustify', { 'for': ['c','cpp']  }
 
-  if has('nvim') && ! (has('win32') || has('win64'))
+  if has('nvim') && ! s:is_windows
     Plug       'Shougo/deoplete.nvim',   { 'do': ':UpdateRemotePlugins' }
     Plug       'Shougo/neoinclude.vim'
     "Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
     " Plug        'zchee/deoplete-jedi',   { 'for': 'python' }
     " Plug 'tweekmonster/deoplete-clang2', { 'commit': '787dd4dc7eeb5d1bc2fd3cefcf7bd07e48f4a962' }
     " Plug     'carlitux/deoplete-ternjs', { 'for': 'javascript' }
-    Plug       'wellle/tmux-complete.vim', has('win32') ? { 'on': [], 'for': [] } : {}
+    Plug       'wellle/tmux-complete.vim', s:is_windows ? { 'on': [], 'for': [] } : {}
   elseif v:version >= 703 && has('lua')
     Plug 'Shougo/neocomplete.vim'
   else
@@ -96,7 +100,7 @@ else
 endif
 
 " Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }
-"Plug     'fisadev/vim-isort', has('win32') ? { 'on': [], 'for': [] } : { 'for': 'python' } " no work windows
+"Plug     'fisadev/vim-isort', s:is_windows ? { 'on': [], 'for': [] } : { 'for': 'python' } " no work windows
 Plug    'chrisbra/csv.vim',         { 'for':    'csv' }
 "{{{2 network i/o (risk)
 " Plug 'baverman/vial-http', { 'commit': 'NULL' } " cool rest client for vim
@@ -131,6 +135,7 @@ Plug 'kevinoid/vim-jsonc', { 'for': 'jsonc' }
 " Plug    'pangloss/vim-javascript',          { 'for': 'javascript' }
 " Plug     'bigfish/vim-js-context-coloring', { 'commit': '6c90329664f3b0a58b05e2a5207c94da0d83a51c', 'for': 'javascript', 'do': 'echo "consider npm install --upgrade"' }
 " this does not work for js files with syntax errors
+
 " Plug 'digitaltoad/vim-jade',                { 'for': ['jade'] }
 "{{{4 linux / systems
 " Plug 'git://fedorapeople.org/home/fedora/wwoods/public_git/vim-scripts.git' "systemd
@@ -177,7 +182,7 @@ Plug       'nightsense/snow'
 " Plug 'flazz/vim-colorschemes'
 "{{{2 End of plugin definitions------------------------------------------------------------------- 
 "
-call        plug#end()
+call plug#end()
 
 "}}}1
 "{{{1 Reset to sane plugin defaults
@@ -194,12 +199,11 @@ let  g:increment_activator_no_default_key_mappings = 1
 let  g:js_context_colors_usemaps                   = 0
 
 "{{{2 can i haz enable plugin
-let      g:gitgutter_enabled                          =         1
-let      g:js_context_colors_enabled                  =         0
-let      g:js_context_colors_highlight_function_names =         0
-let      g:javascript_plugin_jsdoc                    =         1
-autocmd! User                                         GoyoEnter Limelight
-autocmd! User                                         GoyoLeave Limelight!
+let                          g:gitgutter_enabled = 1
+" let                    g:javascript_plugin_jsdoc = 1
+
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
 
 "{{{1 Configure plugins
 "{{{2 Coc vs. alt_complete - complete config
@@ -228,14 +232,17 @@ if has_key(g:plugs, 'coc.nvim')
     autocmd VimEnter * nmap <silent> <leader>gi <Plug>(coc-implementation)
     autocmd VimEnter * nmap <silent> <leader>su <Plug>(coc-references)
   augroup END
+
   nmap <leader>rn <Plug>(coc-rename)
   xmap <leader>af <Plug>(coc-format-selected)
   nmap <leader>af <Plug>(coc-format-selected)
-  nnoremap <silent><nowait> <Leader>co :CocList commands<cr>
-  nnoremap <silent><nowait> <Leader>cd :CocList diagnostics<cr>
+
+  nnoremap ,c :CocList commands<cr>
+
   inoremap <silent><expr>   <C-space> coc#refresh()
-  inoremap <silent><expr>   <C-cr> coc#refresh()
-  inoremap <silent><expr>   <D-cr> coc#refresh()
+  inoremap <silent><expr>   <C-cr>    coc#refresh()
+  inoremap <silent><expr>   <D-cr>    coc#refresh()
+
 else
   :exe 'source' rcz#VimFileRealpath("alt_complete.vimrc")
 endif
@@ -279,6 +286,9 @@ else
 endif
 
 if has_key(g:plugs, 'vim-js-context-coloring')
+  let g:js_context_colors_enabled                  = 0
+  let g:js_context_colors_highlight_function_names = 0
+
   nmap <leader>sj :JSContextColorToggle<cr>
 endif
 
@@ -319,15 +329,16 @@ nnoremap <leader>nr :NR<CR>
 vnoremap <leader>nr :NR<CR>
 
 "{{{2 EasyAlign
-xmap <Enter>    <Plug>(LiveEasyAlign)
-nmap ga         <Plug>(EasyAlign)
+xmap <Enter> <Plug>(EasyAlign)
+nmap ga      <Plug>(EasyAlign)
+xmap gA      <Plug>(LiveEasyAlign)
 
 " space
-nmap gas     vip<ESC>:'<,'>EasyAlign */[ ]/l0r0<CR>
+nmap gas vip<ESC>:'<,'>EasyAlign */[ ]/l0r0<CR>
 
-" vimpluginaligning easyalign vim plug def aligns >_>
-vmap gaga    :'<,'>EasyAlign /[ /]/alrlig['Comment']l0r0<<CR>
-nmap gaga    vip<Leader>gaga<ESC>
+" vimpluginaligning easyalign vim-plug defs >_>
+vmap gaga :'<,'>EasyAlign/[ /]/alrlig['Comment']l0r0<<CR>
+nmap gaga vipgaga<ESC>
 
 "{{{2 fzf (over rg and ag)
 """""""""""""""""""""""""""""""""""""
@@ -366,7 +377,26 @@ let g:fzf_colors ={
 " Terminal buffer options for fzf
 autocmd! FileType fzf
 autocmd  FileType fzf set noshowmode noruler nonu
-nmap , :Commands<CR>
+" nmap ,c :CocList commands<CR>
+nmap ,e :Commands<CR>
+nmap ,b :Buffers<CR>
+nmap ,f :Files<CR>
+nmap ,hi :History<CR>
+nmap ,hi :History<CR>
+nmap ,m :Maps<CR>
+nmap ,gs :GFiles?<CR>
+nmap ,gf :GFiles<CR>
+nmap ,gg :GitGrep<CR>
+nmap ,r  :Rg<CR>
+
+" local lines in current buffer
+nmap ,ll :BLines<CR>
+
+" lines in all buffers
+nmap ,lb :Lines<CR> 
+nmap ,p :Files ~/Projects<CR>
+nmap ,t :Files ~/Projects<CR>
+
 nmap <Leader>fg :GFiles<CR>
 nmap <Leader>fs :GFiles?<CR>
 nmap <Leader>fl :Lines<CR>

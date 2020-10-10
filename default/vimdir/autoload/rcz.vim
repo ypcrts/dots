@@ -1,24 +1,21 @@
-function! rcz#VimFilesDir()
-    let l:dir = fnamemodify($MYVIMRC, ":h")
-    return l:dir
+function! rcz#VimrcDir()
+  return fnamemodify($MYVIMRC, ":h")
+endfunction
+
+function! rcz#VimfilesDir()
+  return (has('win32') || has('win64')) ? '~/vimfiles' : '~/.vim'
 endfunction
 
 function! rcz#DotfilesVimDir()
-    let l:dir = fnamemodify(resolve($MYVIMRC), ":h")
-    return l:dir
-endfunction
-
-function! rcz#PlugVimDir()
-  return rcz#VimFilesDir() . '/plugged'
+    return fnamemodify(resolve($MYVIMRC), ":h")
 endfunction
 
 function! rcz#VimFileRealpath(filename)
-  let l:dir = rcz#DotfilesVimDir()
-  let l:path = l:dir  . "/" . a:filename
+  let l:path = rcz#DotfilesVimDir() . "/" . a:filename
   if filereadable(l:path)
     return l:path
   endif
-  echoerr a:filename . ' not found in ' . l:dir
+  echoerr a:filename . ' not found, resolved to ' . l:path
   return ''
 endfunction
 
@@ -26,7 +23,7 @@ function! rcz#Todo()
   let entries = []
   let args = '-e TODO -e FIXME -e XXX -e BUG -e ERROR -e BLACKMAGIC'
   for cmd in ['git grep -niI ' . args . ' 2> /dev/null',
-            \ 'grep -rniI ' . args . ' * 2> /dev/null']
+        \ 'grep -rniI ' . args . ' * 2> /dev/null']
     let lines = split(system(cmd), '\n')
     if v:shell_error != 0 | continue | endif
     for line in lines
@@ -42,7 +39,6 @@ function! rcz#Todo()
   endif
 endfunction
 
- 
 function! rcz#PlugPathFirstOf(...)
   let l:ret = 0
   for p in a:000
@@ -56,8 +52,10 @@ endfunction
 function! rcz#PlugPathIfExists(path)
   let fullpath = expand(a:path)
   if isdirectory(fullpath)
-    " return plug#load(fullpath)
-    return plug#(a:path)
+    let ret = plug#(a:path)
+    if ret
+      return 1
+    endif
   endif
   return 0
 endfunction
