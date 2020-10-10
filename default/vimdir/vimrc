@@ -259,7 +259,7 @@ function! s:Status()
   let sep = ' %= '
   let pos = ' %-12(%l : %c%V%) '
   let pct = ' %P'
-  return '[%n] %F %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
+  return '[%n] %f %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
 endfunction
 let &statusline = s:Status()
 
