@@ -3,8 +3,10 @@
   "languageserver": {
     "ccls": {
       "command": "ccls",
+      "args": ["--log-file=/tmp/ccls-coc.log", "-v=1"],
       "filetypes": [
         "c",
+        "cc",
         "cpp",
         "objc",
         "objcpp"
@@ -18,7 +20,10 @@
       ],
       "initializationOptions": {
         "cache": {
-          "directory": "/tmp/ccls"
+          "directory": "/tmp/ccls-coc"
+        },
+        "client": {
+          "snippetSupport": true
         }
       }
     }
