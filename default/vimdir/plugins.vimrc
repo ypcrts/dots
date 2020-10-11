@@ -9,7 +9,7 @@ endif
 let s:is_windows = has('win32') || has('win64')
 
 "{{{1 Plug defs
-call plug#begin(rcz#VimrcDir() . '/plugged')
+all plug#begin(rcz#VimrcDir() . '/plugged')
 
 "{{{2 Plug defs
 Plug 'ypcrts/securemodelines', { 'commit': 'fa69372a18cec61c664754848a7094fc4a866dcc' }
@@ -239,7 +239,7 @@ if has_key(g:plugs, 'coc.nvim')
   nmap <leader>rn <Plug>(coc-rename)
   xmap <leader>af <Plug>(coc-format-selected)
   nmap <leader>af <Plug>(coc-format-selected)
-  nmap <leader>qf <Plug>(coc-format-selected)
+  nmap <leader>qf <Plug>(coc-fix-current)
 
   nnoremap ,c :CocList commands<cr>
   nmap <silent> [c <Plug>(coc-diagnostic-prev)
@@ -390,8 +390,8 @@ autocmd  FileType fzf set noshowmode noruler nonu
 nmap ,e :Commands<CR>
 nmap ,b :Buffers<CR>
 nmap ,f :Files<CR>
-nmap ,hi :History<CR>
-nmap ,hi :History<CR>
+nmap ,h :Helptags<CR>
+nmap ,i :History<CR>
 nmap ,m :Maps<CR>
 nmap ,gs :GFiles?<CR>
 nmap ,gf :GFiles<CR>
