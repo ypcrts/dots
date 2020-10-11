@@ -236,8 +236,14 @@ if has_key(g:plugs, 'coc.nvim')
   nmap <leader>rn <Plug>(coc-rename)
   xmap <leader>af <Plug>(coc-format-selected)
   nmap <leader>af <Plug>(coc-format-selected)
+  nmap <leader>qf <Plug>(coc-format-selected)
 
   nnoremap ,c :CocList commands<cr>
+  nmap <silent> [c <Plug>(coc-diagnostic-prev)
+  nmap <silent> ]c <Plug>(coc-diagnostic-next)
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gr <Plug>(coc-references)
 
   inoremap <silent><expr>   <C-space> coc#refresh()
   inoremap <silent><expr>   <C-cr>    coc#refresh()
