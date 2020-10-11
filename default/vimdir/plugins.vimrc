@@ -6,11 +6,10 @@ if !(has('python') || has('python3') || has('nvim'))
   finish
 endif
 
-
 let s:is_windows = has('win32') || has('win64')
 
 "{{{1 Plug defs
-call plug#begin(rcz#VimrcDir() . '/plugged') 
+call plug#begin(rcz#VimrcDir() . '/plugged')
 
 "{{{2 Plug defs
 Plug 'ypcrts/securemodelines', { 'commit': 'fa69372a18cec61c664754848a7094fc4a866dcc' }
@@ -29,7 +28,11 @@ Plug     'chrisbra/NrrwRgn', { 'on': ['NR', 'NarrowRegion'] }
 
 
 " junegunn is everything
-call rcz#PlugPathFirstOf('~/.fzf', '/usr/local/opt/fzf')
+if s:is_windows
+  Plug 'junegunn/fzf'  " XXX: for vim file, but scoop install fzf
+else
+  call rcz#PlugPathFirstOf('~/.fzf', '/usr/local/opt/fzf', )
+endif
 if has_key(g:plugs, '.fzf') || has_key(g:plugs, 'fzf')
   Plug 'junegunn/fzf.vim'
 else
@@ -67,8 +70,8 @@ if v:version >= 800 && has('nvim') && ! s:is_windows
   " Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
   " Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
   Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-else 
-  Plug 'airblade/gitgutter'
+else
+  Plug 'airblade/vim-gitgutter'
   Plug 'Chiel92/vim-autoformat'
   Plug 'ypcrts/vim-uncrustify', { 'for': ['c','cpp']  }
 
@@ -84,10 +87,10 @@ else
     Plug 'Shougo/neocomplete.vim'
   else
     " XXX: completion without lua?
-    Plug 'valloric/youcompleteme', {
-    \ 'do': 'echoerr \"You need to go compile YCM\"',
-    \ 'for': ['javascript']
-    \ }
+    " Plug 'valloric/youcompleteme', {
+    " \ 'do': 'echoerr \"You need to go compile YCM\"',
+    " \ 'for': ['javascript']
+    " \ }
   endif
 endif
 
@@ -180,7 +183,7 @@ Plug       'nightsense/snow'
 " endif
 " Plug 'nightsense/vim-crunchbang'
 " Plug 'flazz/vim-colorschemes'
-"{{{2 End of plugin definitions------------------------------------------------------------------- 
+"{{{2 End of plugin definitions-------------------------------------------------------------------
 "
 call plug#end()
 
@@ -356,7 +359,7 @@ nmap gaga vipgaga<ESC>
 let $FZF_DEFAULT_OPTS .= ' --inline-info'
 
 if exists('$TMUX')
-"  let g:fzf_layout = { 'tmux': '-p 60%,40%' }  " req tmux > 3.2 
+"  let g:fzf_layout = { 'tmux': '-p 60%,40%' }  " req tmux > 3.2
    let g:fzf_layout = { 'tmux': "-d 30%" }
 else
   "let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
@@ -399,7 +402,7 @@ nmap ,r  :Rg<CR>
 nmap ,ll :BLines<CR>
 
 " lines in all buffers
-nmap ,lb :Lines<CR> 
+nmap ,lb :Lines<CR>
 nmap ,p :Files ~/Projects<CR>
 nmap ,t :Files ~/Projects<CR>
 
@@ -445,7 +448,7 @@ xmap ig <Plug>(coc-git-chunk-outer)
 nmap <Leader>ogg :CocCommand git.toggleGutters<cr>
 
 "{{{2 gitgutter   [:h gitgutter.txt]
-elseif has_key(g:plugs, 'gitbutter')
+elseif has_key(g:plugs, 'gitgutter')
   nmap <Leader>ogg :GitGutterToggle<CR>
   nmap [g         <Plug>(GitGutterPrevHunk)
   nmap ]g         <Plug>(GitGutterNextHunk)

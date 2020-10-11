@@ -2,21 +2,45 @@ function! rcz#VimrcDir()
   return fnamemodify($MYVIMRC, ":h")
 endfunction
 
+let s:vimfilesdir = '~/.vim'
 function! rcz#VimfilesDir()
-  return (has('win32') || has('win64')) ? '~/vimfiles' : '~/.vim'
+  return   s:vimfilesdir
 endfunction
 
+let s:dotfilesvimdir = fnamemodify(resolve($MYVIMRC), ":h")
 function! rcz#DotfilesVimDir()
-    return fnamemodify(resolve($MYVIMRC), ":h")
+    return s:dotfilesvimdir
 endfunction
+
+if has('win32') || has('win64')
+  let s:vimfilesdir = '~\vimfiles'
+  let s:dotfilesvimdir = s:vimfilesdir
+endif
 
 function! rcz#VimFileRealpath(filename)
-  let l:path = rcz#DotfilesVimDir() . "/" . a:filename
-  if filereadable(l:path)
-    return l:path
+  return rcz#DotfilesVimDir() . "/" . a:filename
+endfunction
+
+
+function! rcz#PlugPathFirstOf(...)
+  let l:ret = 0
+  for p in a:000
+    let l:ret = rcz#PlugPathIfExists(p)
+    if l:ret
+      return l:ret
+    endif
+  endfor
+endfunction
+
+function! rcz#PlugPathIfExists(path)
+  let fullpath = expand(a:path)
+  if isdirectory(fullpath)
+    let ret = plug#(a:path)
+    if ret
+      return 1
+    endif
   endif
-  echoerr a:filename . ' not found, resolved to ' . l:path
-  return ''
+  return 0
 endfunction
 
 function! rcz#Todo()
@@ -39,23 +63,3 @@ function! rcz#Todo()
   endif
 endfunction
 
-function! rcz#PlugPathFirstOf(...)
-  let l:ret = 0
-  for p in a:000
-    let l:ret = rcz#PlugPathIfExists(p)
-    if l:ret
-      return l:ret
-    endif
-  endfor
-endfunction
-
-function! rcz#PlugPathIfExists(path)
-  let fullpath = expand(a:path)
-  if isdirectory(fullpath)
-    let ret = plug#(a:path)
-    if ret
-      return 1
-    endif
-  endif
-  return 0
-endfunction

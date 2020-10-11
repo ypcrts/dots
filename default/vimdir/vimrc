@@ -11,8 +11,8 @@ let s:is_darwin = has('mac')
 let s:is_nvim = has('nvim')
 let s:is_vim800 = v:version >= 800
 
-let s:vimfilesdir = s:is_windows ? '~/vimfiles' : '~/.vim'
-let s:vimdir = fnamemodify($MYVIMRC, ":h")
+let s:vimfilesdir = s:is_windows ? '~\vimfiles' : '~/.vim'
+let s:vimrcdir = fnamemodify($MYVIMRC, ":h")
 exe "set rtp=" . fnameescape($VIMRUNTIME) . ',' . s:vimfilesdir
 
 if s:is_nvim && s:is_windows
@@ -32,7 +32,7 @@ else
     echoerr '[SAFEVI] disabled as ' . $USER
     exit
   endif
-  execute("source" . rcz#VimFileRealpath('plugins.vimrc'))
+  exe "source " . rcz#VimFileRealpath('plugins.vimrc')
 endif
 
 "{{{1 Standard Base Configuration (syntax, utf8, ft, clipboard, 256 )
