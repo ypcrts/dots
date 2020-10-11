@@ -58,6 +58,7 @@ $ ypcrts
 $ windows
 @include: vimfiles git net powershell_windows ssh_windows
 ~/AppData/Local/nvim/init.vim: ./default/vimdir/vimrc
+~/AppData/Local/nvim/ginit.vim: ./default/vimdir/gvimrc
 ~/AppData/Roaming/alacritty/alacritty.yml: ./alacritty.yml
 
 $ powershell_windows
