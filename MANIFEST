@@ -23,6 +23,7 @@ $ vim
 ~/.gvimrc: @delete
 ~/.config/nvim/init.vim: ./default/vimdir/vimrc
 ~/.config/nvim/ginit.vim: ./default/vimdir/gvimrc
+~/.config/nvim/coc-settings.json: ./default/vimdir/coc-settings.json
 ~/.vim/: ./default/vimdir/*
 
 $ vimfiles
