@@ -15,13 +15,13 @@ bash_prompt_setup () {
   local FARBE BEGRENZER=''
 
   if ((EUID == 0)); then
-    BEGRENZER="//"
+    BEGRENZER+="//"
     FARBE=31
   else
     FARBE="$(__INTFARBE__ "$EUID")"
-    if [[ "x$SSH_TTY" != 'x' ]]; then
-      BEGRENZER='▞'
-    fi
+  fi
+  if [[ "x$SSH_TTY" != 'x' ]]; then
+    BEGRENZER+='▞'
   fi
 
   local F="\[\e[0;${FARBE}m\]"
@@ -30,7 +30,7 @@ bash_prompt_setup () {
 
   local HOST_FARBE="$(__STRFARBE__ "$HOSTNAME")"
 
-  if [[ -z "$SAFE_PROMPT" && -z "$TMUX" ]]; then
+  if [[ -z "$SAFE_PROMPT" ]]; then
     local NUTZER_TEIL="${F}\\u\[\e[0;${HOST_FARBE}m\]@\\H${R} ${BEGRENZER} "
   else
     local NUTZER_TEIL=''
