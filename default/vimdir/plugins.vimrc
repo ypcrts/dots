@@ -9,7 +9,7 @@ endif
 let s:is_windows = has('win32') || has('win64')
 
 "{{{1 Plug defs
-all plug#begin(rcz#VimrcDir() . '/plugged')
+call plug#begin(rcz#VimrcDir() . '/plugged')
 
 "{{{2 Plug defs
 Plug 'ypcrts/securemodelines', { 'commit': 'fa69372a18cec61c664754848a7094fc4a866dcc' }
