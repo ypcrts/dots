@@ -413,7 +413,7 @@ inoremap <C-k> <C-k>
 
 "}}}
 "{{{2 Timestamps, datestamps
-noremap <silent> <leader>zh  m'a<C-R>=datez#LocalTimeNato()<CR><ESC>o<ESC>80i=<ESC>
+noremap <silent> <leader>zh  m'a<C-R>=datez#LocalTime()<CR><ESC>o<ESC>80i=<ESC>
 noremap <silent> <leader>zld m'a<C-R>=datez#Local()<CR><ESC>
 noremap <silent> <leader>zlt m'a<C-R>=datez#LocalTime()<CR><ESC>
 noremap <silent> <Leader>zn  m'a<C-R>=datez#LocalTimeNato()<CR><ESC>
