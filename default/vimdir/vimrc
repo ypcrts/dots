@@ -443,8 +443,8 @@ nnoremap <Leader>ocl :setlocal cursorline!<CR>
 nnoremap <Leader>ocb :call daclipz#ToggleClipboardUnnamedPlus()<CR>
 
 nnoremap <Leader>rc :execute ":tabnew" rcz#VimFileRealpath("vimrc")<CR>
-nnoremap <Leader>rp :execute ":tabnew"  rcz#VimFileRealpath("plugins.vimrc")<CR>
-nnoremap <Leader>rl :execute ":tabnew"  rcz#VimfilesDir() . 'local.vimrc'<CR>
+nnoremap <Leader>rp :execute ":tabnew" rcz#VimFileRealpath("plugins.vimrc")<CR>
+nnoremap <Leader>rl :execute ":tabnew" rcz#VimfilesDir() . 'local.vimrc'<CR>
 
 nnoremap ]q :cnext<CR>
 nnoremap [q :cprevious<CR>

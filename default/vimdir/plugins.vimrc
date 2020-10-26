@@ -238,7 +238,7 @@ if has_key(g:plugs, 'coc.nvim')
 
   nmap <leader>rn <Plug>(coc-rename)
   xmap <leader>af <Plug>(coc-format-selected)
-  nmap <leader>af <Plug>(coc-format-selected)
+  nmap <leader>af <Plug>(coc-format)
   nmap <leader>qf <Plug>(coc-fix-current)
 
   nnoremap ,c :CocList commands<cr>
@@ -281,7 +281,7 @@ if has_key(g:plugs, 'ale')
         \ 'typescript':  ['prettier', 'eslint'],
         \ }
 
-  map <Leader>af :ALEFix<CR>
+  map <Leader>alf :ALEFix<CR>
   nmap ]a <Plug(ale_next_wrap)
   nmap [a <Plug(ale__wrap)
 else
