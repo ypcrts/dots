@@ -62,7 +62,7 @@ onemux () {
 
   # kill old sessions
   tmux ls | \
-    sed -e 's/.*attached.*//' -nre 's/([a-zA-Z0-9_]{1,}-[0-9TZ]{8,}):.*/\1/p' | \
+    sed -e 's/.*attached.*//' -ne 's/\([a-zA-Z0-9_]\{1,\}-[0-9TZ]\{8,\}\):.*/\1/p' | \
     xargs --replace={} tmux kill-session -t {} 2>/dev/null >/dev/null
 
   2>/dev/null >/dev/null tmux $TMUX_OPTS new-session -d -t $ONEMUX_SESSION_NAME -s $ONEMUX_SESSION_INSTANCE
