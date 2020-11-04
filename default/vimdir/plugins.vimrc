@@ -118,6 +118,8 @@ Plug       'raghur/vim-ghost', has('nvim') ? { 'on': 'GhostStart' } : { 'on': []
 " polyglot broken on nvim 0.3.0/sid
 " let g:polyglot_disabled = ['markdown', 'autoindent']
 " Plug 'sheerun/vim-polyglot'
+"{{{4 Shell
+Plug 'arzg/vim-sh'
 "{{{4 Markdown
 Plug  'godlygeek/tabular' " needed by markdown
 Plug 'plasticboy/vim-markdown'
@@ -221,7 +223,7 @@ if has_key(g:plugs, 'coc.nvim')
   nnoremap <silent> K :call <SID>show_documentation()<CR>
 
   let g:coc_global_extensions = [
-        \ 'coc-git'
+        \ 'coc-git', 'coc-sh'
         \ , 'coc-python', 'coc-html', 'coc-json', 'coc-css'
         \ , 'coc-prettier', 'coc-eslint', 'coc-tsserver', 'coc-emoji'
         \ ]
@@ -277,6 +279,7 @@ if has_key(g:plugs, 'ale')
         \ 'typescript': ['tsserver','eslint']
         \ } " merged dict; no pylint in ale please
   let g:ale_fixers = {
+        \ 'sh': ['shfmt'],
         \ 'javascript': ['prettier', 'eslint'],
         \ 'typescript':  ['prettier', 'eslint'],
         \ }
