@@ -155,7 +155,10 @@ mosho  () { TARGET="$1";shift;mosh "$@" -- "$TARGET" '~/bin/onemux'; }
 
 
 cleanout() {
+  # credit: originally inspired by Nate in like 2015? github.com/icco
   # TODO: make separate util
+  # XXX: five years later this is still using GNU find and on bsd/traditional
+  #  find it freaks me out - dear future self, pls fix // 20201104T1349Z
   op="find . -type f -regextype posix-extended -regex '((.*\.(pyc|class|pyo|bak|tmp|toc|aux|log|cp|fn|tp|vr|pg|ky))|(.*\~))'"
   if [ $# -eq 1  ]; then
     case "$1" in
@@ -228,7 +231,12 @@ loadenv () {
             ;;
         esac
       ;;
-    rvm|ruby)
+    rb|rbenv|ruby)
+      if has rbenv; then
+        eval "$(rbenv init -)"
+      fi
+      ;;
+    rvm)
       SOURCE_TRY "$HOME/.rvm/scripts/rvm"
       ;;
     rubygems|gems)
@@ -238,7 +246,7 @@ loadenv () {
       fi
       ;;
     *)
-      echo "loadenv [py|rvm|nvm|gems]"
+      echo "loadenv [py|rbenv|rvm|nvm|gems]"
       return 1
       ;;
   esac
