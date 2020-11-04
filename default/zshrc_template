@@ -1,0 +1,8 @@
+. ~/.profile
+
+# breakout for display managers
+[[ $- == *i* ]] || return
+
+#{{{1 hgto interactive
+#-------------------------------------------------------------------------------
+. ~/.config/bash/interactive.sh
