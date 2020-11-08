@@ -166,6 +166,7 @@
 [include]
   path = ~/.config/git/ssh.gitconfig
   path = ~/.config/git/windows.gitconfig
+  path = ~/.config/git/org.gitconfig
   path = ~/.config/git/local.gitconfig
 
 [submodule]
