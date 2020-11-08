@@ -25,23 +25,32 @@
   co            = checkout
 
   d             = diff -C -w --ignore-blank-lines ; -w===--ignore=all-space; -C===--find-copies
-  dm            = "!sh -c 'git d origin/master $*' -"
+  dc            = d --cached
+
+  dcm           = d --cached origin/master
+  dom           = d orign/master
+
   dw            = diff -C -w --color-words=. ; word diff with no ws
   dad           = diff -C --ws-error-highlight=all ; dad shows ws errors ;'all' includes context
-  dih           = "!sh -c 'git d HEAD $*' -"
-  dis           = "!sh -c 'git d --staged $*' -"
-  diffs         = diff -C -w --summary --stat
+
+  dih           = d HEAD
+  dis           = d --staged
+
+  diffstat      = diff -C -w --summary --stat
+  ds            = diffstat
 
   s             = status --short --branch -- .
   st            = status --short --branch --ignored
-  stv           = -p status --verbose
 
   tags          = tag -l
 
   l             = log -n 10
   logs          = log --show-signature
   lol           = log --graph --date-order --pretty=lol
+  dag           = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)%an <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
+
   people        = shortlog -s -n --email
+  whois         = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
 
   sm            = submodule
   wt            = worktree
@@ -60,12 +69,10 @@
   x             = annex
   github        = repo github
 
-  whois         = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author = \"$1\"' -"
   rewrite-date  = "!set -xue;DATUM=\"$(date -R -d \"$1\")\"; shift; GIT_AUTHOR_DATE=\"$DATUM\" GIT_COMMITTER_DATE=\"$DATUM\" git commit --amend --date \"$DATUM\""
   rewrite-datez = "!set -xue;DATUM=\"$(date -u -R -d \"$1\")\"; shift; GIT_AUTHOR_DATE=\"$DATUM\" GIT_COMMITTER_DATE=\"$DATUM\" git commit --amend --date \"$DATUM\""
 
   wta           = "!doit() { set -eu; BRANCH=\"$1\"; [ $# -eq 2 ] && ODIR=\"$2\" || ODIR=\"$(printf %s \"$BRANCH\" | sed -e 's/pc-[[:digit:]]\\{4,5\\}//i' | tr -d '\\-_/1234567890' | tr '[:upper:]' '[:lower:]')\"; git worktree add ../$ODIR $BRANCH; }; doit"
-  dag           = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)%an <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
 
 [color]
   ui                = auto
@@ -76,7 +83,7 @@
   old = red bold
   new = green bold
   commit = yellow bold
-  whitespace        = red reverse
+  whitespace = red reverse
 [color "branch"]
   current = green bold
   local = normal
@@ -99,7 +106,7 @@
 [clean]
   requireForce      = true
 [core]
-  whitespace        = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+  whitespace        = blank-at-eof,blank-at-eol,space-before-tab,-indent-with-non-tab,tab-in-indent
   autocrlf          = input
   excludesfile      = ~/.gitignore
 
@@ -163,3 +170,5 @@
 
 [submodule]
   recurse = true
+[pull]
+  rebase = true
