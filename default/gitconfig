@@ -25,16 +25,16 @@
   co            = checkout
 
   d             = diff -C -w --ignore-blank-lines ; -w===--ignore=all-space; -C===--find-copies
-  dc            = d --cached
+  dc            = diff -C --cached
 
-  dcm           = d --cached origin/master
-  dom           = d orign/master
+  dcm           = diff -C --cached origin/master
+  dom           = diff -C orign/master
 
   dw            = diff -C -w --color-words=. ; word diff with no ws
   dad           = diff -C --ws-error-highlight=all ; dad shows ws errors ;'all' includes context
 
-  dih           = d HEAD
-  dis           = d --staged
+  dih           = diff -C HEAD
+  dis           = diff -C --staged
 
   diffstat      = diff -C -w --summary --stat
   ds            = diffstat
