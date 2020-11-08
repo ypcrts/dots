@@ -83,6 +83,10 @@ $ karabiner
 
 #--------------------------------------------------------------------------------
 
+$ zsh
+~/.zprofile: ./zsh/zprofile
+~/.zshrc: ./zshrc/zshrc
+
 $ xorg
 ~/bin/: ./xorg/bin/*
 ~/.urxvt/ext/font-size: ./xorg/urxvt-font-size

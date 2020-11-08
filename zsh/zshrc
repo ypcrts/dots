@@ -1,0 +1,2 @@
+[[ $- == *i* ]] || return
+emulate sh -c 'source ~/.config/bash/interactive.sh'
