@@ -137,9 +137,8 @@ if (s:is_windows && !s:is_nvim && v:version < 700 ) || exists('s:safevi')
 "   set background=dark
 "   let g:solarized_termtrans = 1
 "   color solarized8_dark_high
-"elseif datez#EarlyMorningColorschemeNeeded()
-elseif 1
-  colorscheme basic-light
+" elseif datez#EarlyMorningColorschemeNeeded()
+"   colorscheme basic-light
 elseif has('termguicolors') && &termguicolors
   set bg=dark
   colorscheme hybrid
@@ -201,6 +200,7 @@ set virtualedit+=block    " Let cursor move past the last char in <C-v> mode
 set matchpairs=(:),{:},[:],<:>
 set noshowmatch           " Don't Briefly jump to a paren once it's balanced
 " set matchtime=2           " (for only .2 seconds).
+let g:loaded_matchparen = 1
 
 if has("autocmd")
   augroup vimrc

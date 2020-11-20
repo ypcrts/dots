@@ -243,7 +243,6 @@ if has_key(g:plugs, 'coc.nvim')
   nmap <leader>af <Plug>(coc-format)
   nmap <leader>qf <Plug>(coc-fix-current)
 
-  nnoremap ,c :CocList commands<cr>
   nmap <silent> [c <Plug>(coc-diagnostic-prev)
   nmap <silent> ]c <Plug>(coc-diagnostic-next)
   nmap <silent> gd <Plug>(coc-definition)
@@ -389,8 +388,8 @@ let g:fzf_colors ={
 " Terminal buffer options for fzf
 autocmd! FileType fzf
 autocmd  FileType fzf set noshowmode noruler nonu
-" nmap ,c :CocList commands<CR>
-nmap ,e :Commands<CR>
+nnoremap ,c :CocList commands<cr>
+nmap ,, :Commands<CR>
 nmap ,b :Buffers<CR>
 nmap ,f :Files<CR>
 nmap ,h :Helptags<CR>
