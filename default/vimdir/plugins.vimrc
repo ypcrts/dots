@@ -233,9 +233,24 @@ if has_key(g:plugs, 'coc.nvim')
   let g:go_doc_keywordprg_enabled = 0
   augroup coc-config
     autocmd!
-    autocmd VimEnter * nmap <silent> <leader>gd <Plug>(coc-definition)
-    autocmd VimEnter * nmap <silent> <leader>gi <Plug>(coc-implementation)
-    autocmd VimEnter * nmap <silent> <leader>su <Plug>(coc-references)
+    autocmd VimEnter * nmap     <silent> <leader>gd <Plug>(coc-definition)
+    autocmd VimEnter * nmap     <silent> <leader>gi <Plug>(coc-implementation)
+    autocmd VimEnter * nmap     <silent> <leader>su <Plug>(coc-references)
+
+    autocmd VimEnter * nmap     <leader>rn <Plug>(coc-rename)
+    autocmd VimEnter * xmap     <leader>af <Plug>(coc-format-selected)
+    autocmd VimEnter * nmap     <leader>af <Plug>(coc-format)
+    autocmd VimEnter * nmap     <leader>qf <Plug>(coc-fix-current)
+
+    autocmd VimEnter * nmap     <silent> [c <Plug>(coc-diagnostic-prev)
+    autocmd VimEnter * nmap     <silent> ]c <Plug>(coc-diagnostic-next)
+    autocmd VimEnter * nmap     <silent> gd <Plug>(coc-definition)
+    autocmd VimEnter * nmap     <silent> gy <Plug>(coc-type-definition)
+    autocmd VimEnter * nmap     <silent> gr <Plug>(coc-references)
+
+    autocmd VimEnter * inoremap <silent><expr>   <C-space> coc#refresh()
+    autocmd VimEnter * inoremap <silent><expr>   <C-cr>    coc#refresh()
+    autocmd VimEnter * inoremap <silent><expr>   <D-cr>    coc#refresh()
   augroup END
 
   nmap <leader>rn <Plug>(coc-rename)
