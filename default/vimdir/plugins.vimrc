@@ -254,21 +254,6 @@ if has_key(g:plugs, 'coc.nvim')
     autocmd VimEnter * inoremap <silent><expr>   <D-cr>    coc#refresh()
   augroup END
 
-  nmap <leader>rn <Plug>(coc-rename)
-  xmap <leader>af <Plug>(coc-format-selected)
-  nmap <leader>af <Plug>(coc-format)
-  nmap <leader>qf <Plug>(coc-fix-current)
-
-  nmap <silent> [c <Plug>(coc-diagnostic-prev)
-  nmap <silent> ]c <Plug>(coc-diagnostic-next)
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
-  nmap <silent> gr <Plug>(coc-references)
-
-  inoremap <silent><expr>   <C-space> coc#refresh()
-  inoremap <silent><expr>   <C-cr>    coc#refresh()
-  inoremap <silent><expr>   <D-cr>    coc#refresh()
-
 else
   :exe 'source' rcz#VimFileRealpath("alt_complete.vimrc")
 endif
@@ -341,31 +326,33 @@ let g:increment_activator_filetype_candidates =
       \ ],
       \ }
 
-nmap <Leader>aa <Plug>(increment-activator-increment)
-nmap <Leader>ax <Plug>(increment-activator-decrement)
-nmap <c-a>      <Plug>(increment-activator-increment)
-nmap <c-x>      <Plug>(increment-activator-decrement)
-if $TERM =~ 'screen'
-  nnoremap <C-a> <nop>
-  nnoremap <Leader>aa <C-a>
-endif
+augroup incrementing-maps
+  autocmd VimEnter *  nmap <Leader>aa <Plug>(increment-activator-increment)
+  autocmd VimEnter *  nmap <Leader>ax <Plug>(increment-activator-decrement)
+  autocmd VimEnter *  nmap <c-a>      <Plug>(increment-activator-increment)
+  autocmd VimEnter *  nmap <c-x>      <Plug>(increment-activator-decrement)
+augroup END
 
 
 "{{{2 NrrwRgn
-nnoremap <leader>nr :NR<CR>
-vnoremap <leader>nr :NR<CR>
+augroup nr-maps
+    autocmd VimEnter *  nnoremap <leader>nr :NR<CR>
+    autocmd VimEnter *  vnoremap <leader>nr :NR<CR>
+augroup END
 
 "{{{2 EasyAlign
-xmap <Enter> <Plug>(EasyAlign)
-nmap ga      <Plug>(EasyAlign)
-xmap gA      <Plug>(LiveEasyAlign)
+augroup easyalign-maps
+  autocmd VimEnter *  xmap <Enter> <Plug>(EasyAlign)
+  autocmd VimEnter *  nmap ga      <Plug>(EasyAlign)
+  autocmd VimEnter *  xmap gA      <Plug>(LiveEasyAlign)
 
-" space
-nmap gas vip<ESC>:'<,'>EasyAlign */[ ]/l0r0<CR>
+  " space
+  autocmd VimEnter *  nmap gas vip<ESC>:'<,'>EasyAlign */[ ]/l0r0<CR>
 
-" vimpluginaligning easyalign vim-plug defs >_>
-vmap gaga :'<,'>EasyAlign/[ /]/alrlig['Comment']l0r0<<CR>
-nmap gaga vipgaga<ESC>
+  " vimpluginaligning easyalign vim-plug defs >_>
+  autocmd VimEnter *  vmap gaga :'<,'>EasyAlign/[ /]/alrlig['Comment']l0r0<<CR>
+  autocmd VimEnter *  nmap gaga vipgaga<ESC>
+augroup END
 
 "{{{2 fzf (over rg and ag)
 """""""""""""""""""""""""""""""""""""
@@ -401,43 +388,47 @@ let g:fzf_colors ={
       \ 'header':  ['fg', 'Comment']
       \ }
 
-" Terminal buffer options for fzf
-autocmd! FileType fzf
-autocmd  FileType fzf set noshowmode noruler nonu
-nnoremap ,c :CocList commands<cr>
-nmap ,, :Commands<CR>
-nmap ,b :Buffers<CR>
-nmap ,f :Files<CR>
-nmap ,h :Helptags<CR>
-nmap ,i :History<CR>
-nmap ,m :Maps<CR>
-nmap ,gs :GFiles?<CR>
-nmap ,gf :GFiles<CR>
-nmap ,gg :GitGrep<CR>
-nmap ,r  :Rg<CR>
+augroup fzf-maps
+  " Terminal buffer options for fzf
+  autocmd! FileType fzf
+  autocmd  FileType fzf set noshowmode noruler nonu
 
-" local lines in current buffer
-nmap ,ll :BLines<CR>
+   autocmd VimEnter *  nnoremap ,, ,
+   autocmd VimEnter *  nmap ,. :Commands<CR>
+   autocmd VimEnter *  nmap ,c :CocList commands<cr>
+   autocmd VimEnter *  nmap ,b :Buffers<CR>
+   autocmd VimEnter *  nmap ,f :Files<CR>
+   autocmd VimEnter *  nmap ,h :Helptags<CR>
+   autocmd VimEnter *  nmap ,i :History<CR>
+   autocmd VimEnter *  nmap ,m :Maps<CR>
+   autocmd VimEnter *  nmap ,gs :GFiles?<CR>
+   autocmd VimEnter *  nmap ,gf :GFiles<CR>
+   autocmd VimEnter *  nmap ,gg :GitGrep<CR>
+   autocmd VimEnter *  nmap ,r  :Rg<CR>
 
-" lines in all buffers
-nmap ,lb :Lines<CR>
-nmap ,p :Files ~/Projects<CR>
-nmap ,t :Files ~/Projects<CR>
+   autocmd VimEnter *  " local lines in current buffer
+   autocmd VimEnter *  nmap ,ll :BLines<CR>
 
-nmap <Leader>fg :GFiles<CR>
-nmap <Leader>fs :GFiles?<CR>
-nmap <Leader>fl :Lines<CR>
-nmap <Leader>fb :BLines<CR>
-nmap <Leader>ft :Tags<CR>
+   autocmd VimEnter *  " lines in all buffers
+   autocmd VimEnter *  nmap ,lb :Lines<CR>
+   autocmd VimEnter *  nmap ,p :Files ~/Projects<CR>
+   autocmd VimEnter *  nmap ,t :Files ~/Projects<CR>
 
-nmap <Leader>ag  :Ag<cr>
-nmap <Leader>rg  :Rg<cr>
-nmap <Leader>gg  :GitGrep<cr>
-nmap <Leader>ff  :Files<CR>
-nmap <Leader>fp  :Files ~/Projects<CR>
+   autocmd VimEnter *  nmap <Leader>fg :GFiles<CR>
+   autocmd VimEnter *  nmap <Leader>fs :GFiles?<CR>
+   autocmd VimEnter *  nmap <Leader>fl :Lines<CR>
+   autocmd VimEnter *  nmap <Leader>fb :BLines<CR>
+   autocmd VimEnter *  nmap <Leader>ft :Tags<CR>
 
-imap <C-x><C-f> <plug>(fzf-complete-path)
-imap <C-x><C-z> <plug>(fzf-complete-line)
+   autocmd VimEnter *  nmap <Leader>ag  :Ag<cr>
+   autocmd VimEnter *  nmap <Leader>rg  :Rg<cr>
+   autocmd VimEnter *  nmap <Leader>gg  :GitGrep<cr>
+   autocmd VimEnter *  nmap <Leader>ff  :Files<CR>
+   autocmd VimEnter *  nmap <Leader>fp  :Files ~/Projects<CR>
+
+   autocmd VimEnter *  imap <C-x><C-f> <plug>(fzf-complete-path)
+   autocmd VimEnter *  imap <C-x><C-z> <plug>(fzf-complete-line)
+augroup END
 
 command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, fzf#vim#with_preview(),<bang>0)
 
@@ -453,34 +444,42 @@ command! -bang -nargs=* GitGrep call fzf#vim#grep(
 command! -bang -nargs=? -complete=dir Files
   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
-"{{{2 coc-git
+"{{{2 gitgutter and coc-git
+"{{{3 coc-git
 if has_key(g:plugs, 'coc.nvim')
-nmap [g <Plug>(coc-git-prevchunk)
-nmap ]g <Plug>(coc-git-nextchunk)
-nmap gi <Plug>(coc-git-chunkinfo)
-nmap gs :CocCommand git.chunkStage<cr>
-omap ig <Plug>(coc-git-chunk-inner)
-xmap ig <Plug>(coc-git-chunk-inner)
-omap ig <Plug>(coc-git-chunk-outer)
-xmap ig <Plug>(coc-git-chunk-outer)
-nmap <Leader>ogg :CocCommand git.toggleGutters<cr>
+  augroup coc-git-nvim-maps
+    autocmd VimEnter *  nmap [g          <Plug>(coc-git-prevchunk)
+    autocmd VimEnter *  nmap ]g          <Plug>(coc-git-nextchunk)
+    autocmd VimEnter *  nmap <Leader>gi  <Plug>(coc-git-chunkinfo)
+    autocmd VimEnter *  nmap <Leader>gs  :CocCommand git.chunkStage<cr>
+    autocmd VimEnter *  omap ig          <Plug>(coc-git-chunk-inner)
+    autocmd VimEnter *  xmap ig          <Plug>(coc-git-chunk-inner)
+    autocmd VimEnter *  omap ag          <Plug>(coc-git-chunk-outer)
+    autocmd VimEnter *  xmap ig          <Plug>(coc-git-chunk-outer)
+    autocmd VimEnter *  nmap <Leader>ogg :CocCommand git.toggleGutters<cr>
+  augroup END
 
-"{{{2 gitgutter   [:h gitgutter.txt]
+  "{{{3 gitgutter   [:h gitgutter.txt]
 elseif has_key(g:plugs, 'gitgutter')
-  nmap <Leader>ogg :GitGutterToggle<CR>
-  nmap [g         <Plug>(GitGutterPrevHunk)
-  nmap ]g         <Plug>(GitGutterNextHunk)
-  nmap gs <Plug>(GitGutterStageHunk)
-  " nmap gu <Plug>(GitGutterUndoHunk)
-  nmap gi <Plug>(GitGutterPreviewHunk)
-  nmap ghh :GitGutterLineHighlightsToggle<CR>:set nu<CR>:GitGutterLineNrHighlightsToggle<CR>
+  augroup gitgutter-maps
+    autocmd VimEnter *  nmap <Leader>ogg :GitGutterToggle<CR>
+    autocmd VimEnter *  nmap [g          <Plug>(GitGutterPrevHunk)
+    autocmd VimEnter *  nmap ]g          <Plug>(GitGutterNextHunk)
+    autocmd VimEnter *  nmap <Leader>gs  <Plug>(GitGutterStageHunk)
+    autocmd VimEnter *  " nmap <Leader>gu <Plug>(GitGutterUndoHunk)
+    autocmd VimEnter *  nmap <leader>gp  <Plug>(GitGutterPreviewHunk)
+    autocmd VimEnter *  nmap ghh         :GitGutterLineHighlightsToggle<CR>:set nu<CR>:GitGutterLineNrHighlightsToggle<CR>
+  augroup END
 endif
 
-"{{{2 Commentary
-map    gc           <Plug>Commentary
-nmap   gcc          <Plug>CommentaryLine
-map    <Leader>cc   <Plug>Commentary
-nmap   <Leader>cc   <Plug>CommentaryLine
+"{{{2 Commentary Commenting // rip NERDCommentary
+" XXX: TODO: revisit nerdcommentary fork maybe
+augroup commentary-maps
+  autocmd VimEnter *  map    gc           <Plug>Commentary
+  autocmd VimEnter *  nmap   gcc          <Plug>CommentaryLine
+  autocmd VimEnter *  map    <Leader>cc   <Plug>Commentary
+  autocmd VimEnter *  nmap   <Leader>cc   <Plug>CommentaryLine
+augroup END
 
 "{{{2 NERDTree
 " let g:NERDTreeIgnore = ['\~$', '\.pyc$']

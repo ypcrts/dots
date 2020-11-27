@@ -353,18 +353,20 @@ endif
 
 "{{{1 Keybindings.
 "{{{2 Basic functionality extension
-vnoremap > >gv
-vnoremap < <gv
-nnoremap gb :bn<CR>
-nnoremap gB :bp<CR>
-nnoremap ]b :bn<CR>
-nnoremap [b :bp<CR>
-nnoremap ]t :tabn<CR>
-nnoremap [t :tabp<CR>
-nnoremap Y y$
-nnoremap Q gqq
-xnoremap Q gqq
-noremap  <silent> <Leader><Leader> :nohls<cr><c-l>
+augroup basic-sanity-maps
+    autocmd VimEnter *  vnoremap > >gv
+    autocmd VimEnter *  vnoremap < <gv
+    autocmd VimEnter *  nnoremap gb :bn<CR>
+    autocmd VimEnter *  nnoremap gB :bp<CR>
+    autocmd VimEnter *  nnoremap ]b :bn<CR>
+    autocmd VimEnter *  nnoremap [b :bp<CR>
+    autocmd VimEnter *  nnoremap ]t :tabn<CR>
+    autocmd VimEnter *  nnoremap [t :tabp<CR>
+    autocmd VimEnter *  nnoremap Y y$
+    autocmd VimEnter *  nnoremap Q gqq
+    autocmd VimEnter *  xnoremap Q gqq
+    autocmd VimEnter *  noremap  <silent> <Leader><Leader> :nohls<cr><c-l>
+  augroup END
 
 if has('nvim')
   " Hey neovim authors, this isn't emacs.
@@ -373,108 +375,121 @@ if has('nvim')
 endif
 
 " Center the cursor a lot
-nnoremap <silent> <C-]> <C-]>zz
-nnoremap <silent> *     *zz
-nnoremap <silent> #     #zz
-nnoremap <silent> g*    g*zz
-nnoremap <silent> g#    g#zz
-nnoremap <silent> gd    gdzz
-nnoremap <silent> n     nzz
-nnoremap <silent> N     Nzz
+augroup center-cursor-ux-maps
+  autocmd VimEnter *  nnoremap <silent> <C-]> <C-]>zz
+  autocmd VimEnter *  nnoremap <silent> *     *zz
+  autocmd VimEnter *  nnoremap <silent> #     #zz
+  autocmd VimEnter *  nnoremap <silent> g*    g*zz
+  autocmd VimEnter *  nnoremap <silent> g#    g#zz
+  autocmd VimEnter *  nnoremap <silent> gd    gdzz
+  autocmd VimEnter *  nnoremap <silent> n     nzz
+  autocmd VimEnter *  nnoremap <silent> N     Nzz
+augroup END
 
-" K should behave like J, rip
-nnoremap K :echomsg "stop using this, it hurts you when you're not home"<CR>
 
-nnoremap <buffer> <Left>  <Nop>
-nnoremap <buffer> <Right> <Nop>
-nnoremap <buffer> <Up>    <Nop>
-nnoremap <buffer> <Down>  <Nop>
+augroup pain-mode-maps
+  " K should behave like J, rip
+  autocmd VimEnter *  nnoremap K :echomsg "stop using this, it hurts you when you're not home"<CR>
 
-inoremap <buffer> <Left>  <Esc>
-inoremap <buffer> <Right> <Esc>
-inoremap <buffer> <Up>    <Esc>
-inoremap <buffer> <Down>  <Esc>
+  autocmd VimEnter *  nnoremap <buffer> <Left>  <Nop>
+  autocmd VimEnter *  nnoremap <buffer> <Right> <Nop>
+  autocmd VimEnter *  nnoremap <buffer> <Up>    <Nop>
+  autocmd VimEnter *  nnoremap <buffer> <Down>  <Nop>
 
-vnoremap <buffer> <Left>  <Nop>
-vnoremap <buffer> <Right> <Nop>
-vnoremap <buffer> <Up>    <Nop>
-vnoremap <buffer> <Down>  <Nop>
+  autocmd VimEnter *  inoremap <buffer> <Left>  <Esc>
+  autocmd VimEnter *  inoremap <buffer> <Right> <Esc>
+  autocmd VimEnter *  inoremap <buffer> <Up>    <Esc>
+  autocmd VimEnter *  inoremap <buffer> <Down>  <Esc>
+
+  autocmd VimEnter *  vnoremap <buffer> <Left>  <Nop>
+  autocmd VimEnter *  vnoremap <buffer> <Right> <Nop>
+  autocmd VimEnter *  vnoremap <buffer> <Up>    <Nop>
+  autocmd VimEnter *  vnoremap <buffer> <Down>  <Nop>
+augroup END
 
 "{{{2 splits, tmux aware.
-" pieced together from:
-" https://github.com/christoomey/vim-tmux-navigator
-" http://www.codeography.com/2013/06/19/navigating-vim-and-tmux-splits
-nmap <silent> <C-h> :call tmux#switch('h')<cr>
-nmap <silent> <C-j> :call tmux#switch('j')<cr>
-nmap <silent> <C-k> :call tmux#switch('k')<cr>
-nmap <silent> <C-l> :call tmux#switch('l')<cr>
+augroup tmux-splits-maps
+  " pieced together from:
+  " https://github.com/christoomey/vim-tmux-navigator
+  " http://www.codeography.com/2013/06/19/navigating-vim-and-tmux-splits
+  autocmd VimEnter *  nmap <silent> <C-h> :call tmux#switch('h')<cr>
+  autocmd VimEnter *  nmap <silent> <C-j> :call tmux#switch('j')<cr>
+  autocmd VimEnter *  nmap <silent> <C-k> :call tmux#switch('k')<cr>
+  autocmd VimEnter *  nmap <silent> <C-l> :call tmux#switch('l')<cr>
 
-" insert mode <C-k> inserts digraphs etc
-inoremap <C-k> <C-k>
+  " insert mode <C-k> inserts digraphs etc
+  inoremap <C-k> <C-k>
+augroup END
 
 "}}}
 "{{{2 Timestamps, datestamps
-noremap <silent> <leader>zh  m'a<C-R>=datez#LocalTime()<CR><ESC>o<ESC>80i=<ESC>
-noremap <silent> <leader>zld m'a<C-R>=datez#Local()<CR><ESC>
-noremap <silent> <leader>zlt m'a<C-R>=datez#LocalTime()<CR><ESC>
-noremap <silent> <Leader>zn  m'a<C-R>=datez#LocalTimeNato()<CR><ESC>
-noremap <silent> <Leader>zt  m'a<C-R>=datez#UniversalTime()<CR><ESC>
-noremap <silent> <Leader>zd  m'a<C-R>=datez#Universal()<CR><ESC>
+augroup datez-maps
+  autocmd VimEnter *  noremap <silent> <leader>zh  m'a<C-R>=datez#LocalTime()<CR><ESC>o<ESC>80i=<ESC>
+  autocmd VimEnter *  noremap <silent> <leader>zld m'a<C-R>=datez#Local()<CR><ESC>
+  autocmd VimEnter *  noremap <silent> <leader>zlt m'a<C-R>=datez#LocalTime()<CR><ESC>
+  autocmd VimEnter *  noremap <silent> <Leader>zn  m'a<C-R>=datez#LocalTimeNato()<CR><ESC>
+  autocmd VimEnter *  noremap <silent> <Leader>zt  m'a<C-R>=datez#UniversalTime()<CR><ESC>
+  autocmd VimEnter *  noremap <silent> <Leader>zd  m'a<C-R>=datez#Universal()<CR><ESC>
+augroup END
 
 " Timestamped signatures
-nmap <silent> <leader>zg i<C-R>='[ypcrts // ' . datez#UniversalTime() . ']'<CR><ESC>
-nmap <silent> <Leader>zz i<C-R>='['.expand("$USER").' // ' . datez#UniversalTime(). ']'<CR><ESC>
+augroup sig-maps
+    autocmd VimEnter *  nmap <silent> <leader>zg i<C-R>='[ypcrts // ' . datez#UniversalTime() . ']'<CR><ESC>
+    autocmd VimEnter *  nmap <silent> <Leader>zz i<C-R>='['.expand("$USER").' // ' . datez#UniversalTime(). ']'<CR><ESC>
+augroup END
 
 "{{{2 Leader
-nnoremap <Leader>v :Vexplore<CR>
+augroup leader-maps
+  autocmd VimEnter *  nnoremap <Leader>v :Vexplore<CR>
 
-" TODO: put this in tmux instead/also
-" XXX: if ur gonna keep it here it should use input mode
-nnoremap <silent> <Leader>ip "=substitute(system("ifip tun0"),'[\r\n]','','g')<C-M>p
+  " TODO: put this in tmux instead/also
+  " XXX: if ur gonna keep it here it should use input mode
+  autocmd VimEnter *  nnoremap <silent> <Leader>ip "=substitute(system("ifip tun0"),'[\r\n]','','g')<C-M>p
 
-nnoremap <Leader>on  :setlocal number!<CR>
-nnoremap <Leader>or  :setlocal relativenumber!<CR>
-nnoremap <Leader>os  :setlocal spell!<CR>
-nnoremap <Leader>op  :setlocal paste!<CR>:setlocal paste?<CR>
-nnoremap <Leader>ow  :setlocal wrap!<CR>
-nnoremap <Leader>ol  :setlocal list!<CR>
-nnoremap <Leader>om  :setlocal modifiable!<CR>
-nnoremap <Leader>occ :setlocal cursorcolumn!<CR>
-nnoremap <Leader>ocl :setlocal cursorline!<CR>
-nnoremap <Leader>ocb :call daclipz#ToggleClipboardUnnamedPlus()<CR>
+  autocmd VimEnter *  nnoremap <Leader>on  :setlocal number!<CR>
+  autocmd VimEnter *  nnoremap <Leader>or  :setlocal relativenumber!<CR>
+  autocmd VimEnter *  nnoremap <Leader>os  :setlocal spell!<CR>
+  autocmd VimEnter *  nnoremap <Leader>op  :setlocal paste!<CR>:setlocal paste?<CR>
+  autocmd VimEnter *  nnoremap <Leader>ow  :setlocal wrap!<CR>
+  autocmd VimEnter *  nnoremap <Leader>ol  :setlocal list!<CR>
+  autocmd VimEnter *  nnoremap <Leader>om  :setlocal modifiable!<CR>
+  autocmd VimEnter *  nnoremap <Leader>occ :setlocal cursorcolumn!<CR>
+  autocmd VimEnter *  nnoremap <Leader>ocl :setlocal cursorline!<CR>
+  autocmd VimEnter *  nnoremap <Leader>ocb :call daclipz#ToggleClipboardUnnamedPlus()<CR>
 
-nnoremap <Leader>rc :execute ":tabnew" rcz#VimFileRealpath("vimrc")<CR>
-nnoremap <Leader>rp :execute ":tabnew" rcz#VimFileRealpath("plugins.vimrc")<CR>
-nnoremap <Leader>rl :execute ":tabnew" rcz#VimfilesDir() . 'local.vimrc'<CR>
+  autocmd VimEnter *  nnoremap <Leader>rc :execute ":tabnew" rcz#VimFileRealpath("vimrc")<CR>
+  autocmd VimEnter *  nnoremap <Leader>rp :execute ":tabnew" rcz#VimFileRealpath("plugins.vimrc")<CR>
+  autocmd VimEnter *  nnoremap <Leader>rl :execute ":tabnew" rcz#VimfilesDir() . 'local.vimrc'<CR>
 
-nnoremap ]q :cnext<CR>
-nnoremap [q :cprevious<CR>
-nnoremap ]Q :cnfile<CR>
-nnoremap [Q :cpfile<CR>
+  autocmd VimEnter *  nnoremap ]q :cnext<CR>
+  autocmd VimEnter *  nnoremap [q :cprevious<CR>
+  autocmd VimEnter *  nnoremap ]Q :cnfile<CR>
+  autocmd VimEnter *  nnoremap [Q :cpfile<CR>
 
-nnoremap ]l :lnext<CR>
-nnoremap [l :lprevious<CR>
-nnoremap ]L :lnfile<CR>
-nnoremap [L :lpfile<CR>
+  autocmd VimEnter *  nnoremap ]l :lnext<CR>
+  autocmd VimEnter *  nnoremap [l :lprevious<CR>
+  autocmd VimEnter *  nnoremap ]L :lnfile<CR>
+  autocmd VimEnter *  nnoremap [L :lpfile<CR>
 
-" black hole register
-nmap <Leader>b "_
-xmap <Leader>b "_
+  " black hole register
+  autocmd VimEnter *  nmap <Leader>b "_
+  autocmd VimEnter *  xmap <Leader>b "_
 
-nnoremap <leader>dgr :diffget REMOTE<CR>
-nnoremap <leader>dgb :diffget BASE<CR>
-nnoremap <leader>dgl :diffget LOCAL<CR>
-nnoremap dgr :diffget REMOTE<CR>
-nnoremap dgb :diffget BASE<CR>
-nnoremap dgl :diffget LOCAL<CR>
+  autocmd VimEnter *  nnoremap <leader>dgr :diffget REMOTE<CR>
+  autocmd VimEnter *  nnoremap <leader>dgb :diffget BASE<CR>
+  autocmd VimEnter *  nnoremap <leader>dgl :diffget LOCAL<CR>
+  autocmd VimEnter *  nnoremap dgr :diffget REMOTE<CR>
+  autocmd VimEnter *  nnoremap dgb :diffget BASE<CR>
+  autocmd VimEnter *  nnoremap dgl :diffget LOCAL<CR>
 
-nnoremap <leader>8 :%!python  -m autopep8 -a -a -a -<CR>
-vnoremap <leader>8 :!python   -m autopep8 -a -a -a -<CR>
+  autocmd VimEnter *  nnoremap <leader>8 :%!python  -m autopep8 -a -a -a -<CR>
+  autocmd VimEnter *  vnoremap <leader>8 :!python   -m autopep8 -a -a -a -<CR>
 
-nnoremap <Leader>ml  :call modelinestub#do()<CR>
-nnoremap <Leader>dts :call formatz#DeleteTrailingSpaces()<CR>
+  autocmd VimEnter *  nnoremap <Leader>ml  :call modelinestub#do()<CR>
+  autocmd VimEnter *  nnoremap <Leader>dts :call formatz#DeleteTrailingSpaces()<CR>
 
-nnoremap <silent> <F8> :call colorz#Rotate()<cr>
+  autocmd VimEnter *  nnoremap <silent> <F8> :call colorz#Rotate()<cr>
+augroup END
 
 command! Todo call rcz#Todo()
 
