@@ -6,9 +6,9 @@
   insteadOf         = "git://github.com/"
   pushInsteadOf     = "git://github.com/"
 
-;[url "git@github.com:"]
-  ; pushInsteadOf     = "https://github.com/"
-  ; insteadOf         = "https://github.com/"
+[url "git@github.com:"]
+   pushInsteadOf     = "https://github.com/"
+   insteadOf         = "https://github.com/"
 
 [url "https://aur.archlinux.org/"]
   insteadOf = "aur"
