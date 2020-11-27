@@ -147,6 +147,7 @@ Plug 'kevinoid/vim-jsonc', { 'for': 'jsonc' }
 " Plug 'PotatoesMaster/i3-vim-syntax'
 " Plug    'vim-scripts/bats.vim'
 " Plug       'hashivim/vim-terraform'
+Plug 'bfrg/vim-jq', { 'for': ['jq'], 'commit': '0076ef5424894e17f0ab17f4d025a3b519008134' }
 
 "{{{4 esrever
 Plug      'vim-scripts/AnsiEsc.vim'
