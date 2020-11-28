@@ -25,3 +25,4 @@ doc/tags
 tags
 .tags
 .netrwhist
+.vim
