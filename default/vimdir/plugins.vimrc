@@ -65,8 +65,8 @@ Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
 
 Plug 'mzlogin/vim-markdown-toc', { 'for': ['markdown'] }
 
-"{{{3 Coc vs. alt_complete
-if v:version >= 800 && has('nvim') && ! s:is_windows
+"{{{3 Coc vs. alternatives
+if v:version >= 800 && has('nvim')
   " Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
   " Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
   Plug 'neoclide/coc.nvim', { 'branch': 'release' }
