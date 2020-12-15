@@ -50,10 +50,12 @@ ADJUNCT_PATH '/usr/bin'
 ADJUNCT_PATH '/bin'
 ADJUNCT_PATH '/usr/local/bin'       OVERRIDE
 
-export PATH EDITOR VISUAL
+export PATH EDITOR VISUAL MANPATH
 
-for e in nvim vim vi ed; do
-  has $e && EDITOR="$(command -v $e)" && break
+for e in nvim vim vi ed nano; do
+  #`command -v` is not posix and zsh does it wrong
+  #has $e && EDITOR="$(command -v $e)" && break
+  has "$e" && EDITOR="$e" && break
 done
 VISUAL="$EDITOR"
 
