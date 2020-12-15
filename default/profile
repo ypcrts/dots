@@ -67,10 +67,12 @@ VISUAL="$EDITOR"
 [ -n "$XDG_DATA_HOME"   ] || export XDG_DATA_HOME="$HOME/.local/share"
 
 #{{{1 fzf
-# TODO: package manager? something? ur trash
-ADJUNCT_PATH ~/.fzf/bin
 export FZF_COMPLETION_TRIGGER='*'
-[ -d ~/.fzf/man ] && export MANPATH="$MANPATH:~/.fzf/man"
+fzfdir=~/.vim/plugged/fzf
+[ -d $fzfdir ] && {
+  ADJUNCT_PATH "$fzfdir/bin"
+  MANPATH="$MANPATH:$fzfdir/man"
+}
 
 #{{{1 OS Specific
 case "$OSTYPE" in

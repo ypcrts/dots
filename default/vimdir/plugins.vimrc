@@ -31,14 +31,10 @@ Plug     'chrisbra/NrrwRgn', { 'on': ['NR', 'NarrowRegion'] }
 if s:is_windows
   Plug 'junegunn/fzf'  " XXX: for vim file, but scoop install fzf
 else
-  call rcz#PlugPathFirstOf('~/.fzf', '/usr/local/opt/fzf', )
+  " rcz#PlugPathFirstOf('/usr/local/opt/fzf')
+  Plug 'junegunn/fzf', { 'do': './install --all'  }
 endif
-if has_key(g:plugs, '.fzf') || has_key(g:plugs, 'fzf')
-  Plug 'junegunn/fzf.vim'
-else
-   echoerr 'y u no fzf? - ur vimz are sad'
-   " Plug 'junegunn/fzf', { 'do': './install --bin'  }
- endif
+Plug 'junegunn/fzf.vim'
 
 Plug 'junegunn/vim-peekaboo'
 Plug 'junegunn/vim-easy-align'

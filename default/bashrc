@@ -97,12 +97,12 @@ export \
 SOURCE_TRY ~/.config/bash/buku-completion.bash
 
 SOURCE_FIRST 2>/dev/null \
-  ~/.fzf/shell/completion.bash \
+  ~/.vim/plugged/fzf/shell/completion.bash \
   /usr/share/bash-completion/completions/fzf \
   /usr/local/opt/fzf/shell/completion.bash
 
 SOURCE_FIRST 2>/dev/null \
-  ~/.fzf/shell/key-bindings.bash \
+  ~/.vim/plugged/fzf/shell/key-bindings.bash \
   /usr/share/doc/fzf/examples/key-bindings.bash \
   /usr/local/opt/fzf/shell/key-bindings.bash
 
