@@ -45,7 +45,6 @@ set nobackup
 set writebackup
 set noswapfile
 set noautowrite
-set autowriteall
 set autoread
 set nohidden    "nohidden abandons unattached buffers
 

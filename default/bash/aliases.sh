@@ -140,7 +140,7 @@ keys() {
       ssh-add
       ;;
     2)
-      rtagent
+      reagent
       ;;
   esac
 }
