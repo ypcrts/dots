@@ -50,8 +50,8 @@ catstripped () {
   fi
 }
 is_vmware () {
-  command -V lspci 2>/dev/null || return 1
-  lspci | grep VMware 2>/dev/null >&2
+  command -V lspci 2>/dev/null >&2 || return 1
+  ( lspci | grep VMware ) 2>/dev/null >&2
 }
 mksshconfig () {
   local pfx="$HOME/.ssh"
