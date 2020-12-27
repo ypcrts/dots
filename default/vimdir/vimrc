@@ -18,8 +18,10 @@ exe "set rtp=" . fnameescape($VIMRUNTIME) . ',' . s:vimfilesdir
 if s:is_nvim && s:is_windows
   " XXX: python may be python2, because yes life still requires py2 post EOL
   " XXX: `python3` will be the Windows Store shortcut, so try py.exe
-  let g:python3_host_prog = system('powershell "command py | select-object -expandproperty source"')
-  let g:python3_host_prog = substitute(g:python3_host_prog, '[\r\n]\+', '', '')
+  let g:python3_host_prog = substitute(
+        \ system('powershell "@(\"py\", \"py3\", \"python3\", \"python\")|foreach {  if ($ret=command -ErrorAction SilentlyContinue $_) { echo $ret.Source; break; }  }'),
+        \ '[\r\n]\+', '', ''
+        \)
 endif
 
 "{{{2 Plugins
