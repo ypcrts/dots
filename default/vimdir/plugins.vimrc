@@ -220,10 +220,11 @@ if has_key(g:plugs, 'coc.nvim')
   nnoremap <silent> K :call <SID>show_documentation()<CR>
 
   let g:coc_global_extensions = [
-        \ 'coc-git', 'coc-sh'
-        \ , 'coc-python', 'coc-html', 'coc-json', 'coc-css'
-        \ , 'coc-prettier', 'coc-eslint', 'coc-tsserver', 'coc-emoji'
-        \ ]
+        \ 'coc-git'
+        \]
+        " \  'coc-sh'
+        " \ , 'coc-python', 'coc-html', 'coc-json', 'coc-css'
+        " \ , 'coc-prettier', 'coc-eslint', 'coc-tsserver', 'coc-emoji'
         ", 'coc-java'
         ", 'coc-r-lsp', 'coc-solargraph'
   command! -nargs=0 Prettier :CocCommand prettier.formatFile
