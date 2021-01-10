@@ -222,7 +222,7 @@ if has_key(g:plugs, 'coc.nvim')
   let g:coc_global_extensions = [
         \ 'coc-git'
         \]
-        " \  'coc-sh'
+        " \  'coc-sh', 'coc-rls'
         " \ , 'coc-python', 'coc-html', 'coc-json', 'coc-css'
         " \ , 'coc-prettier', 'coc-eslint', 'coc-tsserver', 'coc-emoji'
         ", 'coc-java'
