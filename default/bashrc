@@ -1,5 +1,10 @@
 # vi: ft=sh tw=0 ts=2 sw=2 sts=2 fdm=marker fmr={{{,}}} et:
+#
 # This file targets bash 3, guarding 4.
+# Assumptions: Bash-compatible interactive shell.
+# Ergo: Bashisms are authorized.
+# https://wiki.bash-hackers.org/scripting/bashchanges
+#
 . ~/.profile
 
 # breakout for display managers
@@ -9,14 +14,14 @@
 #{{{1 Disable flow control
 stty -ixoff -ixon
 
-#{{{1 functions
-#-------------------------------------------------------------------------------
-. ~/.config/bash/interactive.sh
-
 #{{{1 all i want is someone who completes me
 #-------------------------------------------------------------------------------
 SOURCE_TRY /etc/bash_completion
 SOURCE_TRY /usr/local/etc/profile.d/bash_completion.sh
+
+#{{{1 functions
+#-------------------------------------------------------------------------------
+. ~/.config/bash/interactive.sh
 
 #{{{1 shopt, set
 #-------------------------------------------------------------------------------
