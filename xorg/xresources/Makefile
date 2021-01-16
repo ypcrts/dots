@@ -1,9 +1,10 @@
 .PHONY: all
-all: bspwm.out dom0.out
+all: bspwm.out dom0.out season.out
 
 %.out: %.h
 	$(CC) -E $< | sed '/^\s*[#!]/d; /^\s*$$/d' >$@
 
 .PHONY: clean
-clean:
-	rm -vf bspwm.out dom0.out
+cleanable := $(wildcard *.out)
+clean: 
+	rm -vf  $(cleanable)

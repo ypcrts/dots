@@ -1,4 +1,4 @@
-! vim:fenc=utf-8:nu:ai:si:et:ts=4:sw=4:ft=xdefaults:
+! vim:fenc=utf-8:nu:ai:si:et:ts=4:sw=4:ft=xdefaults:fdm=marker:
 ! {{{1 Font settings
 Xft.autohint:                        0
 Xft.lcdfilter:                       lcddefault
@@ -8,6 +8,10 @@ Xft.antialias:                       1
 Xft.rgba:                            rgb
 Xft.dpi:                             92
 
+! {{{1 SSH askpass
+! https://wiki.archlinux.org/index.php/SSH_Keys#Calling_x11-ssh-askpass_with_ssh-add
+*askpass*background:                 #000000
+
 ! {{{1 Urxvt
 URxvt.cursorBlink:         false
 URxvt.geometry:            80x22
@@ -16,12 +20,14 @@ URxvt*urgentOnBell:        true
 URxvt.internalBorder:      1
 URxvt.scrollBar_right:     false
 URxvt.scrollBar:           false
+
 ! {{{2 Annoying insert mode
 URxvt.iso14755:            true
 URxvt.iso14755_52:         false
 !URxvt.altSendsEscape:     true ! this is evil!
 URxvt.transparent:         false
 URxvt.insecure: false
+
 ! {{{2 Scrollback
 URxvt*scrollTtyKeypress:   false
 ! URxvt*scrollTtyKeypress: true

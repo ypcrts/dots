@@ -92,6 +92,7 @@ $ xorg
 ~/bin/: ./xorg/bin/*
 ~/.urxvt/ext/font-size: ./xorg/urxvt-font-size
 ~/.config/dunst/dunstrc: ./xorg/dunstrc
+~/.config/i3/config: ./xorg/i3.config
 
 $ bspwm
 ~/bin/: ./bspwm/bin/*
@@ -102,10 +103,15 @@ $ bspwm
 ~/.config/sxhkd/sxhkdrc: ./bspwm/sxhkdrc
 ~/.config/lemonbar: ./bspwm/lemonbar
 ~/.screenlayout: ./bspwm/screenlayout
-~/.Xresources: ./xorg/xresources/bspwm.out
 
 $ awesome
 ~/.config/awesome/rc.lua: ./xorg/awesome.lua
+
+$ bspwm_xres
+~/.Xresources: ./xorg/xresources/bspwm.out
+
+$ season_xres
+~/.Xresources: ./xorg/xresources/season.out
 
 $ dom0_xfcekb
 ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml: ./xorg/xfce4-keyboard-shortcuts.xml
@@ -154,3 +160,6 @@ $ dom0
 
 $ domU
 @include: default xorg domU_xres
+
+$ season
+@include: defaul xorg dev gpg

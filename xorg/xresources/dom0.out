@@ -5,6 +5,7 @@ Xft.hinting: 1
 Xft.antialias: 1
 Xft.rgba: rgb
 Xft.dpi: 92
+*askpass*background: #000000
 URxvt.cursorBlink: false
 URxvt.geometry: 80x22
 URxvt.borderLess: false

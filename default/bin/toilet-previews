@@ -1,0 +1,19 @@
+#!/bin/sh
+FILENAME="/tmp/toilet_previews"
+opts=""
+while [ $# -gt 1 ]; do
+  case "$1" in
+    -*) opts+=" $1" ;;
+    [!-]*) break ;;
+  esac
+  shift
+done
+TEXT="$*"
+[ -z "$TEXT" ] && TEXT="hello i am font"
+for file in /usr/share/figlet/*.tlf; do 
+  basename="$(basename "$file")"
+  echo "\n$basename" ' ↓' >> $FILENAME;
+  toilet -k $opts -d /usr/share/figlet -f $basename "$TEXT" >> $FILENAME; 
+done
+pager $FILENAME
+rm $FILENAME 
