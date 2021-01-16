@@ -281,3 +281,13 @@ checkpath () {
     done
     IFS=' '
 }
+badssl () {
+    set -x
+    export OPENSSL_CONF="$HOME/.config/badssl.cnf";
+    set +x
+}
+badssloff () {
+    set -x
+    unset OPENSSL_CONF
+    set +x
+}
