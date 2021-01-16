@@ -7,6 +7,7 @@ alias \
   j='jobs -l' \
   p='cd ~/Projects' \
   t='cd ~/Projects/tools' \
+  o='exec onemux' \
   tmxlb='tmux loadb -' \
   cdtl='cd "$(git rev-parse --show-toplevel)"' \
   rmi='/bin/rm -i' \
@@ -28,6 +29,7 @@ alias \
   vi='$VISUAL' \
   vim='$VISUAL' \
   safevi='SAFEVI=1 $VISUAL' \
+  svi='SAFEVI=1 $VISUAL' \
   makepackagegreatagain='python3 setup.py sdist bdist_wheel && twine upload dist/*' \
   ypcrtsgitconfig='cat ~/.config/git/ypcrts.gitconfig >> .git/config'
 

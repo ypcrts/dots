@@ -119,4 +119,3 @@ SOURCE_FIRST 2>/dev/null \
 . ~/.config/bash/prompt.bash
 
 # eval "$(dircolors -b ~/.config/bash/dircolors/dircolors.256dark) 2>/dev/null >/dev/null"
-
