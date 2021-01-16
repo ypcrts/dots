@@ -57,15 +57,12 @@ class DebianAPI(object):
 
 
 class UbuntuSucks(DebianAPI):
+    # https://wiki.ubuntu.com/Releases
 
     ENDPOINT = "https://api.launchpad.net/1.0/ubuntu/+archive/primary?ws.op=getPublishedSources&source_name={:s}&exact_match=true"
-    LTS_SUITES = (
-        # 'trusty',
-        "xenial",
-        "bionic",
-    )
+    LTS_SUITES = ("trusty", "xenial", "bionic", "focal")
     HEAD_SUITES = ("groovy",)
-    SUITES_OF_INTEREST = LTS_SUITES + HEAD_SUITES
+    SUITES_OF_INTEREST = {LTS_SUITES + HEAD_SUITES}
 
     def __call__(self):
         ret = dict()
