@@ -26,66 +26,68 @@ SOURCE_TRY /usr/local/etc/profile.d/bash_completion.sh
 #{{{1 shopt, set
 #-------------------------------------------------------------------------------
 # http://wiki.bash-hackers.org/scripting/bashchanges
-shopt_enabled=(
-  # glob
-  dotglob
-  nocaseglob
-  extglob                  #  strange quanitfiers with groups, needed for completitions
+{
+  shopt_enabled=(
+    # glob
+    dotglob
+    nocaseglob
+    extglob                  #  strange quanitfiers with groups, needed for completitions
 
-  # history
-  cmdhist                  # put multiline commands into history
-  histappend
-  histverify
+    # history
+    cmdhist                  # put multiline commands into history
+    histappend
+    histverify
 
-  # strangely custom
-  cdspell
-  gnu_errfmt
-  no_empty_cmd_completion
+    # strangely custom
+    cdspell
+    gnu_errfmt
+    no_empty_cmd_completion
 
-  # defaults
-  expand_aliases
-  extquote
-  interactive_comments
-  progcomp
-  promptvars
-  checkwinsize    #  DANGER: update LINES and COLUMNS after each command
-)
-
-shopt_disabled=(
-  # turned off defaults
-  hostcomplete    #  triggers on @
-  cdable_vars     #  if cd arg does not match, search env vars (was $ hard to type?)
-  sourcepath
-
-  # default offs
-  failglob                 # don't pass failed globs
-  execfail
-  huponexit
-  lithist
-  mailwarn
-  nocasematch
-  nullglob
-  shift_verbose
-  xpg_echo
-)
-
-if [[ "$BASH_VERSINFO" -ge 4 ]]; then
-  shoptions+=(
-    checkhash
-    checkjobs
-    dirspell
-    complete_fullquote
-    lastpipe
+    # defaults
+    expand_aliases
+    extquote
+    interactive_comments
+    progcomp
+    promptvars
+    checkwinsize    #  DANGER: update LINES and COLUMNS after each command
   )
-  shopt_disabled+=(
-    globstar
-    direxpand
-  )
-fi
 
-shopt -s ${shopt_enabled[@]}
-shopt -u ${shopt_disabled[@]}
-unset shopt_enabled shopt_disabled
+  shopt_disabled=(
+    # turned off defaults
+    hostcomplete    #  triggers on @
+    cdable_vars     #  if cd arg does not match, search env vars (was $ hard to type?)
+    sourcepath
+
+    # default offs
+    failglob                 # don't pass failed globs
+    execfail
+    huponexit
+    lithist
+    mailwarn
+    nocasematch
+    nullglob
+    shift_verbose
+    xpg_echo
+  )
+
+  if [[ "$BASH_VERSINFO" -ge 4 ]]; then
+    shoptions+=(
+      checkhash
+      checkjobs
+      dirspell
+      complete_fullquote
+      lastpipe
+    )
+    shopt_disabled+=(
+      globstar
+      direxpand
+    )
+  fi
+
+  shopt -s ${shopt_enabled[@]}
+  shopt -u ${shopt_disabled[@]}
+  unset shopt_enabled shopt_disabled
+} 2>/dev/null
 
 set -o vi noclobber
 
