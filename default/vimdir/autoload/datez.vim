@@ -21,11 +21,11 @@ if exists("*strftime")
     endfunction
 
     function! datez#LocalTime()
-        return strftime("%Y.%m.%dT%H:%M %z")
+        return strftime("%d.%m.%Y %H:%M %z")
     endfunction
 
     function! datez#LocalTimeNato()
-        return strftime("%Y.%m.%dT%H:%M") . s:TimeZoneToCode()
+        return strftime("%d.%m.%Y %H:%M") . s:TimeZoneToCode()
     endfunction
 
     function! s:TimeZoneToCode()
@@ -91,5 +91,11 @@ else
     function! datez#UniversalTime()
         echom "UTC datetime"
         return s:Strip(system('date -u \+\%Y\%m\%dT\%H\%MZ'))
+    endfunction
+
+    " Returns UTC datetime with separators
+    function! datez#UniversalTime8601()
+        echom "UTC datetime"
+        return s:Strip(system('date -u \+\%Y-\%m-\%dT\%H:\%MZ'))
     endfunction
 endif

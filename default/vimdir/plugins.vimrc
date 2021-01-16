@@ -276,6 +276,7 @@ if has_key(g:plugs, 'ale')
         \ 'typescript': ['tsserver','eslint']
         \ } " merged dict; no pylint in ale please
   let g:ale_fixers = {
+        \ 'python': ['isort','black'],
         \ 'sh': ['shfmt'],
         \ 'javascript': ['prettier', 'eslint'],
         \ 'typescript':  ['prettier', 'eslint'],
@@ -391,37 +392,25 @@ augroup fzf-maps
   autocmd  FileType fzf set noshowmode noruler nonu
 
    autocmd VimEnter *  nnoremap ,, ,
-   autocmd VimEnter *  nmap ,. :Commands<CR>
-   autocmd VimEnter *  nmap ,c :CocList commands<cr>
-   autocmd VimEnter *  nmap ,b :Buffers<CR>
-   autocmd VimEnter *  nmap ,f :Files<CR>
-   autocmd VimEnter *  nmap ,h :Helptags<CR>
-   autocmd VimEnter *  nmap ,i :History<CR>
-   autocmd VimEnter *  nmap ,m :Maps<CR>
+
+   autocmd VimEnter *  nmap ,.  :Commands<CR>
+   autocmd VimEnter *  nmap ,c  :CocList commands<cr>
+   autocmd VimEnter *  nmap ,b  :Buffers<CR>
+   autocmd VimEnter *  nmap ,f  :Files<CR>
+   autocmd VimEnter *  nmap ,h  :Helptags<CR>
+   autocmd VimEnter *  nmap ,i  :History<CR>
+   autocmd VimEnter *  nmap ,m  :Maps<CR>
    autocmd VimEnter *  nmap ,gs :GFiles?<CR>
    autocmd VimEnter *  nmap ,gf :GFiles<CR>
    autocmd VimEnter *  nmap ,gg :GitGrep<CR>
    autocmd VimEnter *  nmap ,r  :Rg<CR>
+   autocmd VimEnter *  nmap ,p :Files ~/Projects<CR>
 
-   autocmd VimEnter *  " local lines in current buffer
+   " local lines in current buffer
    autocmd VimEnter *  nmap ,ll :BLines<CR>
 
-   autocmd VimEnter *  " lines in all buffers
+   " lines in all buffers
    autocmd VimEnter *  nmap ,lb :Lines<CR>
-   autocmd VimEnter *  nmap ,p :Files ~/Projects<CR>
-   autocmd VimEnter *  nmap ,t :Files ~/Projects<CR>
-
-   autocmd VimEnter *  nmap <Leader>fg :GFiles<CR>
-   autocmd VimEnter *  nmap <Leader>fs :GFiles?<CR>
-   autocmd VimEnter *  nmap <Leader>fl :Lines<CR>
-   autocmd VimEnter *  nmap <Leader>fb :BLines<CR>
-   autocmd VimEnter *  nmap <Leader>ft :Tags<CR>
-
-   autocmd VimEnter *  nmap <Leader>ag  :Ag<cr>
-   autocmd VimEnter *  nmap <Leader>rg  :Rg<cr>
-   autocmd VimEnter *  nmap <Leader>gg  :GitGrep<cr>
-   autocmd VimEnter *  nmap <Leader>ff  :Files<CR>
-   autocmd VimEnter *  nmap <Leader>fp  :Files ~/Projects<CR>
 
    autocmd VimEnter *  imap <C-x><C-f> <plug>(fzf-complete-path)
    autocmd VimEnter *  imap <C-x><C-z> <plug>(fzf-complete-line)
@@ -463,7 +452,7 @@ elseif has_key(g:plugs, 'gitgutter')
     autocmd VimEnter *  nmap [g          <Plug>(GitGutterPrevHunk)
     autocmd VimEnter *  nmap ]g          <Plug>(GitGutterNextHunk)
     autocmd VimEnter *  nmap <Leader>gs  <Plug>(GitGutterStageHunk)
-    autocmd VimEnter *  " nmap <Leader>gu <Plug>(GitGutterUndoHunk)
+    "autocmd VimEnter *  nmap <Leader>gu <Plug>(GitGutterUndoHunk)
     autocmd VimEnter *  nmap <leader>gp  <Plug>(GitGutterPreviewHunk)
     autocmd VimEnter *  nmap ghh         :GitGutterLineHighlightsToggle<CR>:set nu<CR>:GitGutterLineNrHighlightsToggle<CR>
   augroup END
