@@ -14,6 +14,19 @@
 #{{{1 Disable flow control
 stty -ixoff -ixon
 
+#{{{1 functions
+#-------------------------------------------------------------------------------
+SOURCE_TRY () { [[ -f "$1" ]] && . "$1"; }
+
+SOURCE_FIRST () {
+  while (( $# > 0 )); do
+    SOURCE_TRY "$1" && return 0
+    shift
+  done
+  return 1
+}
+
+
 #{{{1 all i want is someone who completes me
 #-------------------------------------------------------------------------------
 SOURCE_TRY /etc/bash_completion

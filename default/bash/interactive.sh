@@ -4,18 +4,6 @@
 # https://wiki.bash-hackers.org/scripting/bashchanges
 #
 
-#{{{1 functions
-#-------------------------------------------------------------------------------
-SOURCE_TRY () { [[ -f "$1" ]] && . "$1"; }
-
-SOURCE_FIRST () {
-  while (( $# > 0 )); do
-    SOURCE_TRY "$1" && return 0
-    shift
-  done
-  return 1
-}
-
 #{{{1 source base
 #-------------------------------------------------------------------------------
 # source this or error verbosel
