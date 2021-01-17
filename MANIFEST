@@ -93,6 +93,7 @@ $ xorg
 ~/.urxvt/ext/font-size: ./xorg/urxvt-font-size
 ~/.config/dunst/dunstrc: ./xorg/dunstrc
 ~/.config/i3/config: ./xorg/i3.config
+~/.xsession: ./xorg/xsession
 
 $ bspwm
 ~/bin/: ./bspwm/bin/*

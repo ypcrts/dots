@@ -1,0 +1,13 @@
+# vi: ft=sh tw=0 ts=2 sw=2 sts=2 fdm=marker fmr={{{,}}} et:
+
+# /usr/bin/setxkbmap -option terminate:ctrl_alt_bksp
+~/bin/fixkeys
+
+#repeat rate
+/usr/bin/xset r rate 300 20
+
+# needed for firefox OMTC on bspwm
+export MOZ_USE_OMTC=1
+
+/usr/bin/xsetroot -cursor_name left_ptr &
+export _JAVA_AWT_WM_NONREPARENTING=1 JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
