@@ -23,6 +23,7 @@ set ssl_use_sslv3    = no
 set ssl_use_tlsv1    = no
 set ssl_use_tlsv1_1  = no
 set ssl_use_tlsv1_2  = yes
+set ssl_use_tlsv1_3  = yes
 set ssl_verify_dates = yes
 set ssl_verify_host  = yes
 
@@ -33,7 +34,7 @@ set pgp_check_exit      = yes
 set pgp_entry_format    = "%4n %t%f %4l/0x%k %-4a %2c %u"
 set pgp_good_sign       = "Good signature from"
 set pgp_ignore_subkeys  = yes
-# mutt na
+# neomutt patch:
 # set pgp_encrypt_self    = yes
 set pgp_long_ids        = no
 set pgp_mime_auto       = no
@@ -45,12 +46,9 @@ set pgp_strict_enc      = yes
 set pgp_timeout         = 3600
 
 ###1 imap
-set ssl_starttls = yes
-unset imap_passive
-set imap_keepalive = 300
+# unset imap_passive
+set imap_keepalive = 60
 set mail_check = 60
-# set spoolfile = '+INBOX'
-# set postponed = +[Gmail]/Drafts
 
 ###1 smtp
 set smtp_authenticators = "gssapi:login"
@@ -59,15 +57,16 @@ set smtp_authenticators = "gssapi:login"
 # set header_cache = "~/.cache/mutt"
 # set message_cachedir  = "~/.cache/mutt"
 
-set beep=no
-set sort="threads"
-set autoedit = yes
+###1 basic?
+set beep         = no
+set sort         = "threads"
+set autoedit     = yes
 set edit_headers = yes
 
 ###1 Color
-set my_norm=color253
-set my_bg=color233
-set my_comm=color244
+set my_norm = color253
+set my_bg   = color233
+set my_comm = color244
 
 color status     color218 color234
 color search     black    color96
