@@ -55,7 +55,8 @@ filetype plugin indent on
 syntax on
 syntax sync minlines=256
 set synmaxcol=4096
-let &spellfile = s:vimfilesdir . '/spell/en.utf-8.add' " defaults to rtp[0] -_-
+ " defaults to rtp[0] -_-
+let &spellfile = expand(s:vimfilesdir . '/spell/en.utf-8.add')
 
 "{{{2 File encoding
 if has('multi_byte')
