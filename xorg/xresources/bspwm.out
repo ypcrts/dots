@@ -29,6 +29,25 @@ URxvt.keysym.C-M-Up: perl:font-size:increase
 URxvt.keysym.C-M-Down: perl:font-size:decrease
 URxvt.keysym.C-M-S-Up: perl:font-size:incglobal
 URxvt.keysym.C-M-S-Down: perl:font-size:decglobal
+rofi.color-enabled: true
+rofi.show-icons: true
+rofi.color-normal: #00000000, #ffffff, #aa000000, #f2f2ff, #000000
+rofi.color-urgent: #00000000, #ffffff, #aa000000, #f2f2ff, #000000
+rofi.color-active: #00000000, #cccccc, #aa000000, #000000, #aaaaaa
+rofi.color-window: #aa000000, #aa222222
+rofi.terminal: urxvt
+rofi.location: 0
+rofi.padding: 30
+rofi.separator-style: solid
+rofi.threads: 0
+rofi.lines: 10
+rofi.fixed-num-lines: true
+rofi.eh: 1
+rofi.bw: 0
+rofi.hide-scrollbar: true
+rofi.font: DejaVu Sans 14
+rofi.fullscreen: false
+rofi.modi: combi,drun,window,windowcd,run,ssh,keys
 *background: #1D1F21
 *foreground: #C5C8C6
 *color0: #282A2E
@@ -52,23 +71,6 @@ Xautolock.cornerdelay: 600
 Xautolock.time: 5
 Xautolock.notify: 15
 *askpass*background: #000000
-rofi.color-enabled: true
-rofi.color-normal: #00000000, #FFffffff, #00000000, #CC000000, #FFffffff
-rofi.color-urgent: #000000, #ffffff, #000000, #333333, #ffffff
-rofi.color-active: #000000, #ffffff, #000000, #333333, #ffffff
-rofi.color-window: #aa000000, #aa222222
-rofi.terminal: urxvt
-rofi.location: 0
-rofi.padding: 30
-rofi.separator-style: solid
-rofi.threads: 0
-rofi.lines: 10
-rofi.fixed-num-lines: true
-rofi.eh: 2
-rofi.bw: 0
-rofi.hide-scrollbar: true
-rofi.font: Iosevka Term 10
-rofi.fullscreen: false
 URxvt.cursorColor: #5E468C
 URxvt*depth: 32
 URxvt*background: [90]#000000
