@@ -62,6 +62,7 @@ set beep         = no
 set sort         = "threads"
 set autoedit     = yes
 set edit_headers = yes
+set delete # don't prompt
 
 ###1 Color
 set my_norm = color253
