@@ -21,7 +21,6 @@ function! rcz#VimFileRealpath(filename)
   return rcz#DotfilesVimDir() . "/" . a:filename
 endfunction
 
-
 function! rcz#PlugPathFirstOf(...)
   let l:ret = 0
   for p in a:000
@@ -62,4 +61,3 @@ function! rcz#Todo()
     copen
   endif
 endfunction
-

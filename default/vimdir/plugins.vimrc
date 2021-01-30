@@ -223,7 +223,7 @@ if has_key(g:plugs, 'coc.nvim')
         \ 'coc-git'
         \]
         " \  'coc-sh', 'coc-rls'
-        " \ , 'coc-python', 'coc-html', 'coc-json', 'coc-css'
+        " \ , 'coc-pyright', 'coc-html', 'coc-json', 'coc-css'
         " \ , 'coc-prettier', 'coc-eslint', 'coc-tsserver', 'coc-emoji'
         ", 'coc-java'
         ", 'coc-r-lsp', 'coc-solargraph'
