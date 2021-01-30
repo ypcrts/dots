@@ -97,12 +97,16 @@ $ xorg
 
 $ bspwm
 ~/bin/: ./bspwm/bin/*
-~/.config/gtk-3.0/settings.ini: ./bspwm/gtkrc3
-~/.gtkrc-2.0: ./bspwm/gtkrc2
 ~/.xinitrc: ./bspwm/xinitrc
 ~/.config/bspwm/bspwmrc: ./bspwm/bspwmrc
 ~/.config/sxhkd/sxhkdrc: ./bspwm/sxhkdrc
 ~/.config/lemonbar: ./bspwm/lemonbar
+
+$ bspwm_gtkrc
+~/.config/gtk-3.0/settings.ini: ./bspwm/gtkrc3
+~/.gtkrc-2.0: ./bspwm/gtkrc2
+
+$ screenlayout
 ~/.screenlayout: ./bspwm/screenlayout
 
 $ awesome
