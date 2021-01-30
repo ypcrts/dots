@@ -30,6 +30,7 @@ alias \
   vim='$VISUAL' \
   safevi='SAFEVI=1 $VISUAL' \
   svi='SAFEVI=1 $VISUAL' \
+  startx='2>&1 >~/.local/startx.log startx' \
   makepackagegreatagain='python3 setup.py sdist bdist_wheel && twine upload dist/*' \
   ypcrtsgitconfig='cat ~/.config/git/ypcrts.gitconfig >> .git/config'
 

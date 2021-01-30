@@ -38,14 +38,14 @@ export SXHKD_SHELL=dash
 #    fc-cache -f
 #fi
 #
-# . ~/.screenlayout/active.sh &
+. ~/.screenlayout/current.sh &
 # ~/bin/feh-bgrotate --once &
-/usr/bin/compton &
+#/usr/bin/compton &
 #~/bin/redshift-run &
 #~/bin/thinktouchpad off &
-/usr/bin/xscreensaver -no-splash &
+#/usr/bin/xscreensaver -no-splash &
 dunst &
 sxhkd &
-exec bspwm > .xinit.log 2>&1
+exec bspwm >~/.local/bspwm.log 2>&1
 
 # vim: set ft=sh tw=0 ts=4 sw=4 sts=2 fdm=marker fmr={{{,}}} et:

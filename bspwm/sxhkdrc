@@ -54,7 +54,7 @@ super + bracketleft
 # {{{1 Desktop
 
 super + alt + control + 0 ; d
-    notify-send "Desktop $(bspc query --desktops --desktop focused)"
+    notify-send "Desktop $(bspc query --desktops --desktop focused --names)"
 
 # #toggle between tiled and monocle
 # super + alt + {t,y}
@@ -70,6 +70,7 @@ super + alt + backslash
     bspc desktop --focus last
 
 super + {j,k}
+    notify-send "Desktop $(bspc query --desktops --desktop focused --names)"
     bspc desktop --focus {next,prev}
 
 super + alt + {j,k}
@@ -77,13 +78,15 @@ super + alt + {j,k}
     WIN=$(bspc query --nodes --node focused); \
     bspc node --to-desktop "$DIR" && \
     bspc desktop --focus "$DIR" && \
-    bspc node $WIN --focus
+    bspc node "$WIN" --focus
 
 super + {1-9}
     bspc desktop --focus ^{1-9}
 
 super + alt + {1-9}
-    bspc node --to-desktop ^{1-9}
+    DESKTOP={1-9}; \
+    bspc node --to-desktop ^"$DESKTOP"; \
+    notify-send "Sent to Desktop $DESKTOP"
 
 # super + control + shift + {1-9}
 #     DESKTOP={1-9}; \
@@ -113,8 +116,11 @@ super + q
 super + alt + {_,control +}Tab
     bspc node --focus @{parent,brother}
 
-super + {Tab,shift + Tab}
-    bspc node --focus {next,prev}.active
+alt + {Tab,shift + Tab}
+    bspc node --focus {next,prev}.local.leaf
+
+super + Tab
+    rofi -show window
 
 super + b
     bspc node -s biggest
@@ -174,7 +180,7 @@ super + alt + control + Return
     urxvt -name fancyonemux -e onemux
 
 super + control + Return
-    urxvt -name onemux -e onemux
+    urxvt -name onemux -e ~/bin/onemux
 
 super + o
     wmctrl -xa "Icedove" || exec icedove
@@ -189,7 +195,7 @@ super + r
     rofi -show run
 
 super + space
-    rofi -show combi -combi-modi run,window,drun
+    rofi -show combi
 
 super + Tab ; space
     rofi -show window
@@ -197,42 +203,41 @@ super + Tab ; space
 #
 # {{{1 Fn Keys
 
-XF86AudioMute
-    ~/bin/thinkvolume mute
+# XF86AudioMute
+#     ~/bin/thinkvolume mute
 
-super + XF86AudioMute
-    wmctrl -xa "pavucontrol" || exec pavucontrol
+# super + XF86AudioMute
+#     wmctrl -xa "pavucontrol" || exec pavucontrol
 
-super + Escape
-    wmctrl -xa "pavucontrol" || exec pavucontrol
+# super + Escape
+#     wmctrl -xa "pavucontrol" || exec pavucontrol
 
-XF86AudioRaiseVolume
-    ~/bin/thinkvolume up
+# XF86AudioRaiseVolume
+#     ~/bin/thinkvolume up
 
-super + XF86AudioRaiseVolume
-    wmctrl -xa "cantata" || exec cantata
+# super + XF86AudioRaiseVolume
+#     wmctrl -xa "cantata" || exec cantata
 
-XF86AudioLowerVolume
-    ~/bin/thinkvolume down
+# XF86AudioLowerVolume
+#     ~/bin/thinkvolume down
 
-XF86AudioMicMute
-    ~/bin/thinkvolume mutemic
+# XF86AudioMicMute
+#     ~/bin/thinkvolume mutemic
 
 super + grave
     wmctrl -xa "wicd-client.py" || exec ~/bin/wifischeisse
 
-
 # mpc
-super + alt + control + Right
-    mpc next
+# super + alt + control + Right
+#     mpc next
 
-super + alt + control + Left
-    mpc prev
+# super + alt + control + Left
+#     mpc prev
 
-super + alt + control + Up
-    mpc toggle
+# super + alt + control + Up
+#     mpc toggle
 
-super + alt + control + Up
-    mpc pause
+# super + alt + control + Up
+#     mpc pause
 
 # vim: set ft=conf tw=0 ts=4 sw=4 sts=4 fdm=marker fmr={{{,}}} et:

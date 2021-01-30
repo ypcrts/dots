@@ -30,10 +30,18 @@ vi-keys in bash and powershell is key to my happiness.  `set -o vi` is my favour
     thing to type in a reverse shell, even before `python -c 'import
     pty;pty.spawn("/bin/bash")'`.
 
-### Abandoned Features
-This repo used to also provide an up-to-date configuration for bspwm and sxkhd
+### ~Abandoned~ Features
+<s>This repo used to also provide an up-to-date configuration for bspwm and sxkhd
 that I loved dearly. This text blob is in loving memory of the days where
 I felt that keeping up to date with the bspwm developer's breaking changes was
 worth my time. It's not anymore. I'd rather use Microsoft Windows to host my
 terminal emulators (<s>Windows Terminal is pretty good</s> Alacritty is cute)
-so I can do things in docker and over ssh.  RIP bspwm & the Linux desktop.
+so I can do things in docker and over ssh.  RIP bspwm & the Linux desktop.<s>
+
+The above text blob is a reminder of the time I quit bspwm for a year.
+
+This text blob commemorates the time that I killed moving my config from bspwm
+0.9.2 to 0.9.9.
+
+This text blob is a reminder to never give up on your favourite window manager.
+Even if the X11 threat model is unconscionable in 2021, bspwm is worth it.
