@@ -436,6 +436,7 @@ augroup END
 "{{{2 Timestamps, datestamps
 augroup datez-maps
   autocmd VimEnter *  noremap <silent> <leader>zh  m'a<C-R>=datez#UniversalTime()<CR><ESC>o<ESC>80i=<ESC>
+  autocmd VimEnter *  noremap <silent> <leader>zi  o80i/o80i/OTLP:AMBER:right0RINTERNAL NOTE
   autocmd VimEnter *  noremap <silent> <leader>zld m'a<C-R>=datez#Local()<CR><ESC>
   autocmd VimEnter *  noremap <silent> <leader>zlt m'a<C-R>=datez#LocalTime()<CR><ESC>
   autocmd VimEnter *  noremap <silent> <Leader>zln m'a<C-R>=datez#LocalTimeNato()<CR><ESC>
