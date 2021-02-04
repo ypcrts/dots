@@ -54,24 +54,23 @@ super + bracketleft
 # {{{1 Desktop
 
 super + alt + control + 0 ; d
-    notify-send "Desktop $(bspc query --desktops --desktop focused --names)"
+    notify-send "Desktop $(bspc query --desktops --desktop focused --names) is focused"
 
-# #toggle between tiled and monocle
-# super + alt + {t,y}
-#     bspc desktop --layout {tiled,monocle}
+ super + alt + space
+     bspc desktop --layout next
 
 super + alt + {r, shift + r}
     bspc node --rotate {90,270}
 
-super + alt + {c, shift + c}
-    bspc node --circulate {forward,backward}
+super + alt + {b,c,e}
+    bspc node @/ --{balance,circulate forward,equalize}
 
 super + alt + backslash
     bspc desktop --focus last
 
 super + {j,k}
-    notify-send "Desktop $(bspc query --desktops --desktop focused --names)"
-    bspc desktop --focus {next,prev}
+    bspc desktop --focus {next,prev}; \
+    notify-send --expire-time 800 -c BSPWM "Desktop $(bspc query --desktops --desktop focused --names)"
 
 super + alt + {j,k}
     DIR={next,prev}; \
@@ -150,6 +149,9 @@ super + shift + {h,j,k,l}
 super + control + {h,j,k,l}
     bspc node --presel-dir \~{west,south,north,east}
 
+super + control + shift {h,j,k,l}
+    bspc node --swap \~{west,south,north,east}
+
 # ratios
 super + control + {b,e}
     bspc desktop --{balance,equalize}
@@ -195,7 +197,7 @@ super + r
     rofi -show run
 
 super + space
-    rofi -show combi
+    rofi -show drun
 
 super + Tab ; space
     rofi -show window

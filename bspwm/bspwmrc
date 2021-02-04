@@ -33,7 +33,10 @@ n="$(bspc rule --list | grep -c .)"
 for ((i = 0; i < n; ++i)); do bspc rule --remove head; done
 unset i n
 
-bspc monitor --reset-desktops 1 2 3 4 5 6 7 8 9
+for m in $(bspc query --monitors); do
+  name="$(bspc query -M -m $m --names)"
+  bspc monitor  "$m" --reset-desktops "${name}:a" "${name}:b" "${name}:c" "${name}:d"
+done
 
 bspc rule --add gifview                   focus=true     state=floating center=true
 bspc rule --add kupfer.py                 focus=true     state=floating center=true
