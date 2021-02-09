@@ -2,6 +2,8 @@ Set-Alias v vi
 Set-Alias vi vim
 Set-Alias vim nvim
 
+Set-PSReadlineOption -EditMode vi
+
 Function mksshconfig {
   & docker run -it -v "~:/root" debian:stable bash /root/Documents/dots/ssh/bin/mksshconfig
 }
@@ -12,7 +14,6 @@ Function dockerbash {
 #Function edit-powershell-profile {
 #  vim $profile
 #}
-Set-PSReadlineOption -EditMode vi
 
 Function bg() {
   # Cause I keep forgetting this.
@@ -34,6 +35,15 @@ Function k {
 }
 Function p {
   cd $env:USERPROFILE/Documents
+}
+Function pp {
+  cd $env:USERPROFILE/Documents
+}
+Function ssho {
+  Param(
+    [string[]]$Pass
+  )
+ & ssh -t @Pass -- exec bin/onemux
 }
 Function ssho {
   Param(
