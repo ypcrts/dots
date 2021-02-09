@@ -11,35 +11,37 @@ bash_prompt_setup () {
   # local W='\033[0;37m' # white
   # local RST='\033[0m' # Text reset
 
-  local F begrenzer=' ' benutzer='' promptchar='$'
-  local H="\[\e[0;$(__strfarbe__ "$HOSTNAME")m\]"
+  local FARBE BEGRENZER=''
+
   if ((EUID == 0)); then
-    begrenzer='//'
-    promptchar='#'
-    farbeint=31
+    BEGRENZER+="//"
+    FARBE=31
   else
-    farbeint="$(__intfarbe__ "$EUID")"
+    FARBE="$(__INTFARBE__ "$EUID")"
   fi
-  F="\[\e[0;${farbeint}m\]"
-
   if [[ "x$SSH_TTY" != 'x' ]]; then
-    begrenzer='▞'
-    if [[ -z "$SAFE_PROMPT" ]]; then
-      benutzer="${F}\\u${H}@\\h${R}${begrenzer}"
-    fi
+    BEGRENZER+='▞'
   fi
 
+  local F="\[\e[0;${FARBE}m\]"
   local R='\[\e[0m\]'
   local BOLD='\[\033[1m\]'
-  local S='\[${statusfarbecode}\]'
+
+  local HOST_FARBE="$(__STRFARBE__ "$HOSTNAME")"
+
+  if [[ -z "$SAFE_PROMPT" ]]; then
+    local NUTZER_TEIL="${F}\\u\[\e[0;${HOST_FARBE}m\]@\\h${R} ${BEGRENZER} "
+  else
+    local NUTZER_TEIL=''
+  fi
 
   # PS0 doesn't want to be in the prompt [ ] brackets
   PS0='\033[0m'
-  PS1="${R}${benutzer}${S}\\w${R}${begrenzer}\$(__git_ps1 \"%s\" 2>/dev/null)${R} \$(___VIRTUALENV_PROMPT__ )${R}\n${S}${promptchar}${R}${BOLD} "
+  PS1="\n${NUTZER_TEIL}\[\033[\${RET_FARBE}m\]\\w${R} \$(___VIRTUALENV_PROMPT__ 2>/dev/null)\[\033[0;34m\]\$(__git_ps1 \"(%s)\" 2>/dev/null)${R}\n\[\033[\${RET_FARBE}m\]\\$ ${R}${BOLD}"
   PS2="${F}\ "
   PS4="${F}• "
 }
-__strfarbe__ ()  {
+__STRFARBE__ ()  {
 # param $1 str to hash
   (($# != 1)) && return 1
 
@@ -67,7 +69,7 @@ __strfarbe__ ()  {
     done
   fi
 }
-__intfarbe__ ()  {
+__INTFARBE__ ()  {
   # Converts integer to one of four ANSI colour codes
   (($# != 1)) && return 1
   local pybin
@@ -85,28 +87,27 @@ __intfarbe__ ()  {
 }
 
 bash_prompt_setup
-unset bash_prompt_setup __strfarbe__ __intfarbe__
+unset bash_prompt_setup __STRFARBE__ __INTFARBE__
 
 ___VIRTUALENV_PROMPT__ () {
-  {
-    [ -n "$RUHE" ] && return 0
-    if [ -n "$VIRTUAL_ENV" ]; then
-      echo -en "\033[0;32m${VIRTUAL_ENV##*/}\033[0m"
-    fi
-    if [ -n "$NVM_BIN" ]; then
-      echo -en "\033[0;35m`nvm current | sed -n -e 's/v\([0-9]*\).*/\1/p' 2>/dev/null `\033[0m"
-    fi
-    # TODO: Add rubygems (g), rvm (r)
-  } 2>/dev/null
+  [ -n "$RUHE" ] && return 0
+  if [ -n "$VIRTUAL_ENV" ]; then
+    echo -en "\033[0;32m${VIRTUAL_ENV##*/}\033[0m "
+  fi
+  if [ -n "$NVM_BIN" ]; then
+    echo -en "\033[0;35mn`nvm current | sed -n -e 's/v\([0-9]*\).*/\1/p' 2>/dev/null `\033[0m "
+  fi
+  # TODO: Add rubygems (g), rvm (r)
 }
 
 ___EXITSTAT () {
   local RET=$?
   if ((RET)); then
-    statusfarbecode=$'\e[1;31m'
-    printf "\n${statusfarbecode}¿%s?\033[0m " "$RET"
+    RET_FARBE='0;31'
+    printf "\n\033[1;31m(%s)\033[0m " "$RET"
   else
-    statusfarbecode=''
+    RET_FARBE='0'
   fi
+
 }
 PROMPT_COMMAND='___EXITSTAT'
