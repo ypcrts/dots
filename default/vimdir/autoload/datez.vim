@@ -2,14 +2,20 @@ function! s:Strip(val)
     return substitute(a:val, '[\r\n]*$', '', '')
 endfunction
 
-function! datez#EarlyMorningColorschemeNeeded()
+function! datez#LightVi()
+    if !empty($LIGHTVI)
+      if $LIGHTVI == '1'
+        echomsg '[LIGHTVI] enabled'
+        return 1
+      endif
+      echomsg '[LIGHTVI] disabled'
+      return 0
+    endif
     if ! exists("*strftime")
         return 0
     endif
     let s:local_hour = strftime("%k")
-    if s:local_hour < 6
-        return 0
-    elseif s:local_hour > 10
+    if 6 < s:local_hour ||  s:local_hour > 10
         return 0
     endif
     return 1
