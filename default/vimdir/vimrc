@@ -374,6 +374,7 @@ augroup basic-sanity-maps
     autocmd VimEnter *  nnoremap ]t :tabn<CR>
     autocmd VimEnter *  nnoremap [t :tabp<CR>
     autocmd VimEnter *  nnoremap Y y$
+    autocmd VimEnter *  nnoremap vq vapgq
     " autocmd VimEnter *  nnoremap Q gqq
     " autocmd VimEnter *  xnoremap Q gqq
     autocmd VimEnter *  noremap  <silent> <Leader><Leader> :nohls<cr><c-l>
