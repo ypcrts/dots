@@ -38,7 +38,7 @@ export SXHKD_SHELL=dash
 #    fc-cache -f
 #fi
 #
-. ~/.screenlayout/current.sh &
+#. ~/.screenlayout/current.sh &
 # ~/bin/feh-bgrotate --once &
 #/usr/bin/compton &
 #~/bin/redshift-run &

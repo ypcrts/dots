@@ -35,7 +35,7 @@ unset i n
 
 for m in $(bspc query --monitors); do
   name="$(bspc query -M -m $m --names)"
-  bspc monitor  "$m" --reset-desktops "${name}:a" "${name}:b" "${name}:c" "${name}:d"
+  bspc monitor  "$m" --reset-desktops "${name}:a" "${name}:b"
 done
 
 bspc rule --add gifview                   focus=true     state=floating center=true
@@ -63,6 +63,7 @@ bspc rule --add Nautilus                  state=floating
 bspc rule --add Acroread                  state=floating
 bspc rule --add Pinentry                  state=floating center=true
 bspc rule --add Wicd-client.py            state=floating center=true    sticky=true
+bspc rule --add Blueman-manager           state=floating center=true
 bspc rule --add jetbrains-idea-ce         state=tiled    private=true
 bspc rule --add TeamViewer.exe            state=floating
 bspc rule --add com.ypcrts.AppMainFX      state=floating center=true    sticky=true
