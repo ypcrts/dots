@@ -90,7 +90,8 @@ checkagent () {
     return 6
   fi
 
-  ssh-add -l -q >/dev/null 2>&1
+  # note: `-q` option missing from older ssh-add
+  ssh-add -l >/dev/null 2>&1
 
   case $? in
     0)
@@ -118,7 +119,8 @@ reagent () {
   for agent in $agents; do
     export SSH_AUTH_SOCK="$agent"
 
-    if ssh-add -l -q >/dev/null 2>&1; then
+    if ssh-add -l >/dev/null 2>&1; then
+      # note: `-q` option missing from older ssh-add
       [ -z "$QUIET" ] && echo "Found keyed agent: $agent"
       ssh-add -l
       return 0
