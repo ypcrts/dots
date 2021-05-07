@@ -240,8 +240,8 @@ if has_key(g:plugs, 'coc.nvim')
     autocmd VimEnter * nmap     <leader>af <Plug>(coc-format)
     autocmd VimEnter * nmap     <leader>qf <Plug>(coc-fix-current)
 
-    autocmd VimEnter * nmap     <silent> [c <Plug>(coc-diagnostic-prev)
-    autocmd VimEnter * nmap     <silent> ]c <Plug>(coc-diagnostic-next)
+    autocmd VimEnter * nmap     <silent> [d <Plug>(coc-diagnostic-prev)
+    autocmd VimEnter * nmap     <silent> ]d <Plug>(coc-diagnostic-next)
     autocmd VimEnter * nmap     <silent> gd <Plug>(coc-definition)
     autocmd VimEnter * nmap     <silent> gy <Plug>(coc-type-definition)
     autocmd VimEnter * nmap     <silent> gr <Plug>(coc-references)
@@ -391,26 +391,24 @@ augroup fzf-maps
   autocmd! FileType fzf
   autocmd  FileType fzf set noshowmode noruler nonu
 
-   autocmd VimEnter *  nnoremap ,, ,
-
-   autocmd VimEnter *  nmap ,.  :Commands<CR>
-   autocmd VimEnter *  nmap ,c  :CocList commands<cr>
-   autocmd VimEnter *  nmap ,b  :Buffers<CR>
-   autocmd VimEnter *  nmap ,f  :Files<CR>
-   autocmd VimEnter *  nmap ,h  :Helptags<CR>
-   autocmd VimEnter *  nmap ,i  :History<CR>
-   autocmd VimEnter *  nmap ,m  :Maps<CR>
-   autocmd VimEnter *  nmap ,gs :GFiles?<CR>
-   autocmd VimEnter *  nmap ,gf :GFiles<CR>
-   autocmd VimEnter *  nmap ,gg :GitGrep<CR>
-   autocmd VimEnter *  nmap ,r  :Rg<CR>
-   autocmd VimEnter *  nmap ,p :Files ~/Projects<CR>
+   autocmd VimEnter *  nmap <leader>x :Commands<CR>
+   autocmd VimEnter *  nmap <leader>gc  :CocList commands<cr>
+   autocmd VimEnter *  nmap <leader>gb  :Buffers<CR>
+   autocmd VimEnter *  nmap <leader>gf  :Files<CR>
+   autocmd VimEnter *  nmap <leader>gh  :Helptags<CR>
+   autocmd VimEnter *  nmap <leader>gi  :History<CR>
+   autocmd VimEnter *  nmap <leader>gm  :Maps<CR>
+   autocmd VimEnter *  nmap <leader>ggs :GFiles?<CR>
+   autocmd VimEnter *  nmap <leader>ggf :GFiles<CR>
+   autocmd VimEnter *  nmap <leader>ggg :GitGrep<CR>
+   autocmd VimEnter *  nmap <leader>gr  :Rg<CR>
+   autocmd VimEnter *  nmap <leader>gp :Files ~/Projects<CR>
 
    " local lines in current buffer
-   autocmd VimEnter *  nmap ,ll :BLines<CR>
+   autocmd VimEnter *  nmap <leader>gll :BLines<CR>
 
    " lines in all buffers
-   autocmd VimEnter *  nmap ,lb :Lines<CR>
+   autocmd VimEnter *  nmap <leader>glb :Lines<CR>
 
    autocmd VimEnter *  imap <C-x><C-f> <plug>(fzf-complete-path)
    autocmd VimEnter *  imap <C-x><C-z> <plug>(fzf-complete-line)
@@ -437,7 +435,7 @@ if has_key(g:plugs, 'coc.nvim')
     autocmd VimEnter *  nmap [g          <Plug>(coc-git-prevchunk)
     autocmd VimEnter *  nmap ]g          <Plug>(coc-git-nextchunk)
     autocmd VimEnter *  nmap <Leader>gi  <Plug>(coc-git-chunkinfo)
-    autocmd VimEnter *  nmap <Leader>gs  :CocCommand git.chunkStage<cr>
+    " autocmd VimEnter *  nmap <Leader>gs  :CocCommand git.chunkStage<cr>
     autocmd VimEnter *  omap ig          <Plug>(coc-git-chunk-inner)
     autocmd VimEnter *  xmap ig          <Plug>(coc-git-chunk-inner)
     autocmd VimEnter *  omap ag          <Plug>(coc-git-chunk-outer)
