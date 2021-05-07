@@ -13,6 +13,10 @@ bash_prompt_setup () {
 
   local F begrenzer=' ' benutzer='' promptchar='$'
   local H="\[\e[0;$(__strfarbe__ "$HOSTNAME")m\]"
+  local R='\[\e[0m\]'
+  local BOLD='\[\033[1m\]'
+  local S='\[${statusfarbecode}\]'
+
   if ((EUID == 0)); then
     begrenzer='//'
     promptchar='#'
@@ -25,17 +29,12 @@ bash_prompt_setup () {
   if [[ "x$SSH_TTY" != 'x' ]]; then
     begrenzer='▞'
   elif [[ -f /.dockerenv ]] || grep -Eq '(docker|lxc)/' /proc/1/cgroup 2>/dev/null; then
-    begrenzer='¢'
+    begrenzer=" © "
   fi
 
   if [[ "x$begrenzer" != 'x '  ]] || [[ -n "$SAFE_PROMPT" ]]; then
-    printf "fu"
     benutzer="${F}\\u${H}@\\h${R}${begrenzer}"
   fi
-
-  local R='\[\e[0m\]'
-  local BOLD='\[\033[1m\]'
-  local S='\[${statusfarbecode}\]'
 
   # PS0 doesn't want to be in the prompt [ ] brackets
   PS0='\033[0m'
