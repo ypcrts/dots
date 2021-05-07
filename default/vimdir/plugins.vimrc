@@ -391,24 +391,24 @@ augroup fzf-maps
   autocmd! FileType fzf
   autocmd  FileType fzf set noshowmode noruler nonu
 
-   autocmd VimEnter *  nmap <leader>x :Commands<CR>
-   autocmd VimEnter *  nmap <leader>gc  :CocList commands<cr>
-   autocmd VimEnter *  nmap <leader>gb  :Buffers<CR>
-   autocmd VimEnter *  nmap <leader>gf  :Files<CR>
-   autocmd VimEnter *  nmap <leader>gh  :Helptags<CR>
-   autocmd VimEnter *  nmap <leader>gi  :History<CR>
-   autocmd VimEnter *  nmap <leader>gm  :Maps<CR>
-   autocmd VimEnter *  nmap <leader>ggs :GFiles?<CR>
-   autocmd VimEnter *  nmap <leader>ggf :GFiles<CR>
-   autocmd VimEnter *  nmap <leader>ggg :GitGrep<CR>
-   autocmd VimEnter *  nmap <leader>gr  :Rg<CR>
-   autocmd VimEnter *  nmap <leader>gp :Files ~/Projects<CR>
+   autocmd VimEnter *  nmap <leader>x  :Commands<CR>
+   autocmd VimEnter *  nmap <leader>c  :CocList commands<cr>
+   autocmd VimEnter *  nmap <leader>b  :Buffers<CR>
+   autocmd VimEnter *  nmap <leader>f  :Files<CR>
+   autocmd VimEnter *  nmap <leader>h  :Helptags<CR>
+   autocmd VimEnter *  nmap <leader>i  :History<CR>
+   autocmd VimEnter *  nmap <leader>m  :Maps<CR>
+   autocmd VimEnter *  nmap <leader>gs :GFiles?<CR>
+   autocmd VimEnter *  nmap <leader>gf :GFiles<CR>
+   autocmd VimEnter *  nmap <leader>gg :GitGrep<CR>
+   autocmd VimEnter *  nmap <leader>r  :Rg<CR>
+   autocmd VimEnter *  nmap <leader>p :Files ~/Projects<CR>
 
    " local lines in current buffer
-   autocmd VimEnter *  nmap <leader>gll :BLines<CR>
+   autocmd VimEnter *  nmap <leader>ll :BLines<CR>
 
    " lines in all buffers
-   autocmd VimEnter *  nmap <leader>glb :Lines<CR>
+   autocmd VimEnter *  nmap <leader>lb :Lines<CR>
 
    autocmd VimEnter *  imap <C-x><C-f> <plug>(fzf-complete-path)
    autocmd VimEnter *  imap <C-x><C-z> <plug>(fzf-complete-line)
