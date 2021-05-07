@@ -32,7 +32,7 @@ if s:is_windows
   Plug 'junegunn/fzf'  " XXX: for vim file, but scoop install fzf
 else
   " rcz#PlugPathFirstOf('/usr/local/opt/fzf')
-  Plug 'junegunn/fzf', { 'do': './install --all'  }
+  Plug 'junegunn/fzf', { 'do': './install --bin'  }
 endif
 Plug 'junegunn/fzf.vim'
 
