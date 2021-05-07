@@ -30,7 +30,7 @@ if s:is_nvim
     if executable(s:node_path)
       let g:node_host_prog = s:node_path
       let g:coc_node_path = s:node_path
-      let $PATH .= fnamemodify(s:node_path, ':p:h')
+      let $PATH .= ":" . fnamemodify(s:node_path, ':p:h')
     endif
 
     let s:pydir = fnamemodify('~/.virtualenvs/3/bin/', ':p')
