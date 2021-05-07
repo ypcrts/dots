@@ -24,9 +24,13 @@ bash_prompt_setup () {
 
   if [[ "x$SSH_TTY" != 'x' ]]; then
     begrenzer='▞'
-    if [[ -z "$SAFE_PROMPT" ]]; then
-      benutzer="${F}\\u${H}@\\h${R}${begrenzer}"
-    fi
+  elif [[ -f /.dockerenv ]] || grep -Eq '(docker|lxc)/' /proc/1/cgroup 2>/dev/null; then
+    begrenzer='¢'
+  fi
+
+  if [[ "x$begrenzer" != 'x '  ]] || [[ -n "$SAFE_PROMPT" ]]; then
+    printf "fu"
+    benutzer="${F}\\u${H}@\\h${R}${begrenzer}"
   fi
 
   local R='\[\e[0m\]'
