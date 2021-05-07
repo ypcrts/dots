@@ -24,11 +24,20 @@ if s:is_nvim
       \ )
     let g:python3_host_prog = substitute(s:pyprogpath, '[\r\n]\+', '', '')
   else
+    let s:node_path = substitute(
+          \ system("bash -c '. ~/.bashrc; . ~/.config/bash/interactive.sh;  loadenv n; nvm use node 2>/dev/null >&2;which node '"),
+          \ '[[:cntrl:]]', '', 'g')
+    if executable(s:node_path)
+      let g:node_host_prog = s:node_path
+      let g:coc_node_path = s:node_path
+      let $PATH .= fnamemodify(s:node_path, ':p:h')
+    endif
+
     let s:pydir = fnamemodify('~/.virtualenvs/3/bin/', ':p')
     if isdirectory(s:pydir)
       let g:python3_host_prog = s:pydir . "python"
     else
-      echoerr "python3_host_prog unset - dir not found: " . s:pydir
+      echomsg "python3_host_prog unset - dir not found: " . s:pydir
     endif
   endif
 endif
