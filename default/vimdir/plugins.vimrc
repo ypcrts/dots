@@ -104,7 +104,7 @@ Plug    'chrisbra/csv.vim',         { 'for':    'csv' }
 "{{{2 network i/o (risk)
 " Plug 'baverman/vial-http', { 'commit': 'NULL' } " cool rest client for vim
 " XXX: TODO: blackmagic: cr ghost
-Plug       'raghur/vim-ghost', has('nvim') ? { 'on': 'GhostStart' } : { 'on': [], 'for': [] }
+Plug       'raghur/vim-ghost' ", has('nvim') ? { 'on': 'GhostStart' } : { 'on': [], 'for': [] }
 
 "{{{3 Syntax
 "{{{4 Syntax - polyglot and overrides
@@ -171,10 +171,16 @@ Plug             'w0ng/vim-hybrid'
 Plug         'nanotech/jellybeans.vim'
 Plug             'guns/jellyx.vim'
 Plug          'fisadev/fisa-vim-colorscheme'
+if has('nvim-0.5.0')
+  Plug       'nvim-lua/popup.nvim'
+  Plug       'nvim-lua/plenary.nvim'
+  Plug          'folke/tokyonight.nvim'
+  Plug 'nvim-telescope/telescope.nvim'
+endif
 Plug      'whatyouhide/vim-gotham'        ",   { 'commit': 'f46412d4f9768c332ae22676f3ef4cc130457ba0' }
-Plug          'djjcast/mirodark',              { 'commit': '306c5f96dd0ecaa64eac603b990a22300dc798f7' }
+Plug          'djjcast/mirodark',         { 'commit': '306c5f96dd0ecaa64eac603b990a22300dc798f7' }
 " Plug         'lu-ren/SerialExperimentsLain', { 'commit': 'aabb800d6a27cde243604a94a9a14334286a87b2' }
-Plug           'zcodes/vim-colors-basic',      { 'commit': 'bdf14db578ad283bffa019ab2236f4d378eef34b' }
+Plug           'zcodes/vim-colors-basic', { 'commit': 'bdf14db578ad283bffa019ab2236f4d378eef34b' }
 Plug       'lifepillar/vim-solarized8'    ",   { 'commit': 'dc6c1dfa6f5c068ba338b8a2e4f88f4b6de4433a' }
 Plug       'nightsense/snow'
 " if !has('nvim') " nvim no work? 16-bit
@@ -184,7 +190,7 @@ Plug       'nightsense/snow'
 " Plug 'flazz/vim-colorschemes'
 "{{{2 End of plugin definitions-------------------------------------------------------------------
 "
-call plug#end()
+call        plug#end()
 
 "}}}1
 "{{{1 Reset to sane plugin defaults
@@ -395,6 +401,7 @@ augroup fzf-maps
    autocmd VimEnter *  nmap <leader>c  :CocList commands<cr>
    autocmd VimEnter *  nmap <leader>b  :Buffers<CR>
    autocmd VimEnter *  nmap <leader>f  :Files<CR>
+   autocmd VimEnter *  nmap        ,f  :Files<CR>
    autocmd VimEnter *  nmap <leader>h  :Helptags<CR>
    autocmd VimEnter *  nmap <leader>i  :History<CR>
    autocmd VimEnter *  nmap <leader>m  :Maps<CR>

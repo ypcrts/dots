@@ -158,16 +158,27 @@ if (s:is_windows && !s:is_nvim && v:version < 700 ) || exists('s:safevi')
 "   let g:solarized_termtrans = 1
 "   color solarized8_dark_high
 elseif datez#LightVi()
-  colorscheme basic-light
+  " if has('nvim-0.5.0')
+  "   let g:tokyonight_style = "day"
+  "   colorscheme tokyonight
+  " else
+    colorscheme basic-light
+  " endif
 elseif has('termguicolors') && &termguicolors
-  set bg=dark
-  colorscheme hybrid
-  if ! has('gvim')
-    augroup transparentbackground
-      au colorscheme * hi normal guibg=none ctermbg=none
-    augroup end
-  endif
-  colorscheme hybrid
+  " if has('nvim-0.5.0')
+  "   let g:tokyonight_transparent = 1
+  "   let g:tokyonight_style = "storm"
+  "   colorscheme tokyonight
+  " else
+    set bg=dark
+    colorscheme hybrid
+    if ! has('gvim')
+      augroup transparentbackground
+        au colorscheme * hi normal guibg=none ctermbg=none
+      augroup end
+    endif
+    colorscheme hybrid
+  " endif
 else
   colorscheme basic-dark
   if ! has('gvim')
@@ -189,7 +200,7 @@ set shiftwidth=2
 set softtabstop=2
 
 set showcmd            " show typing in normal mode
-set showbreak='+'
+set showbreak=…
 set breakindent
 set breakindentopt=sbr
 set textwidth=0        " disable hard wrap at col 79
