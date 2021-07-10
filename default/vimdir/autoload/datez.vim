@@ -79,7 +79,7 @@ else
 
 endif
 
-if has('win_32')
+if has('win32')
     function! datez#Universal()
         echoerr "datez#Universal() not impl on win32: try datez#Local()"
     endfunction
