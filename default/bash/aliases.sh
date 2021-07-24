@@ -16,6 +16,7 @@ alias \
   dr='docker' \
   drc='docker-compose' \
   npmx='PATH="$(git rev-parse --show-toplevel || echo ".")/node_modules/.bin:$PATH"' \
+  yka='export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/yubikey-agent/yubikey-agent.sock"' \
   k='keys' \
   rot13='tr a-zA-Z n-za-mN-ZA-M' \
   troll='tr a-zA-Z qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM' \
