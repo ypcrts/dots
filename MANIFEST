@@ -85,8 +85,8 @@ $ karabiner
 #--------------------------------------------------------------------------------
 
 $ zsh
-~/.zprofile: ./zsh/zprofile
-~/.zshrc: ./zshrc/zshrc
+~/.zprofile: @delete
+~/.zshrc: ./zsh/zshrc
 
 $ xorg
 ~/bin/: ./xorg/bin/*
