@@ -210,7 +210,8 @@ loadenv () {
         if SOURCE_FIRST \
           /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
           /usr/bin/virtualenvwrapper.sh \
-          /usr/local/bin/virtualenvwrapper.sh; then
+          /usr/local/bin/virtualenvwrapper.sh \
+          ~/.local/bin/virtualenvwrapper.sh; then
           echo "OK"
         else
           echo "failed!"
