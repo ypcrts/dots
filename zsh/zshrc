@@ -1,2 +1,7 @@
 [[ $- == *i* ]] || return
-emulate sh -c 'source ~/.config/bash/interactive.sh'
+#emulate sh -c 'source ~/.config/bash/interactive.sh'
+
+if [[ -n "$ZSH_NAME" ]]; then
+    export SHELL="/bin/bash"
+      ARGV0="-bash" exec /bin/bash
+fi
