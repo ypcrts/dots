@@ -1,10 +1,11 @@
 " vi: ft=vim sts=2 ts=2 sw=2 et
 "{{{1 Bootstrap
 "{{{2 - require py
-if !(has('python') || has('python3') || has('nvim'))
-  echoerr 'no pythonsss'
-  finish
-endif
+" XXX: 2025-01-14 vim-plug works without python, not clear why i had this here
+"if !(has('python') || has('python3') || has('nvim'))
+"  echoerr 'no pythonsss'
+"  "finish
+"endif
 
 let s:is_windows = has('win32') || has('win64')
 
