@@ -93,32 +93,13 @@ if &t_Co > 2 || has('gui_running')
   set hlsearch
 endif
 
-if has('termguicolors') && !s:is_windows
-  " vim8 has termguicolors too
-  if s:is_nvim && (
-        \    match($TERM, '^\v(screen|rxvt)-256.*$') == 0
-        \   || !empty($ITERM_SESSION_ID)
-        \   || !empty($ALACRITTY_LOG)
-        \   || !empty($GHOSTTTY_SHELL_FEATURES)
-        \ )
-    " This nonsense can only be set if terminal has 24 bit colour support.
-    " neovim does not intuit such a thing. programming is math not magic.
-    " rxvt never has 24-bit support, so off.
-
-    set termguicolors
-
-    " STILL BROKEN IN VIM800/TMUX2.6 - github issues galore
-    " XXX: When unbroken should remove has('nvim') from conditional
-
-    " " vim8, tmux-2.5, iterm3: b&w so force it off
-    " if v:version >= 800
-    "   " see `:help term.txt`
-    "   let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
-    "   let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
-    " endif
-  else
-    set notermguicolors
-  endif
+if has('termguicolors') && (s:is_nvim || !empty($ITERM_SESSION_ID)
+      \   || !empty($ALACRITTY_LOG)
+      \   || !empty($GHOSTTY_SHELL_FEATURES)
+      \ )
+  set termguicolors
+else
+  set notermguicolors
 endif
 
 
@@ -153,21 +134,22 @@ endif
 
 if (s:is_windows && !s:is_nvim && v:version < 700 ) || exists('s:safevi')
  colorscheme ir_black
-" elseif has('termguicolors') && &termguicolors
-"   set background=dark
-"   let g:solarized_termtrans = 1
-"   color solarized8_dark_high
-elseif datez#LightVi()
-  colorscheme basic-light
+ " elseif has('termguicolors') && &termguicolors
+ "   set background=dark
+ "   let g:solarized_termtrans = 1
+ "   color solarized8_dark_high
+" elseif datez#LightVi()
+"   colorscheme basic-light
 elseif has('termguicolors') && &termguicolors
-  set bg=dark
-  colorscheme hybrid
-  if ! has('gvim')
-    augroup transparentbackground
-      au colorscheme * hi normal guibg=none ctermbg=none
-    augroup end
-  endif
-  colorscheme hybrid
+  color iceberg
+  " set bg=dark
+  " colorscheme hybrid
+  " if ! has('gvim')
+  "   augroup transparentbackground
+  "     au colorscheme * hi normal guibg=none ctermbg=none
+  "   augroup end
+  " endif
+  " colorscheme hybrid
 else
   colorscheme basic-dark
   if ! has('gvim')

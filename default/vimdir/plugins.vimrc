@@ -174,7 +174,7 @@ Plug             'guns/jellyx.vim'
 Plug          'fisadev/fisa-vim-colorscheme'
 Plug      'whatyouhide/vim-gotham'        ",   { 'commit': 'f46412d4f9768c332ae22676f3ef4cc130457ba0' }
 Plug          'djjcast/mirodark',              { 'commit': '306c5f96dd0ecaa64eac603b990a22300dc798f7' }
-" Plug         'lu-ren/SerialExperimentsLain', { 'commit': 'aabb800d6a27cde243604a94a9a14334286a87b2' }
+Plug         'lu-ren/SerialExperimentsLain', { 'commit': 'aabb800d6a27cde243604a94a9a14334286a87b2' }
 Plug           'zcodes/vim-colors-basic',      { 'commit': 'bdf14db578ad283bffa019ab2236f4d378eef34b' }
 Plug       'lifepillar/vim-solarized8'    ",   { 'commit': 'dc6c1dfa6f5c068ba338b8a2e4f88f4b6de4433a' }
 Plug       'nightsense/snow'

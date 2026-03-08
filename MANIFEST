@@ -17,7 +17,7 @@ $ shell
 ~/.inputrc: ./default/inputrc
 ~/.ipython/profile_default/ipython_config.py: ./default/ipython_config.py
 ~/.config/badssl.cnf: ./default/badssl.cnf
-~/.config/ghosttty/config: ./default/ghosttty.config
+~/.config/ghostty/config: ./default/ghostty.config
 
 $ vim
 ~/.vimrc: @delete
