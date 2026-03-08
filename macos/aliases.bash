@@ -1,8 +1,8 @@
 # vi: ft=sh sts=2 sw=2 sts=2 et
 alias firefoxp='/Applications/Firefox.app/Contents/MacOS/firefox  --no-remote -P'
 alias lock='/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend'
-alias pbcopy='/usr/local/bin/reattach-to-user-namespace pbcopy'
-alias pbpaste='/usr/local/bin/reattach-to-user-namespace pbpaste'
+#alias pbcopy='/usr/local/bin/reattach-to-user-namespace pbcopy'
+#alias pbpaste='/usr/local/bin/reattach-to-user-namespace pbpaste'
 alias pbp='pbpaste'
 alias pbc='pbcopy'
 pidof () { ps -Acw | grep -iE $@ | awk '{print $1}'; } # this is kind of trash

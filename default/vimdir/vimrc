@@ -86,7 +86,6 @@ set ffs=unix,dos,mac " Try recognizing dos, unix, and mac line endings.
 "{{{2 Neovim-obseleted options
 if ! s:is_nvim
   set ttyfast               " More redrawing characters sent to terminal
-  set ttymouse=xterm2       " More accurate mouse tracking
 endif
 
 "{{{1 4-bit, 8-bit and 24-bit color support
@@ -100,6 +99,7 @@ if has('termguicolors') && !s:is_windows
         \    match($TERM, '^\v(screen|rxvt)-256.*$') == 0
         \   || !empty($ITERM_SESSION_ID)
         \   || !empty($ALACRITTY_LOG)
+        \   || !empty($GHOSTTTY_SHELL_FEATURES)
         \ )
     " This nonsense can only be set if terminal has 24 bit colour support.
     " neovim does not intuit such a thing. programming is math not magic.
